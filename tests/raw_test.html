@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Raw HTML Test</title>
+    <link rel="stylesheet" href="../semantic/dist/semantic.min.css">
+</head>
+<body style="padding: 40px;">
+    <script src="../jquery/jquery.min.js"></script>
+    <script src="../semantic/dist/semantic.min.js"></script>
+    
+    <h1>Raw HTML Form Test - Direkt ohne PHP</h1>
+    
+    <div id="result"></div>
+    
+    <form id="test_form" class="ui form">
+        <input type="hidden" name="form_id" value="application_form">
+        <input type="hidden" name="csrf_token" value="dummy_token">
+        
+        <div class="field">
+            <label>Vorname</label>
+            <input type="text" name="firstname" value="Max" required>
+        </div>
+        
+        <div class="field">
+            <label>Nachname</label>
+            <input type="text" name="lastname" value="Mustermann" required>
+        </div>
+        
+        <div class="field">
+            <label>E-Mail</label>
+            <input type="email" name="email" value="test@example.com" required>
+        </div>
+        
+        <div class="field">
+            <label>Bildung</label>
+            <select name="education" required>
+                <option value="">Bitte wählen</option>
+                <option value="abitur" selected>Abitur</option>
+                <option value="bachelor">Bachelor</option>
+            </select>
+        </div>
+        
+        <div class="field">
+            <div class="ui checkbox">
+                <input type="checkbox" name="terms" value="1" checked>
+                <label>Ich akzeptiere die Bedingungen</label>
+            </div>
+        </div>
+        
+        <button type="submit" class="ui primary button">Absenden</button>
+    </form>
+    
+    <hr>
+    
+    <h3>Console Output:</h3>
+    <pre id="console" style="background: #000; color: #0f0; padding: 10px; min-height: 200px;"></pre>
+    
+    <script>
+    function log(msg, data) {
+        var output = msg;
+        if (data) {
+            output += ': ' + JSON.stringify(data, null, 2);
+        }
+        $('#console').append(output + '\n');
+        console.log(msg, data || '');
+    }
+    
+    $(document).ready(function() {
+        log('Page loaded');
+        
+        $('#test_form').on('submit', function(e) {
+            e.preventDefault();
+            log('Form submitted');
+            
+            var formData = new FormData(this);
+            
+            log('=== Form Data ===');
+            for (var pair of formData.entries()) {
+                log(pair[0], pair[1]);
+            }
+            
+            log('Sending to server...');
+            
+            $.ajax({
+                url: 'examples/process.php',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                success: function(response) {
+                    log('SUCCESS', response);
+                    $('#result').html('<div class="ui success message">Success: ' + response.message + '</div>');
+                },
+                error: function(xhr) {
+                    log('ERROR Status', xhr.status);
+                    try {
+                        var response = JSON.parse(xhr.responseText);
+                        log('ERROR Response', response);
+                        $('#result').html('<div class="ui error message">Error: ' + response.message + '</div>');
+                        
+                        if (response.errors) {
+                            var errorHtml = '<div class="ui warning message"><h4>Validierungsfehler:</h4><ul>';
+                            for (var field in response.errors) {
+                                errorHtml += '<li><strong>' + field + ':</strong> ' + response.errors[field] + '</li>';
+                            }
+                            errorHtml += '</ul></div>';
+                            $('#result').append(errorHtml);
+                        }
+                        
+                        if (response.received_data) {
+                            log('Server received', response.received_data);
+                        }
+                    } catch(e) {
+                        log('Could not parse error response');
+                        $('#result').html('<div class="ui error message">Error: ' + xhr.statusText + '</div>');
+                    }
+                }
+            });
+            
+            return false;
+        });
+    });
+    </script>
+</body>
+</html>

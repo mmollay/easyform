@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Examples - EasyForm/EasyList Documentation</title>
+    <meta name="description" content="Comprehensive code examples, use cases, and best practices for EasyForm and EasyList. Copy-paste ready code snippets for common scenarios.">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        .example-card {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            margin: 2rem 0;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .example-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .example-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .example-difficulty {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .example-body {
+            padding: 1.5rem;
+        }
+        
+        .example-description {
+            color: #6c757d;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .example-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .example-tag {
+            background: #f8f9fa;
+            color: #495057;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: 1px solid #e9ecef;
+        }
+        
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-radius: 4px 4px 0 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            font-weight: 500;
+            color: #6c757d;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            background: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .faq-section {
+            margin: 3rem 0;
+        }
+        
+        .faq-item {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            background: #f8f9fa;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: #495057;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .faq-question:hover {
+            background: #e9ecef;
+        }
+        
+        .faq-answer {
+            padding: 1.5rem;
+            display: none;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .faq-answer.active {
+            display: block;
+        }
+        
+        .faq-toggle {
+            transition: transform 0.3s ease;
+        }
+        
+        .faq-toggle.active {
+            transform: rotate(180deg);
+        }
+        
+        .use-case-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .use-case-card {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .use-case-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .use-case-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .use-case-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+        
+        .use-case-description {
+            color: #6c757d;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .copy-button {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            font-size: 0.8rem;
+        }
+        
+        .code-block:hover .copy-button {
+            opacity: 1;
+        }
+        
+        .copy-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        @media (max-width: 768px) {
+            .example-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .use-case-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="../index.html">EasyForm/EasyList</a>
+                </div>
+                <nav class="nav">
+                    <a href="#form-examples" class="nav-link">Form Examples</a>
+                    <a href="#list-examples" class="nav-link">List Examples</a>
+                    <a href="#use-cases" class="nav-link">Use Cases</a>
+                    <a href="#faq" class="nav-link">FAQ</a>
+                    <a href="api.html" class="nav-link">API</a>
+                </nav>
+                <button class="mobile-menu-toggle">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container" style="margin-top: 2rem; margin-bottom: 3rem;">
+        <div class="row">
+            <!-- Sidebar Navigation -->
+            <div class="col-3">
+                <div class="doc-nav">
+                    <h3 style="margin-bottom: 1rem;">Code Examples</h3>
+                    <ul>
+                        <li><a href="#overview" class="active">Overview</a></li>
+                        <li><a href="#form-examples">Form Examples</a></li>
+                        <li><a href="#contact-form">Contact Form</a></li>
+                        <li><a href="#registration-form">Registration</a></li>
+                        <li><a href="#multi-step">Multi-Step</a></li>
+                        <li><a href="#list-examples">List Examples</a></li>
+                        <li><a href="#basic-table">Basic Table</a></li>
+                        <li><a href="#advanced-table">Advanced Table</a></li>
+                        <li><a href="#use-cases">Use Cases</a></li>
+                        <li><a href="#best-practices">Best Practices</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Documentation Content -->
+            <div class="col-9">
+                <div class="doc-content">
+                    <h1 id="overview">Code Examples</h1>
+                    <p class="section-subtitle">Ready-to-use code examples for common scenarios. Copy, paste, and customize for your projects.</p>
+
+                    <!-- Overview -->
+                    <section id="overview">
+                        <h2>Getting Started</h2>
+                        <p>This collection includes practical examples for real-world scenarios. Each example is complete and ready to use, with explanations of key concepts and best practices.</p>
+                        
+                        <div class="alert alert-info">
+                            <strong>💡 Pro Tip:</strong> All examples include both the PHP code and the resulting HTML output. Most examples are copy-paste ready with minimal setup required.
+                        </div>
+
+                        <h3>Example Categories</h3>
+                        <div class="use-case-grid">
+                            <div class="use-case-card">
+                                <div class="use-case-icon">📝</div>
+                                <h4 class="use-case-title">Form Examples</h4>
+                                <p class="use-case-description">Contact forms, registration, login, surveys, and complex multi-step forms.</p>
+                            </div>
+                            <div class="use-case-card">
+                                <div class="use-case-icon">📊</div>
+                                <h4 class="use-case-title">Data Tables</h4>
+                                <p class="use-case-description">User lists, product catalogs, reports, and dashboard tables with advanced features.</p>
+                            </div>
+                            <div class="use-case-card">
+                                <div class="use-case-icon">🔧</div>
+                                <h4 class="use-case-title">Integration Examples</h4>
+                                <p class="use-case-description">Database integration, API connections, AJAX implementations, and framework usage.</p>
+                            </div>
+                            <div class="use-case-card">
+                                <div class="use-case-icon">🎨</div>
+                                <h4 class="use-case-title">Styling & Themes</h4>
+                                <p class="use-case-description">Custom themes, responsive layouts, and advanced styling techniques.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Form Examples -->
+                    <section id="form-examples">
+                        <h2>Form Examples</h2>
+                        <p>Complete form examples for common scenarios.</p>
+
+                        <!-- Contact Form -->
+                        <div id="contact-form" class="example-card">
+                            <div class="example-header">
+                                <h3 class="example-title">📧 Contact Form</h3>
+                                <span class="example-difficulty">Beginner</span>
+                            </div>
+                            <div class="example-body">
+                                <p class="example-description">
+                                    A professional contact form with validation, CSRF protection, and email functionality. Perfect for business websites and landing pages.
+                                </p>
+                                <div class="example-tags">
+                                    <span class="example-tag">Validation</span>
+                                    <span class="example-tag">CSRF</span>
+                                    <span class="example-tag">Email</span>
+                                    <span class="example-tag">Responsive</span>
+                                </div>
+                                
+                                <div class="tabs">
+                                    <button class="tab-btn active" onclick="showTab(this, 'contact-php')">PHP Code</button>
+                                    <button class="tab-btn" onclick="showTab(this, 'contact-processing')">Form Processing</button>
+                                    <button class="tab-btn" onclick="showTab(this, 'contact-html')">Generated HTML</button>
+                                </div>
+                                
+                                <div id="contact-php" class="tab-content active">
+                                    <div class="code-block" data-language="php" style="position: relative;">
+<button class="copy-button" onclick="copyCode(this)">Copy</button>
+<code><?php
+require_once 'easy_form/autoload.php';
+use EasyForm\EasyForm;
+
+// Create contact form
+$form = new EasyForm('contact_form', [
+    'theme' => 'semantic',
+    'width' => 600
+]);
+
+$form->heading('Get In Touch', 2)
+    ->text('name', 'Your Name', [
+        'required' => true,
+        'placeholder' => 'Enter your full name',
+        'icon' => 'user'
+    ])
+    ->email('email', 'Email Address', [
+        'required' => true,
+        'placeholder' => 'your@email.com',
+        'icon' => 'envelope'
+    ])
+    ->select('subject', 'Subject', [
+        'general' => 'General Inquiry',
+        'support' => 'Technical Support',
+        'sales' => 'Sales Question',
+        'partnership' => 'Partnership Opportunity',
+        'other' => 'Other'
+    ], ['required' => true])
+    ->textarea('message', 'Your Message', [
+        'required' => true,
+        'placeholder' => 'Tell us how we can help you...',
+        'rows' => 6,
+        'help' => 'Please provide as much detail as possible'
+    ])
+    ->checkbox('newsletter', 'Subscribe to our newsletter for updates')
+    ->submit('Send Message', [
+        'class' => 'ui primary button large',
+        'icon' => 'send'
+    ]);
+
+// Add validation rules
+$form->rule('name', 'required|minlength[2]')
+    ->rule('email', 'required|email')
+    ->rule('message', 'required|minlength[10]');
+
+// Display the form
+$form->display();
+?></code>
+                                    </div>
+                                </div>
+                                
+                                <div id="contact-processing" class="tab-content">
+                                    <div class="code-block" data-language="php" style="position: relative;">
+<button class="copy-button" onclick="copyCode(this)">Copy</button>
+<code><?php
+// Form processing logic
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Get form data
+    $name = trim($_POST['name'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $subject = $_POST['subject'] ?? '';
+    $message = trim($_POST['message'] ?? '');
+    $newsletter = isset($_POST['newsletter']);
+    
+    // Validation
+    $errors = [];
+    
+    if (empty($name) || strlen($name) < 2) {
+        $errors['name'] = 'Name must be at least 2 characters';
+    }
+    
+    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors['email'] = 'Please enter a valid email address';
+    }
+    
+    if (empty($message) || strlen($message) < 10) {
+        $errors['message'] = 'Message must be at least 10 characters';
+    }
+    
+    // If no errors, process the form
+    if (empty($errors)) {
+        // Send email
+        $to = 'info@yourcompany.com';
+        $emailSubject = 'Contact Form: ' . $subject;
+        $emailBody = "Name: {$name}\n";
+        $emailBody .= "Email: {$email}\n";
+        $emailBody .= "Subject: {$subject}\n\n";
+        $emailBody .= "Message:\n{$message}\n\n";
+        
+        if ($newsletter) {
+            $emailBody .= "Subscriber requested newsletter updates.\n";
+        }
+        
+        $headers = [
+            'From' => $email,
+            'Reply-To' => $email,
+            'X-Mailer' => 'EasyForm Contact Form'
+        ];
+        
+        $success = mail($to, $emailSubject, $emailBody, implode("\r\n", $headers));
+        
+        if ($success) {
+            // Optional: Save to database
+            saveContactMessage($name, $email, $subject, $message, $newsletter);
+            
+            // Optional: Add to newsletter list
+            if ($newsletter) {
+                addToNewsletter($email, $name);
+            }
+            
+            // Redirect to thank you page
+            header('Location: thank-you.html');
+            exit;
+        } else {
+            $errors['general'] = 'Failed to send message. Please try again.';
+        }
+    }
+}
+
+function saveContactMessage($name, $email, $subject, $message, $newsletter) {
+    // Database save logic
+    $pdo = new PDO('mysql:host=localhost;dbname=yourdb', $username, $password);
+    $stmt = $pdo->prepare("
+        INSERT INTO contact_messages (name, email, subject, message, newsletter, created_at) 
+        VALUES (?, ?, ?, ?, ?, NOW())
+    ");
+    return $stmt->execute([$name, $email, $subject, $message, $newsletter ? 1 : 0]);
+}
+?></code>
+                                    </div>
+                                </div>
+                                
+                                <div id="contact-html" class="tab-content">
+                                    <div class="code-block" data-language="html" style="position: relative;">
+<button class="copy-button" onclick="copyCode(this)">Copy</button>
+<code>&lt;form id="contact_form" method="POST" class="ui form" style="max-width: 600px;"&gt;
+    &lt;h2 class="ui dividing header"&gt;Get In Touch&lt;/h2&gt;
+    
+    &lt;div class="field required"&gt;
+        &lt;label&gt;Your Name&lt;/label&gt;
+        &lt;div class="ui left icon input"&gt;
+            &lt;i class="user icon"&gt;&lt;/i&gt;
+            &lt;input type="text" name="name" placeholder="Enter your full name" required&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="field required"&gt;
+        &lt;label&gt;Email Address&lt;/label&gt;
+        &lt;div class="ui left icon input"&gt;
+            &lt;i class="envelope icon"&gt;&lt;/i&gt;
+            &lt;input type="email" name="email" placeholder="your@email.com" required&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="field required"&gt;
+        &lt;label&gt;Subject&lt;/label&gt;
+        &lt;select name="subject" class="ui dropdown" required&gt;
+            &lt;option value="general"&gt;General Inquiry&lt;/option&gt;
+            &lt;option value="support"&gt;Technical Support&lt;/option&gt;
+            &lt;option value="sales"&gt;Sales Question&lt;/option&gt;
+            &lt;option value="partnership"&gt;Partnership Opportunity&lt;/option&gt;
+            &lt;option value="other"&gt;Other&lt;/option&gt;
+        &lt;/select&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="field required"&gt;
+        &lt;label&gt;Your Message&lt;/label&gt;
+        &lt;textarea name="message" rows="6" placeholder="Tell us how we can help you..." required&gt;&lt;/textarea&gt;
+        &lt;small&gt;Please provide as much detail as possible&lt;/small&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="field"&gt;
+        &lt;div class="ui checkbox"&gt;
+            &lt;input type="checkbox" name="newsletter"&gt;
+            &lt;label&gt;Subscribe to our newsletter for updates&lt;/label&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;button type="submit" class="ui primary button large"&gt;
+        &lt;i class="send icon"&gt;&lt;/i&gt; Send Message
+    &lt;/button&gt;
+    
+    &lt;input type="hidden" name="csrf_token" value="generated_token_here"&gt;
+&lt;/form&gt;</code>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- User Registration Form -->
+                        <div id="registration-form" class="example-card">
+                            <div class="example-header">
+                                <h3 class="example-title">👤 User Registration</h3>
+                                <span class="example-difficulty">Intermediate</span>
+                            </div>
+                            <div class="example-body">
+                                <p class="example-description">
+                                    Complete user registration form with password strength checking, email verification, and terms acceptance. Includes database integration.
+                                </p>
+                                <div class="example-tags">
+                                    <span class="example-tag">Registration</span>
+                                    <span class="example-tag">Password Validation</span>
+                                    <span class="example-tag">Database</span>
+                                    <span class="example-tag">Security</span>
+                                </div>
+                                
+                                <div class="tabs">
+                                    <button class="tab-btn active" onclick="showTab(this, 'reg-php')">PHP Code</button>
+                                    <button class="tab-btn" onclick="showTab(this, 'reg-validation')">Validation</button>
+                                    <button class="tab-btn" onclick="showTab(this, 'reg-database')">Database</button>
+                                </div>
+                                
+                                <div id="reg-php" class="tab-content active">
+                                    <div class="code-block" data-language="php" style="position: relative;">
+<button class="copy-button" onclick="copyCode(this)">Copy</button>
+<code><?php
+$form = new EasyForm('registration_form', [
+    'theme' => 'semantic',
+    'width' => 500
+]);
+
+$form->heading('Create Your Account', 2)
+    
+    // Personal Information
+    ->row()
+        ->column(6)
+            ->text('first_name', 'First Name', ['required' => true])
+        ->endColumn()
+        ->column(6)
+            ->text('last_name', 'Last Name', ['required' => true])
+        ->endColumn()
+    ->endRow()
+    
+    ->email('email', 'Email Address', [
+        'required' => true,
+        'placeholder' => 'your@email.com',
+        'help' => 'We\'ll send a verification email to this address'
+    ])
+    
+    ->text('username', 'Username', [
+        'required' => true,
+        'placeholder' => 'Choose a unique username',
+        'help' => 'Letters, numbers, and underscores only',
+        'minlength' => 3,
+        'maxlength' => 20
+    ])
+    
+    // Password Section
+    ->divider('Account Security')
+    
+    ->password('password', 'Password', [
+        'required' => true,
+        'help' => 'Minimum 8 characters with uppercase, lowercase, and numbers',
+        'data-strength' => 'true'
+    ])
+    
+    ->password('confirm_password', 'Confirm Password', [
+        'required' => true,
+        'help' => 'Must match the password above'
+    ])
+    
+    // Terms and Newsletter
+    ->divider('Preferences')
+    
+    ->checkbox('terms', 'I agree to the Terms of Service and Privacy Policy', [
+        'required' => true,
+        'template' => '
+            <div class="ui checkbox">
+                <input type="checkbox" name="terms" required>
+                <label>I agree to the <a href="/terms" target="_blank">Terms of Service</a> 
+                       and <a href="/privacy" target="_blank">Privacy Policy</a></label>
+            </div>'
+    ])
+    
+    ->checkbox('newsletter', 'Send me product updates and news')
+    
+    ->submit('Create Account', [
+        'class' => 'ui primary button fluid large',
+        'icon' => 'user plus'
+    ]);
+
+// Validation Rules
+$form->rule('first_name', 'required|minlength[2]|alpha')
+    ->rule('last_name', 'required|minlength[2]|alpha')
+    ->rule('email', 'required|email|unique[users,email]')
+    ->rule('username', 'required|minlength[3]|maxlength[20]|alphanumeric|unique[users,username]')
+    ->rule('password', 'required|minlength[8]|password_strength[medium]')
+    ->rule('confirm_password', 'required|matches[password]');
+
+$form->display();
+?></code>
+                                    </div>
+                                </div>
+                                
+                                <div id="reg-validation" class="tab-content">
+                                    <div class="code-block" data-language="php" style="position: relative;">
+<button class="copy-button" onclick="copyCode(this)">Copy</button>
+<code><?php
+// Custom validation functions
+function validateRegistration($data) {
+    $errors = [];
+    
+    // Name validation
+    if (empty($data['first_name']) || !preg_match('/^[a-zA-Z\s]+$/', $data['first_name'])) {
+        $errors['first_name'] = 'First name must contain only letters';
+    }
+    
+    if (empty($data['last_name']) || !preg_match('/^[a-zA-Z\s]+$/', $data['last_name'])) {
+        $errors['last_name'] = 'Last name must contain only letters';
+    }
+    
+    // Email validation
+    if (empty($data['email'])) {
+        $errors['email'] = 'Email is required';
+    } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+        $errors['email'] = 'Please enter a valid email address';
+    } elseif (emailExists($data['email'])) {
+        $errors['email'] = 'This email is already registered';
+    }
+    
+    // Username validation
+    if (empty($data['username'])) {
+        $errors['username'] = 'Username is required';
+    } elseif (strlen($data['username']) < 3) {
+        $errors['username'] = 'Username must be at least 3 characters';
+    } elseif (!preg_match('/^[a-zA-Z0-9_]+$/', $data['username'])) {
+        $errors['username'] = 'Username can only contain letters, numbers, and underscores';
+    } elseif (usernameExists($data['username'])) {
+        $errors['username'] = 'This username is already taken';
+    }
+    
+    // Password validation
+    if (empty($data['password'])) {
+        $errors['password'] = 'Password is required';
+    } elseif (strlen($data['password']) < 8) {
+        $errors['password'] = 'Password must be at least 8 characters';
+    } elseif (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/', $data['password'])) {
+        $errors['password'] = 'Password must contain uppercase, lowercase, and numbers';
+    }
+    
+    // Confirm password
+    if ($data['password'] !== $data['confirm_password']) {
+        $errors['confirm_password'] = 'Passwords do not match';
+    }
+    
+    // Terms acceptance
+    if (!isset($data['terms']) || !$data['terms']) {
+        $errors['terms'] = 'You must accept the terms and conditions';
+    }
+    
+    return $errors;
+}
+
+function emailExists($email) {
+    $pdo = getPDOConnection();
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE email = ?");
+    $stmt->execute([$email]);
+    return $stmt->fetchColumn() > 0;
+}
+
+function usernameExists($username) {
+    $pdo = getPDOConnection();
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE username = ?");
+    $stmt->execute([$username]);
+    return $stmt->fetchColumn() > 0;
+}
+?></code>
+                                    </div>
+                                </div>
+                                
+                                <div id="reg-database" class="tab-content">
+                                    <div class="code-block" data-language="php" style="position: relative;">
+<button class="copy-button" onclick="copyCode(this)">Copy</button>
+<code><?php
+// Database schema and user creation
+function createUserTable() {
+    $sql = "
+    CREATE TABLE IF NOT EXISTS users (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        first_name VARCHAR(50) NOT NULL,
+        last_name VARCHAR(50) NOT NULL,
+        email VARCHAR(100) UNIQUE NOT NULL,
+        username VARCHAR(20) UNIQUE NOT NULL,
+        password_hash VARCHAR(255) NOT NULL,
+        email_verified BOOLEAN DEFAULT FALSE,
+        verification_token VARCHAR(100),
+        newsletter_subscribed BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        INDEX idx_email (email),
+        INDEX idx_username (username)
+    )";
+    
+    $pdo = getPDOConnection();
+    $pdo->exec($sql);
+}
+
+function createUser($data) {
+    $pdo = getPDOConnection();
+    
+    // Hash password
+    $passwordHash = password_hash($data['password'], PASSWORD_DEFAULT);
+    
+    // Generate verification token
+    $verificationToken = bin2hex(random_bytes(32));
+    
+    try {
+        $pdo->beginTransaction();
+        
+        // Insert user
+        $stmt = $pdo->prepare("
+            INSERT INTO users (
+                first_name, last_name, email, username, 
+                password_hash, verification_token, newsletter_subscribed
+            ) VALUES (?, ?, ?, ?, ?, ?, ?)
+        ");
+        
+        $stmt->execute([
+            $data['first_name'],
+            $data['last_name'],
+            $data['email'],
+            $data['username'],
+            $passwordHash,
+            $verificationToken,
+            isset($data['newsletter']) ? 1 : 0
+        ]);
+        
+        $userId = $pdo->lastInsertId();
+        
+        // Send verification email
+        sendVerificationEmail($data['email'], $verificationToken);
+        
+        $pdo->commit();
+        
+        return [
+            'success' => true,
+            'user_id' => $userId,
+            'message' => 'Account created successfully! Please check your email to verify your account.'
+        ];
+        
+    } catch (PDOException $e) {
+        $pdo->rollback();
+        return [
+            'success' => false,
+            'message' => 'Failed to create account. Please try again.'
+        ];
+    }
+}
+
+function sendVerificationEmail($email, $token) {
+    $verificationUrl = "https://yoursite.com/verify-email.php?token=" . $token;
+    
+    $subject = "Verify Your Email Address";
+    $message = "
+        <h2>Welcome! Please verify your email address</h2>
+        <p>Click the link below to verify your email and activate your account:</p>
+        <p><a href='{$verificationUrl}'>Verify Email Address</a></p>
+        <p>If the link doesn't work, copy and paste this URL into your browser:</p>
+        <p>{$verificationUrl}</p>
+    ";
+    
+    $headers = [
+        'MIME-Version: 1.0',
+        'Content-type: text/html; charset=UTF-8',
+        'From: noreply@yoursite.com',
+        'X-Mailer: PHP/' . phpversion()
+    ];
+    
+    return mail($email, $subject, $message, implode("\r\n", $headers));
+}
+?></code>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- List Examples -->
+                    <section id="list-examples">
+                        <h2>Data Table Examples</h2>
+                        <p>Powerful data tables for displaying and managing information.</p>
+
+                        <!-- Basic Data Table -->
+                        <div id="basic-table" class="example-card">
+                            <div class="example-header">
+                                <h3 class="example-title">📊 Basic Data Table</h3>
+                                <span class="example-difficulty">Beginner</span>
+                            </div>
+                            <div class="example-body">
+                                <p class="example-description">
+                                    Simple data table with sorting, searching, and pagination. Perfect for displaying user lists, products, or any tabular data.
+                                </p>
+                                <div class="example-tags">
+                                    <span class="example-tag">Sorting</span>
+                                    <span class="example-tag">Search</span>
+                                    <span class="example-tag">Pagination</span>
+                                    <span class="example-tag">Export</span>
+                                </div>
+                                
+                                <div class="code-block" data-language="php" style="position: relative;">
+<button class="copy-button" onclick="copyCode(this)">Copy</button>
+<code><?php
+require_once 'easy_form/autoload.php';
+use EasyForm\EasyList;
+
+// Sample data - typically from database
+$users = [
+    ['id' => 1, 'name' => 'John Doe', 'email' => 'john@example.com', 'role' => 'Admin', 'status' => 'Active', 'created_at' => '2024-01-15'],
+    ['id' => 2, 'name' => 'Jane Smith', 'email' => 'jane@example.com', 'role' => 'User', 'status' => 'Active', 'created_at' => '2024-01-20'],
+    ['id' => 3, 'name' => 'Bob Johnson', 'email' => 'bob@example.com', 'role' => 'Moderator', 'status' => 'Inactive', 'created_at' => '2024-01-25'],
+    ['id' => 4, 'name' => 'Alice Brown', 'email' => 'alice@example.com', 'role' => 'User', 'status' => 'Active', 'created_at' => '2024-02-01']
+];
+
+// Create the data table
+$list = new EasyList('users_table');
+
+$list->data($users)
+    
+    // Define columns
+    ->column('id', 'ID', [
+        'width' => '60px',
+        'align' => 'center',
+        'sortable' => true
+    ])
+    
+    ->column('name', 'Full Name', [
+        'sortable' => true,
+        'searchable' => true,
+        'template' => '<strong>{{name}}</strong>'
+    ])
+    
+    ->column('email', 'Email Address', [
+        'sortable' => true,
+        'searchable' => true,
+        'template' => '<a href="mailto:{{email}}">{{email}}</a>'
+    ])
+    
+    ->column('role', 'Role', [
+        'sortable' => true,
+        'filter' => [
+            'all' => 'All Roles',
+            'Admin' => 'Admin',
+            'Moderator' => 'Moderator',
+            'User' => 'User'
+        ]
+    ])
+    
+    ->column('status', 'Status', [
+        'sortable' => true,
+        'template' => function($row) {
+            $class = $row['status'] === 'Active' ? 'green' : 'red';
+            return "<span class=\"ui label {$class}\">{$row['status']}</span>";
+        },
+        'filter' => ['Active', 'Inactive']
+    ])
+    
+    ->column('created_at', 'Member Since', [
+        'type' => 'date',
+        'format' => 'M j, Y',
+        'sortable' => true
+    ])
+    
+    // Enable features
+    ->searchable([
+        'placeholder' => 'Search users...',
+        'debounce' => 300
+    ])
+    
+    ->paginate(25)
+    
+    ->exportable(['csv', 'excel'], [
+        'filename' => 'users_export'
+    ])
+    
+    // Add action buttons
+    ->addAction('edit', 'Edit', [
+        'icon' => 'edit',
+        'class' => 'ui button small blue',
+        'url' => '/users/edit/{{id}}'
+    ])
+    
+    ->addAction('delete', 'Delete', [
+        'icon' => 'trash',
+        'class' => 'ui button small red',
+        'url' => '/users/delete/{{id}}',
+        'confirm' => 'Are you sure you want to delete this user?'
+    ])
+    
+    // Display the table
+    ->display();
+?></code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Use Cases -->
+                    <section id="use-cases">
+                        <h2>Real-World Use Cases</h2>
+                        <p>See how EasyForm and EasyList solve common business problems.</p>
+
+                        <div class="use-case-grid">
+                            <div class="use-case-card">
+                                <div class="use-case-icon">🏢</div>
+                                <h4 class="use-case-title">Corporate Websites</h4>
+                                <p class="use-case-description">Contact forms, career applications, client onboarding, and service request forms.</p>
+                            </div>
+                            <div class="use-case-card">
+                                <div class="use-case-icon">🛒</div>
+                                <h4 class="use-case-title">E-Commerce</h4>
+                                <p class="use-case-description">Product management, order processing, customer data, and inventory tracking.</p>
+                            </div>
+                            <div class="use-case-card">
+                                <div class="use-case-icon">🎓</div>
+                                <h4 class="use-case-title">Educational Platforms</h4>
+                                <p class="use-case-description">Student registration, course management, grade tracking, and survey forms.</p>
+                            </div>
+                            <div class="use-case-card">
+                                <div class="use-case-icon">🏥</div>
+                                <h4 class="use-case-title">Healthcare</h4>
+                                <p class="use-case-description">Patient forms, appointment booking, medical records, and staff management.</p>
+                            </div>
+                            <div class="use-case-card">
+                                <div class="use-case-icon">📊</div>
+                                <h4 class="use-case-title">Analytics Dashboards</h4>
+                                <p class="use-case-description">Data visualization, report generation, user analytics, and performance metrics.</p>
+                            </div>
+                            <div class="use-case-card">
+                                <div class="use-case-icon">🔧</div>
+                                <h4 class="use-case-title">Admin Panels</h4>
+                                <p class="use-case-description">User management, content administration, system settings, and monitoring tools.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Best Practices -->
+                    <section id="best-practices">
+                        <h2>Best Practices</h2>
+                        <p>Follow these guidelines for optimal results with EasyForm and EasyList.</p>
+
+                        <div class="example-card">
+                            <div class="example-header">
+                                <h3 class="example-title">💡 Development Best Practices</h3>
+                            </div>
+                            <div class="example-body">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <h4>Form Design</h4>
+                                        <ul>
+                                            <li>Keep forms as short as possible</li>
+                                            <li>Group related fields logically</li>
+                                            <li>Use clear, descriptive labels</li>
+                                            <li>Provide helpful placeholder text</li>
+                                            <li>Show validation errors clearly</li>
+                                            <li>Use appropriate input types</li>
+                                        </ul>
+                                        
+                                        <h4>Security</h4>
+                                        <ul>
+                                            <li>Always validate on server-side</li>
+                                            <li>Use CSRF protection (built-in)</li>
+                                            <li>Sanitize all input data</li>
+                                            <li>Hash passwords properly</li>
+                                            <li>Validate file uploads carefully</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-6">
+                                        <h4>Performance</h4>
+                                        <ul>
+                                            <li>Use pagination for large datasets</li>
+                                            <li>Implement server-side processing</li>
+                                            <li>Cache frequently accessed data</li>
+                                            <li>Optimize database queries</li>
+                                            <li>Use AJAX for better UX</li>
+                                        </ul>
+                                        
+                                        <h4>User Experience</h4>
+                                        <ul>
+                                            <li>Provide clear feedback messages</li>
+                                            <li>Use loading indicators</li>
+                                            <li>Make interfaces responsive</li>
+                                            <li>Test on multiple devices</li>
+                                            <li>Follow accessibility guidelines</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- FAQ -->
+                    <section id="faq" class="faq-section">
+                        <h2>Frequently Asked Questions</h2>
+                        <p>Common questions and solutions for EasyForm and EasyList.</p>
+
+                        <div class="faq-item">
+                            <h3 class="faq-question" onclick="toggleFaq(this)">
+                                How do I handle file uploads securely?
+                                <span class="faq-toggle">▼</span>
+                            </h3>
+                            <div class="faq-answer">
+                                <p>EasyForm provides secure file upload handling with built-in validation:</p>
+                                <div class="code-block" data-language="php">
+<code>$form->file('avatar', 'Profile Picture', [
+    'accept' => 'image/*',
+    'maxsize' => '2MB',
+    'allowed_types' => ['jpg', 'jpeg', 'png', 'gif'],
+    'upload_path' => '/secure/uploads/',
+    'validate_image' => true
+]);</code>
+                                </div>
+                                <p>Always validate file types on the server side and store uploads outside the web root when possible.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <h3 class="faq-question" onclick="toggleFaq(this)">
+                                Can I integrate with existing frameworks?
+                                <span class="faq-toggle">▼</span>
+                            </h3>
+                            <div class="faq-answer">
+                                <p>Yes! EasyForm/EasyList work great with popular PHP frameworks:</p>
+                                <ul>
+                                    <li><strong>Laravel:</strong> Use as a service or in controllers</li>
+                                    <li><strong>Symfony:</strong> Integrate with Twig templates</li>
+                                    <li><strong>CodeIgniter:</strong> Use in views and controllers</li>
+                                    <li><strong>WordPress:</strong> Create plugins and admin interfaces</li>
+                                </ul>
+                                <p>The libraries are framework-agnostic and use standard PHP, making integration straightforward.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <h3 class="faq-question" onclick="toggleFaq(this)">
+                                How do I customize the styling?
+                                <span class="faq-toggle">▼</span>
+                            </h3>
+                            <div class="faq-answer">
+                                <p>EasyForm supports multiple CSS frameworks and custom styling:</p>
+                                <div class="code-block" data-language="php">
+<code>// Use different themes
+$form = new EasyForm('my_form', [
+    'theme' => 'bootstrap', // or 'semantic', 'material'
+    'class' => 'custom-form-class'
+]);
+
+// Add custom CSS classes to fields
+$form->text('name', 'Name', [
+    'class' => 'custom-input-class'
+]);</code>
+                                </div>
+                                <p>You can also create completely custom themes by extending the base classes.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <h3 class="faq-question" onclick="toggleFaq(this)">
+                                What about large datasets in EasyList?
+                                <span class="faq-toggle">▼</span>
+                            </h3>
+                            <div class="faq-answer">
+                                <p>EasyList handles large datasets efficiently with server-side processing:</p>
+                                <div class="code-block" data-language="php">
+<code>$list = new EasyList('large_dataset');
+$list->serverSide(true)
+    ->ajax(['url' => '/api/data'])
+    ->paginate(50)
+    ->virtualScroll(['height' => 400]);</code>
+                                </div>
+                                <p>This loads data on-demand and only renders visible rows, handling millions of records smoothly.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <h3 class="faq-question" onclick="toggleFaq(this)">
+                                How do I add custom validation rules?
+                                <span class="faq-toggle">▼</span>
+                            </h3>
+                            <div class="faq-answer">
+                                <p>You can add custom validation using callbacks or extend the validation system:</p>
+                                <div class="code-block" data-language="php">
+<code>// Custom validation callback
+$form->rule('domain', function($value) {
+    if (!preg_match('/^[a-zA-Z0-9\-]+\.[a-zA-Z]{2,}$/', $value)) {
+        return 'Please enter a valid domain name';
+    }
+    return true;
+});
+
+// Or register global custom rules
+EasyForm::addValidationRule('strong_password', function($value) {
+    return preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/', $value);
+});</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Code Examples</h3>
+                    <a href="#form-examples">Form Examples</a>
+                    <a href="#list-examples">Data Tables</a>
+                    <a href="#use-cases">Use Cases</a>
+                    <a href="#best-practices">Best Practices</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Documentation</h3>
+                    <a href="installation.html">Installation</a>
+                    <a href="easyform.html">EasyForm Guide</a>
+                    <a href="easylist.html">EasyList Guide</a>
+                    <a href="api.html">API Reference</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <a href="demos/">Interactive Demos</a>
+                    <a href="builders.html">Visual Builders</a>
+                    <a href="../examples/">Sample Files</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <a href="mailto:support@example.com">Email Support</a>
+                    <a href="https://github.com/smartform/easyform">GitHub</a>
+                    <a href="#faq">FAQ</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 EasyForm/EasyList Code Examples. Ready-to-use snippets.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="assets/js/main.js"></script>
+    
+    <script>
+        // Tab functionality
+        function showTab(button, tabId) {
+            // Remove active class from all tabs and buttons in this example
+            const exampleCard = button.closest('.example-card');
+            exampleCard.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            exampleCard.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Add active class to clicked button and corresponding content
+            button.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+        
+        // FAQ toggle functionality
+        function toggleFaq(element) {
+            const answer = element.nextElementSibling;
+            const toggle = element.querySelector('.faq-toggle');
+            
+            if (answer.classList.contains('active')) {
+                answer.classList.remove('active');
+                toggle.classList.remove('active');
+            } else {
+                // Close all other FAQs
+                document.querySelectorAll('.faq-answer.active').forEach(faq => {
+                    faq.classList.remove('active');
+                    faq.previousElementSibling.querySelector('.faq-toggle').classList.remove('active');
+                });
+                
+                // Open this FAQ
+                answer.classList.add('active');
+                toggle.classList.add('active');
+            }
+        }
+        
+        // Copy code functionality
+        function copyCode(button) {
+            const codeBlock = button.nextElementSibling;
+            const code = codeBlock.textContent;
+            
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                button.style.background = 'rgba(40, 167, 69, 0.8)';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = 'rgba(255, 255, 255, 0.1)';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy code:', err);
+            });
+        }
+    </script>
+</body>
+</html>

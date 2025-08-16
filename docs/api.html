@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Reference - EasyForm/EasyList Documentation</title>
+    <meta name="description" content="Complete API reference for EasyForm and EasyList PHP libraries. Method documentation, parameters, return values, and examples.">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        .api-method {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+        
+        .api-method-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .api-method-name {
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .api-method-type {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .api-method-body {
+            padding: 1.5rem;
+        }
+        
+        .api-signature {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 1rem;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+        
+        .param-table {
+            width: 100%;
+            margin: 1rem 0;
+        }
+        
+        .param-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .param-name {
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-weight: 600;
+            color: #e83e8c;
+        }
+        
+        .param-type {
+            font-family: 'Monaco', 'Consolas', monospace;
+            color: #6f42c1;
+            font-size: 0.9rem;
+        }
+        
+        .param-required {
+            background: #dc3545;
+            color: white;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .param-optional {
+            background: #28a745;
+            color: white;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .return-info {
+            background: #e7f3ff;
+            border-left: 4px solid #007bff;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .example-section {
+            background: #f8f9fa;
+            border-radius: 4px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .class-section {
+            margin: 3rem 0;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 2rem;
+        }
+        
+        .class-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+        
+        .class-description {
+            font-size: 1.1rem;
+            color: #6c757d;
+            margin-bottom: 2rem;
+        }
+        
+        .quick-ref {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 4px;
+            padding: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .deprecated {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .since-version {
+            background: #d1ecf1;
+            color: #0c5460;
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .method-group {
+            margin: 2rem 0;
+        }
+        
+        .method-group-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="../index.html">EasyForm/EasyList</a>
+                </div>
+                <nav class="nav">
+                    <a href="#easyform-api" class="nav-link">EasyForm API</a>
+                    <a href="#easylist-api" class="nav-link">EasyList API</a>
+                    <a href="#examples" class="nav-link">Examples</a>
+                    <a href="easyform.html" class="nav-link">Guide</a>
+                    <a href="installation.html" class="nav-link">Install</a>
+                </nav>
+                <button class="mobile-menu-toggle">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container" style="margin-top: 2rem; margin-bottom: 3rem;">
+        <div class="row">
+            <!-- Sidebar Navigation -->
+            <div class="col-3">
+                <div class="doc-nav">
+                    <h3 style="margin-bottom: 1rem;">API Reference</h3>
+                    <ul>
+                        <li><a href="#overview" class="active">Overview</a></li>
+                        <li><a href="#easyform-api">EasyForm API</a></li>
+                        <li><a href="#constructor">Constructor</a></li>
+                        <li><a href="#field-methods">Field Methods</a></li>
+                        <li><a href="#layout-methods">Layout Methods</a></li>
+                        <li><a href="#validation-methods">Validation</a></li>
+                        <li><a href="#output-methods">Output Methods</a></li>
+                        <li><a href="#easylist-api">EasyList API</a></li>
+                        <li><a href="#data-methods">Data Methods</a></li>
+                        <li><a href="#column-methods">Column Methods</a></li>
+                        <li><a href="#feature-methods">Feature Methods</a></li>
+                        <li><a href="#display-methods">Display Methods</a></li>
+                        <li><a href="#utility-methods">Utility Methods</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Documentation Content -->
+            <div class="col-9">
+                <div class="doc-content">
+                    <h1 id="overview">API Reference</h1>
+                    <p class="section-subtitle">Complete method reference for EasyForm and EasyList classes with parameters, return values, and usage examples.</p>
+
+                    <!-- Overview -->
+                    <section id="overview">
+                        <h2>Overview</h2>
+                        <p>This reference covers all public methods available in the EasyForm and EasyList libraries. Each method includes detailed parameter information, return values, and practical examples.</p>
+                        
+                        <div class="quick-ref">
+                            <h3>Quick Reference</h3>
+                            <div class="row">
+                                <div class="col-6">
+                                    <h4>EasyForm</h4>
+                                    <ul>
+                                        <li><strong>Field Methods:</strong> text(), email(), select(), etc.</li>
+                                        <li><strong>Layout:</strong> group(), row(), column()</li>
+                                        <li><strong>Validation:</strong> rule(), validate()</li>
+                                        <li><strong>Output:</strong> display(), render(), toJson()</li>
+                                    </ul>
+                                </div>
+                                <div class="col-6">
+                                    <h4>EasyList</h4>
+                                    <ul>
+                                        <li><strong>Data:</strong> data(), fromDatabase(), fromApi()</li>
+                                        <li><strong>Columns:</strong> column(), addColumn()</li>
+                                        <li><strong>Features:</strong> searchable(), paginate(), exportable()</li>
+                                        <li><strong>Actions:</strong> addAction(), addBulkAction()</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- EasyForm API -->
+                    <section id="easyform-api" class="class-section">
+                        <h1 class="class-title">EasyForm API</h1>
+                        <p class="class-description">The EasyForm class provides a fluent interface for building HTML forms with validation, AJAX support, and responsive design.</p>
+
+                        <!-- Constructor -->
+                        <div class="method-group" id="constructor">
+                            <h2 class="method-group-title">Constructor</h2>
+                            
+                            <div class="api-method">
+                                <div class="api-method-header">
+                                    <span class="api-method-name">__construct()</span>
+                                    <span class="api-method-type">Constructor</span>
+                                </div>
+                                <div class="api-method-body">
+                                    <p>Creates a new EasyForm instance with optional configuration.</p>
+                                    
+                                    <div class="api-signature">
+public function __construct(string $id = 'easyform', array $config = []): EasyForm</div>
+
+                                    <h4>Parameters</h4>
+                                    <table class="param-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Parameter</th>
+                                                <th>Type</th>
+                                                <th>Required</th>
+                                                <th>Default</th>
+                                                <th>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><span class="param-name">$id</span></td>
+                                                <td><span class="param-type">string</span></td>
+                                                <td><span class="param-optional">Optional</span></td>
+                                                <td>'easyform'</td>
+                                                <td>Unique form identifier</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="param-name">$config</span></td>
+                                                <td><span class="param-type">array</span></td>
+                                                <td><span class="param-optional">Optional</span></td>
+                                                <td>[]</td>
+                                                <td>Configuration options</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <div class="return-info">
+                                        <strong>Returns:</strong> <span class="param-type">EasyForm</span> - The form instance for method chaining
+                                    </div>
+
+                                    <div class="example-section">
+                                        <h4>Example</h4>
+                                        <div class="code-block" data-language="php">
+<code><?php
+// Basic form
+$form = new EasyForm('contact_form');
+
+// Form with configuration
+$form = new EasyForm('advanced_form', [
+    'theme' => 'bootstrap',
+    'size' => 'large',
+    'width' => 800,
+    'language' => 'en'
+]);
+?></code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Field Methods -->
+                        <div class="method-group" id="field-methods">
+                            <h2 class="method-group-title">Field Methods</h2>
+
+                            <!-- text() method -->
+                            <div class="api-method">
+                                <div class="api-method-header">
+                                    <span class="api-method-name">text()</span>
+                                    <span class="api-method-type">Field</span>
+                                </div>
+                                <div class="api-method-body">
+                                    <p>Creates a text input field.</p>
+                                    
+                                    <div class="api-signature">
+public function text(string $name, string $label = '', array $options = []): self</div>
+
+                                    <h4>Parameters</h4>
+                                    <table class="param-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Parameter</th>
+                                                <th>Type</th>
+                                                <th>Required</th>
+                                                <th>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><span class="param-name">$name</span></td>
+                                                <td><span class="param-type">string</span></td>
+                                                <td><span class="param-required">Required</span></td>
+                                                <td>Field name attribute</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="param-name">$label</span></td>
+                                                <td><span class="param-type">string</span></td>
+                                                <td><span class="param-optional">Optional</span></td>
+                                                <td>Field label text</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="param-name">$options</span></td>
+                                                <td><span class="param-type">array</span></td>
+                                                <td><span class="param-optional">Optional</span></td>
+                                                <td>Field configuration options</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <h4>Available Options</h4>
+                                    <ul>
+                                        <li><code>required</code> (bool): Make field mandatory</li>
+                                        <li><code>placeholder</code> (string): Placeholder text</li>
+                                        <li><code>value</code> (string): Default value</li>
+                                        <li><code>maxlength</code> (int): Maximum character length</li>
+                                        <li><code>readonly</code> (bool): Make field read-only</li>
+                                        <li><code>disabled</code> (bool): Disable field</li>
+                                        <li><code>icon</code> (string): Field icon</li>
+                                        <li><code>help</code> (string): Help text</li>
+                                        <li><code>class</code> (string): Additional CSS classes</li>
+                                    </ul>
+
+                                    <div class="example-section">
+                                        <h4>Examples</h4>
+                                        <div class="code-block" data-language="php">
+<code><?php
+// Basic text field
+$form->text('username', 'Username');
+
+// Required field with placeholder
+$form->text('name', 'Full Name', [
+    'required' => true,
+    'placeholder' => 'Enter your full name'
+]);
+
+// Advanced text field
+$form->text('title', 'Job Title', [
+    'value' => 'Software Developer',
+    'maxlength' => 100,
+    'icon' => 'briefcase',
+    'help' => 'Your current or desired job title'
+]);
+?></code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- email() method -->
+                            <div class="api-method">
+                                <div class="api-method-header">
+                                    <span class="api-method-name">email()</span>
+                                    <span class="api-method-type">Field</span>
+                                </div>
+                                <div class="api-method-body">
+                                    <p>Creates an email input field with built-in email validation.</p>
+                                    
+                                    <div class="api-signature">
+public function email(string $name, string $label = '', array $options = []): self</div>
+
+                                    <div class="example-section">
+                                        <h4>Example</h4>
+                                        <div class="code-block" data-language="php">
+<code><?php
+$form->email('email', 'Email Address', [
+    'required' => true,
+    'placeholder' => 'your@email.com',
+    'icon' => 'envelope'
+]);
+?></code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- select() method -->
+                            <div class="api-method">
+                                <div class="api-method-header">
+                                    <span class="api-method-name">select()</span>
+                                    <span class="api-method-type">Field</span>
+                                </div>
+                                <div class="api-method-body">
+                                    <p>Creates a select dropdown field with options.</p>
+                                    
+                                    <div class="api-signature">
+public function select(string $name, string $label, array $options, array $config = []): self</div>
+
+                                    <h4>Parameters</h4>
+                                    <table class="param-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Parameter</th>
+                                                <th>Type</th>
+                                                <th>Required</th>
+                                                <th>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><span class="param-name">$name</span></td>
+                                                <td><span class="param-type">string</span></td>
+                                                <td><span class="param-required">Required</span></td>
+                                                <td>Field name</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="param-name">$label</span></td>
+                                                <td><span class="param-type">string</span></td>
+                                                <td><span class="param-required">Required</span></td>
+                                                <td>Field label</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="param-name">$options</span></td>
+                                                <td><span class="param-type">array</span></td>
+                                                <td><span class="param-required">Required</span></td>
+                                                <td>Select options (value => label)</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="param-name">$config</span></td>
+                                                <td><span class="param-type">array</span></td>
+                                                <td><span class="param-optional">Optional</span></td>
+                                                <td>Field configuration</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <div class="example-section">
+                                        <h4>Examples</h4>
+                                        <div class="code-block" data-language="php">
+<code><?php
+// Simple select
+$form->select('country', 'Country', [
+    'us' => 'United States',
+    'uk' => 'United Kingdom',
+    'ca' => 'Canada'
+]);
+
+// Select with default value
+$form->select('priority', 'Priority', [
+    'low' => 'Low',
+    'medium' => 'Medium',
+    'high' => 'High'
+], ['value' => 'medium']);
+
+// Multiple select
+$form->select('skills', 'Skills', [
+    'php' => 'PHP',
+    'javascript' => 'JavaScript',
+    'python' => 'Python'
+], ['multiple' => true]);
+?></code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Layout Methods -->
+                        <div class="method-group" id="layout-methods">
+                            <h2 class="method-group-title">Layout Methods</h2>
+
+                            <!-- group() method -->
+                            <div class="api-method">
+                                <div class="api-method-header">
+                                    <span class="api-method-name">group()</span>
+                                    <span class="api-method-type">Layout</span>
+                                </div>
+                                <div class="api-method-body">
+                                    <p>Creates a field group (tab, accordion, or fieldset).</p>
+                                    
+                                    <div class="api-signature">
+public function group(string $name, string $label, array $options = []): self</div>
+
+                                    <h4>Group Types</h4>
+                                    <ul>
+                                        <li><code>tab</code>: Tabbed interface</li>
+                                        <li><code>accordion</code>: Collapsible sections</li>
+                                        <li><code>fieldset</code>: HTML fieldset with legend</li>
+                                    </ul>
+
+                                    <div class="example-section">
+                                        <h4>Example</h4>
+                                        <div class="code-block" data-language="php">
+<code><?php
+$form->group('personal', 'Personal Information', [
+        'type' => 'tab',
+        'active' => true
+    ])
+    ->text('name', 'Name')
+    ->email('email', 'Email')
+    ->endGroup();
+?></code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Validation Methods -->
+                        <div class="method-group" id="validation-methods">
+                            <h2 class="method-group-title">Validation Methods</h2>
+
+                            <!-- rule() method -->
+                            <div class="api-method">
+                                <div class="api-method-header">
+                                    <span class="api-method-name">rule()</span>
+                                    <span class="api-method-type">Validation</span>
+                                </div>
+                                <div class="api-method-body">
+                                    <p>Adds validation rules to a field.</p>
+                                    
+                                    <div class="api-signature">
+public function rule(string $field, string|array $rules): self</div>
+
+                                    <h4>Available Rules</h4>
+                                    <ul>
+                                        <li><code>required</code>: Field must not be empty</li>
+                                        <li><code>email</code>: Valid email address</li>
+                                        <li><code>url</code>: Valid URL</li>
+                                        <li><code>numeric</code>: Numeric value</li>
+                                        <li><code>minlength[n]</code>: Minimum length</li>
+                                        <li><code>maxlength[n]</code>: Maximum length</li>
+                                        <li><code>matches[field]</code>: Match another field</li>
+                                    </ul>
+
+                                    <div class="example-section">
+                                        <h4>Examples</h4>
+                                        <div class="code-block" data-language="php">
+<code><?php
+// Single rule
+$form->rule('email', 'required|email');
+
+// Multiple rules
+$form->rule('password', ['required', 'minlength[8]']);
+
+// Password confirmation
+$form->rule('confirm_password', 'required|matches[password]');
+?></code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Output Methods -->
+                        <div class="method-group" id="output-methods">
+                            <h2 class="method-group-title">Output Methods</h2>
+
+                            <!-- display() method -->
+                            <div class="api-method">
+                                <div class="api-method-header">
+                                    <span class="api-method-name">display()</span>
+                                    <span class="api-method-type">Output</span>
+                                </div>
+                                <div class="api-method-body">
+                                    <p>Outputs the form HTML directly to the browser.</p>
+                                    
+                                    <div class="api-signature">
+public function display(): void</div>
+
+                                    <div class="example-section">
+                                        <h4>Example</h4>
+                                        <div class="code-block" data-language="php">
+<code><?php
+$form->text('name', 'Name')
+    ->submit('Submit')
+    ->display();
+?></code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- render() method -->
+                            <div class="api-method">
+                                <div class="api-method-header">
+                                    <span class="api-method-name">render()</span>
+                                    <span class="api-method-type">Output</span>
+                                </div>
+                                <div class="api-method-body">
+                                    <p>Returns the form HTML as a string.</p>
+                                    
+                                    <div class="api-signature">
+public function render(): string</div>
+
+                                    <div class="return-info">
+                                        <strong>Returns:</strong> <span class="param-type">string</span> - Complete form HTML
+                                    </div>
+
+                                    <div class="example-section">
+                                        <h4>Example</h4>
+                                        <div class="code-block" data-language="php">
+<code><?php
+$html = $form->render();
+echo $html;
+
+// Or use in templates
+$template = str_replace('{{form}}', $form->render(), $template);
+?></code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- EasyList API -->
+                    <section id="easylist-api" class="class-section">
+                        <h1 class="class-title">EasyList API</h1>
+                        <p class="class-description">The EasyList class creates powerful data tables with search, sorting, pagination, and export capabilities.</p>
+
+                        <!-- Data Methods -->
+                        <div class="method-group" id="data-methods">
+                            <h2 class="method-group-title">Data Methods</h2>
+
+                            <!-- data() method -->
+                            <div class="api-method">
+                                <div class="api-method-header">
+                                    <span class="api-method-name">data()</span>
+                                    <span class="api-method-type">Data</span>
+                                </div>
+                                <div class="api-method-body">
+                                    <p>Sets the data source for the table.</p>
+                                    
+                                    <div class="api-signature">
+public function data(array $data): self</div>
+
+                                    <h4>Parameters</h4>
+                                    <table class="param-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Parameter</th>
+                                                <th>Type</th>
+                                                <th>Required</th>
+                                                <th>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><span class="param-name">$data</span></td>
+                                                <td><span class="param-type">array</span></td>
+                                                <td><span class="param-required">Required</span></td>
+                                                <td>Array of associative arrays (rows)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <div class="example-section">
+                                        <h4>Example</h4>
+                                        <div class="code-block" data-language="php">
+<code><?php
+$users = [
+    ['id' => 1, 'name' => 'John', 'email' => 'john@example.com'],
+    ['id' => 2, 'name' => 'Jane', 'email' => 'jane@example.com']
+];
+
+$list = new EasyList('users');
+$list->data($users);
+?></code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Column Methods -->
+                        <div class="method-group" id="column-methods">
+                            <h2 class="method-group-title">Column Methods</h2>
+
+                            <!-- column() method -->
+                            <div class="api-method">
+                                <div class="api-method-header">
+                                    <span class="api-method-name">column()</span>
+                                    <span class="api-method-type">Column</span>
+                                </div>
+                                <div class="api-method-body">
+                                    <p>Defines a table column with options.</p>
+                                    
+                                    <div class="api-signature">
+public function column(string $key, string $label, array $options = []): self</div>
+
+                                    <h4>Parameters</h4>
+                                    <table class="param-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Parameter</th>
+                                                <th>Type</th>
+                                                <th>Required</th>
+                                                <th>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><span class="param-name">$key</span></td>
+                                                <td><span class="param-type">string</span></td>
+                                                <td><span class="param-required">Required</span></td>
+                                                <td>Data key/field name</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="param-name">$label</span></td>
+                                                <td><span class="param-type">string</span></td>
+                                                <td><span class="param-required">Required</span></td>
+                                                <td>Column header text</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="param-name">$options</span></td>
+                                                <td><span class="param-type">array</span></td>
+                                                <td><span class="param-optional">Optional</span></td>
+                                                <td>Column configuration</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <h4>Column Options</h4>
+                                    <ul>
+                                        <li><code>sortable</code> (bool): Enable sorting</li>
+                                        <li><code>searchable</code> (bool): Include in search</li>
+                                        <li><code>width</code> (string): Column width</li>
+                                        <li><code>align</code> (string): Text alignment</li>
+                                        <li><code>type</code> (string): Data type for formatting</li>
+                                        <li><code>format</code> (string): Custom format string</li>
+                                        <li><code>template</code> (string|callable): Custom template</li>
+                                    </ul>
+
+                                    <div class="example-section">
+                                        <h4>Examples</h4>
+                                        <div class="code-block" data-language="php">
+<code><?php
+// Basic column
+$list->column('name', 'Full Name');
+
+// Sortable column
+$list->column('email', 'Email', ['sortable' => true]);
+
+// Formatted column
+$list->column('created_at', 'Created', [
+    'type' => 'date',
+    'format' => 'M j, Y'
+]);
+
+// Custom template
+$list->column('status', 'Status', [
+    'template' => function($row) {
+        $class = $row['active'] ? 'green' : 'red';
+        return "<span class=\"ui label {$class}\">{$row['status']}</span>";
+    }
+]);
+?></code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Feature Methods -->
+                        <div class="method-group" id="feature-methods">
+                            <h2 class="method-group-title">Feature Methods</h2>
+
+                            <!-- searchable() method -->
+                            <div class="api-method">
+                                <div class="api-method-header">
+                                    <span class="api-method-name">searchable()</span>
+                                    <span class="api-method-type">Feature</span>
+                                </div>
+                                <div class="api-method-body">
+                                    <p>Enables global search functionality.</p>
+                                    
+                                    <div class="api-signature">
+public function searchable(array $options = []): self</div>
+
+                                    <div class="example-section">
+                                        <h4>Example</h4>
+                                        <div class="code-block" data-language="php">
+<code><?php
+$list->searchable([
+    'placeholder' => 'Search users...',
+    'debounce' => 300
+]);
+?></code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- paginate() method -->
+                            <div class="api-method">
+                                <div class="api-method-header">
+                                    <span class="api-method-name">paginate()</span>
+                                    <span class="api-method-type">Feature</span>
+                                </div>
+                                <div class="api-method-body">
+                                    <p>Enables pagination with specified page size.</p>
+                                    
+                                    <div class="api-signature">
+public function paginate(int $pageSize = 25): self</div>
+
+                                    <div class="example-section">
+                                        <h4>Example</h4>
+                                        <div class="code-block" data-language="php">
+<code><?php
+$list->paginate(50); // 50 items per page
+?></code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- exportable() method -->
+                            <div class="api-method">
+                                <div class="api-method-header">
+                                    <span class="api-method-name">exportable()</span>
+                                    <span class="api-method-type">Feature</span>
+                                </div>
+                                <div class="api-method-body">
+                                    <p>Enables data export in specified formats.</p>
+                                    
+                                    <div class="api-signature">
+public function exportable(array $formats = ['csv', 'excel']): self</div>
+
+                                    <h4>Supported Formats</h4>
+                                    <ul>
+                                        <li><code>csv</code>: Comma-separated values</li>
+                                        <li><code>excel</code>: Microsoft Excel</li>
+                                        <li><code>json</code>: JSON format</li>
+                                        <li><code>pdf</code>: PDF document</li>
+                                    </ul>
+
+                                    <div class="example-section">
+                                        <h4>Example</h4>
+                                        <div class="code-block" data-language="php">
+<code><?php
+$list->exportable(['csv', 'excel', 'pdf']);
+?></code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Display Methods -->
+                        <div class="method-group" id="display-methods">
+                            <h2 class="method-group-title">Display Methods</h2>
+
+                            <!-- display() method -->
+                            <div class="api-method">
+                                <div class="api-method-header">
+                                    <span class="api-method-name">display()</span>
+                                    <span class="api-method-type">Output</span>
+                                </div>
+                                <div class="api-method-body">
+                                    <p>Outputs the table HTML directly.</p>
+                                    
+                                    <div class="api-signature">
+public function display(): void</div>
+
+                                    <div class="example-section">
+                                        <h4>Example</h4>
+                                        <div class="code-block" data-language="php">
+<code><?php
+$list->data($users)
+    ->column('name', 'Name')
+    ->column('email', 'Email')
+    ->searchable()
+    ->display();
+?></code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Complete Example -->
+                    <section id="examples" class="section-alt" style="background: #f8f9fa; padding: 2rem; border-radius: 8px; margin: 3rem 0;">
+                        <h2>Complete API Example</h2>
+                        <p>Here's a comprehensive example using multiple API methods:</p>
+                        
+                        <div class="code-block" data-language="php">
+<code><?php
+require_once 'autoload.php';
+use EasyForm\EasyForm;
+use EasyForm\EasyList;
+
+// Create a complex form
+$form = new EasyForm('user_form', [
+    'theme' => 'semantic',
+    'width' => 800
+]);
+
+$form->heading('User Registration', 2)
+    ->group('personal', 'Personal Information', ['type' => 'tab', 'active' => true])
+        ->text('first_name', 'First Name', ['required' => true])
+        ->text('last_name', 'Last Name', ['required' => true])
+        ->email('email', 'Email', ['required' => true])
+        ->date('birth_date', 'Birth Date')
+    ->endGroup()
+    ->group('account', 'Account Details', ['type' => 'tab'])
+        ->text('username', 'Username', ['required' => true])
+        ->password('password', 'Password', ['required' => true])
+        ->password('confirm_password', 'Confirm Password', ['required' => true])
+    ->endGroup()
+    ->rule('email', 'required|email')
+    ->rule('password', 'required|minlength[8]')
+    ->rule('confirm_password', 'required|matches[password]')
+    ->submit('Register', ['class' => 'ui primary button']);
+
+// Create a data table
+$list = new EasyList('users_table');
+
+$list->data($users)
+    ->column('id', 'ID', ['width' => '60px', 'align' => 'center'])
+    ->column('name', 'Full Name', ['sortable' => true, 'searchable' => true])
+    ->column('email', 'Email', ['sortable' => true, 'searchable' => true])
+    ->column('created_at', 'Created', ['type' => 'date', 'format' => 'M j, Y'])
+    ->column('status', 'Status', [
+        'template' => function($row) {
+            $class = $row['active'] ? 'green' : 'red';
+            return "<span class=\"ui label {$class}\">{$row['status']}</span>";
+        }
+    ])
+    ->searchable(['placeholder' => 'Search users...'])
+    ->paginate(25)
+    ->exportable(['csv', 'excel'])
+    ->addAction('edit', 'Edit', ['url' => '/users/edit/{{id}}'])
+    ->addAction('delete', 'Delete', [
+        'url' => '/users/delete/{{id}}',
+        'confirm' => 'Delete this user?'
+    ]);
+
+// Display both
+$form->display();
+echo '<hr style="margin: 3rem 0;">';
+$list->display();
+?></code>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>API Reference</h3>
+                    <a href="#easyform-api">EasyForm API</a>
+                    <a href="#easylist-api">EasyList API</a>
+                    <a href="#field-methods">Field Methods</a>
+                    <a href="#column-methods">Column Methods</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Documentation</h3>
+                    <a href="installation.html">Installation</a>
+                    <a href="easyform.html">EasyForm Guide</a>
+                    <a href="easylist.html">EasyList Guide</a>
+                    <a href="examples.html">Examples</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <a href="demos/">Interactive Demos</a>
+                    <a href="builders.html">Visual Builders</a>
+                    <a href="../examples/">Sample Code</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <a href="mailto:support@example.com">Email Support</a>
+                    <a href="https://github.com/smartform/easyform">GitHub</a>
+                    <a href="examples.html#faq">FAQ</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 EasyForm/EasyList API Reference. Complete method documentation.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

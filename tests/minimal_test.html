@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Minimal Test</title>
+    <link rel="stylesheet" href="../semantic/dist/semantic.min.css">
+</head>
+<body style="padding: 40px;">
+    <script src="../jquery/jquery.min.js"></script>
+    <script src="../semantic/dist/semantic.min.js"></script>
+    
+    <h1>Absolut Minimaler Test</h1>
+    
+    <form id="test" class="ui form">
+        <div class="field">
+            <label>Name</label>
+            <input type="text" name="name" required>
+        </div>
+        <button type="submit" class="ui primary button">Absenden</button>
+    </form>
+    
+    <div id="output" style="margin-top: 20px; padding: 10px; background: #f0f0f0;"></div>
+    
+    <script>
+    $(document).ready(function() {
+        $('#output').append('<p>jQuery loaded: YES</p>');
+        
+        $('#test').on('submit', function(e) {
+            e.preventDefault();
+            $('#output').append('<p style="color: green; font-weight: bold;">FORM SUBMITTED!</p>');
+            alert('Form submitted!');
+            return false;
+        });
+        
+        $('#output').append('<p>Submit handler attached: YES</p>');
+    });
+    </script>
+</body>
+</html>

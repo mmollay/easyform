@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EasyForm Test</title>
+    <link rel="stylesheet" href="semantic/dist/semantic.min.css">
+</head>
+<body>
+    <div class="ui container" style="padding: 50px;">
+        <h1 class="ui header">
+            <i class="check circle green icon"></i>
+            EasyForm Test Erfolgreich!
+        </h1>
+        <div class="ui success message">
+            <div class="header">Alle Abhängigkeiten gefunden!</div>
+            <ul class="list">
+                <li>✅ Semantic UI CSS geladen</li>
+                <li id="jquery-status">⏳ jQuery wird getestet...</li>
+                <li id="semantic-js-status">⏳ Semantic UI JS wird getestet...</li>
+            </ul>
+        </div>
+        
+        <div class="ui info message">
+            <div class="header">Verfügbare Links:</div>
+            <div class="ui list">
+                <a class="item" href="index.php"><i class="home icon"></i> Hauptseite</a>
+                <a class="item" href="examples/"><i class="code icon"></i> Beispiele</a>
+                <a class="item" href="form_builder.php"><i class="paint brush icon"></i> Form Builder</a>
+                <a class="item" href="list_generator.php"><i class="table icon"></i> List Generator</a>
+            </div>
+        </div>
+    </div>
+    
+    <script src="jquery/jquery.min.js"></script>
+    <script src="semantic/dist/semantic.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#jquery-status').html('✅ jQuery erfolgreich geladen (Version ' + $.fn.jquery + ')');
+            
+            if (typeof $.fn.modal !== 'undefined') {
+                $('#semantic-js-status').html('✅ Semantic UI JS erfolgreich geladen');
+            } else {
+                $('#semantic-js-status').html('❌ Semantic UI JS konnte nicht geladen werden');
+            }
+        });
+    </script>
+</body>
+</html>

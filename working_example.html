@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Working Example</title>
+    <link rel="stylesheet" href="../semantic/dist/semantic.min.css">
+</head>
+<body style="padding: 40px;">
+    <h2>Funktionierendes Beispiel OHNE EasyForm</h2>
+    
+    <form id="test_form" class="ui form" action="examples/process.php" method="POST">
+        <input type="hidden" name="form_id" value="test">
+        
+        <div class="ui top attached tabular menu">
+            <a class="item active" data-tab="tab1">Tab 1</a>
+            <a class="item" data-tab="tab2">Tab 2</a>
+        </div>
+        
+        <div class="ui bottom attached tab segment active" data-tab="tab1">
+            <div class="field required">
+                <label>Name</label>
+                <input type="text" name="name" required>
+            </div>
+        </div>
+        
+        <div class="ui bottom attached tab segment" data-tab="tab2">
+            <div class="field required">
+                <label>Email</label>
+                <input type="email" name="email" required>
+            </div>
+        </div>
+        
+        <div class="field">
+            <button type="submit" class="ui primary button">Absenden</button>
+        </div>
+    </form>
+    
+    <div id="result"></div>
+    
+    <script src="../jquery/jquery.min.js"></script>
+    <script src="../semantic/dist/semantic.min.js"></script>
+    
+    <script>
+    $(document).ready(function() {
+        console.log('Page loaded');
+        
+        // Initialize tabs
+        $('.menu .item').tab();
+        
+        // Form submission
+        $('#test_form').on('submit', function(e) {
+            e.preventDefault();
+            console.log('Form submitted!');
+            
+            var formData = new FormData(this);
+            
+            $.ajax({
+                url: 'examples/process.php',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                success: function(response) {
+                    console.log('Success:', response);
+                    $('#result').html('<div class="ui success message">Success: ' + response.message + '</div>');
+                },
+                error: function(xhr) {
+                    console.log('Error:', xhr);
+                    $('#result').html('<div class="ui error message">Error: ' + xhr.statusText + '</div>');
+                }
+            });
+            
+            return false;
+        });
+        
+        // Debug button click
+        $('button[type="submit"]').on('click', function() {
+            console.log('Submit button clicked!');
+        });
+    });
+    </script>
+</body>
+</html>

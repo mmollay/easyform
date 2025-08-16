@@ -1,0 +1,10 @@
+/* SortableJS CSS */
+.sortable-ghost {
+    opacity: 0.4;
+}
+.sortable-drag {
+    opacity: 0.8;
+}
+.sortable-chosen {
+    background-color: #f0f0f0;
+}

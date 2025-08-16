@@ -1,0 +1,36 @@
+# EasyForm .htaccess Configuration
+DirectoryIndex index.php index.html
+
+# PHP Error Reporting (Development)
+php_flag display_errors on
+php_value error_reporting E_ALL
+
+# Character Encoding
+AddDefaultCharset UTF-8
+
+# Cache Control (Development - No Cache)
+<IfModule mod_headers.c>
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires 0
+</IfModule>
+
+# Rewrite Rules
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Remove trailing slash
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.+)/$ /$1 [L,R=301]
+    
+    # Force HTTPS (uncomment in production)
+    # RewriteCond %{HTTPS} !=on
+    # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# Security Headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>

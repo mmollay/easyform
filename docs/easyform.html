@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyForm Documentation - Modern PHP Form Builder</title>
+    <meta name="description" content="Complete EasyForm documentation with API reference, examples, and best practices. Build beautiful forms with fluent PHP API.">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="../index.html">EasyForm/EasyList</a>
+                </div>
+                <nav class="nav">
+                    <a href="#overview" class="nav-link">Overview</a>
+                    <a href="#quickstart" class="nav-link">Quick Start</a>
+                    <a href="#field-types" class="nav-link">Field Types</a>
+                    <a href="#validation" class="nav-link">Validation</a>
+                    <a href="#ajax" class="nav-link">AJAX</a>
+                    <a href="easylist.html" class="nav-link">EasyList</a>
+                    <a href="demos/" class="nav-link">Demos</a>
+                </nav>
+                <button class="mobile-menu-toggle">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container" style="margin-top: 2rem; margin-bottom: 3rem;">
+        <div class="row">
+            <!-- Sidebar Navigation -->
+            <div class="col-3">
+                <div class="doc-nav">
+                    <h3 style="margin-bottom: 1rem;">EasyForm Guide</h3>
+                    <ul>
+                        <li><a href="#overview" class="active">Overview</a></li>
+                        <li><a href="#quickstart">Quick Start</a></li>
+                        <li><a href="#constructor">Constructor</a></li>
+                        <li><a href="#field-types">Field Types</a></li>
+                        <li><a href="#text-fields">Text Fields</a></li>
+                        <li><a href="#selection-fields">Selection Fields</a></li>
+                        <li><a href="#special-fields">Special Fields</a></li>
+                        <li><a href="#layout">Layout Elements</a></li>
+                        <li><a href="#validation">Validation</a></li>
+                        <li><a href="#groups">Groups & Tabs</a></li>
+                        <li><a href="#ajax">AJAX Support</a></li>
+                        <li><a href="#theming">Theming</a></li>
+                        <li><a href="#advanced">Advanced Features</a></li>
+                        <li><a href="#best-practices">Best Practices</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Documentation Content -->
+            <div class="col-9">
+                <div class="doc-content">
+                    <h1 id="overview">EasyForm Documentation</h1>
+                    <p class="section-subtitle">Master the modern PHP form builder with fluent API, advanced validation, and beautiful responsive designs.</p>
+
+                    <!-- Overview Section -->
+                    <section id="overview">
+                        <h2>What is EasyForm?</h2>
+                        <p>EasyForm is a revolutionary PHP form builder that transforms how you create HTML forms. With its fluent interface and powerful features, you can build complex forms in minutes instead of hours.</p>
+                        
+                        <h3>Key Features</h3>
+                        <div class="row">
+                            <div class="col-6">
+                                <ul>
+                                    <li><strong>Fluent API:</strong> Chainable methods for intuitive coding</li>
+                                    <li><strong>50+ Field Types:</strong> Everything from basic inputs to rich components</li>
+                                    <li><strong>Responsive Design:</strong> Mobile-first approach</li>
+                                    <li><strong>Built-in Validation:</strong> Client and server-side validation</li>
+                                    <li><strong>AJAX Ready:</strong> Seamless asynchronous form handling</li>
+                                </ul>
+                            </div>
+                            <div class="col-6">
+                                <ul>
+                                    <li><strong>CSRF Protection:</strong> Automatic security measures</li>
+                                    <li><strong>Multiple Themes:</strong> Semantic UI, Bootstrap, Material Design</li>
+                                    <li><strong>Layout System:</strong> Tabs, accordions, columns, groups</li>
+                                    <li><strong>Internationalization:</strong> Multi-language support</li>
+                                    <li><strong>Type Safety:</strong> Full PHP 8 type hints</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <strong>Migration from Smart-Form:</strong> EasyForm provides a modern alternative to array-based form configurations with 90% less code and full IDE support.
+                        </div>
+                    </section>
+
+                    <!-- Quick Start -->
+                    <section id="quickstart">
+                        <h2>Quick Start</h2>
+                        <p>Get up and running with EasyForm in under 5 minutes.</p>
+
+                        <h3>Basic Contact Form</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+require_once 'easy_form/autoload.php';
+use EasyForm\EasyForm;
+
+// Create a new form
+$form = new EasyForm('contact_form');
+
+// Add fields using fluent interface
+$form->text('name', 'Your Name', ['required' => true])
+    ->email('email', 'Email Address', ['required' => true])
+    ->textarea('message', 'Your Message', ['rows' => 5])
+    ->submit('Send Message');
+
+// Display the form
+$form->display();
+?></code>
+                        </div>
+
+                        <h3>Processing Form Data</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // CSRF protection (automatic)
+    if (!$form->validateCSRF()) {
+        die('Security error: Invalid CSRF token');
+    }
+    
+    // Get and validate data
+    $name = $_POST['name'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $message = $_POST['message'] ?? '';
+    
+    // Server-side validation
+    if ($form->validate($_POST)) {
+        // Process the form data
+        sendEmail($name, $email, $message);
+        echo "Thank you! Your message has been sent.";
+    } else {
+        // Display validation errors
+        $form->displayErrors();
+    }
+}
+?></code>
+                        </div>
+                    </section>
+
+                    <!-- Constructor -->
+                    <section id="constructor">
+                        <h2>Constructor & Configuration</h2>
+                        <p>Create forms with custom configuration options.</p>
+
+                        <h3>Basic Constructor</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// Simple form with default settings
+$form = new EasyForm('my_form');
+
+// Form with custom configuration
+$form = new EasyForm('advanced_form', [
+    'theme' => 'bootstrap',     // Theme: semantic, bootstrap, material
+    'size' => 'large',          // Size: mini, tiny, small, medium, large, huge
+    'width' => 800,             // Maximum width in pixels
+    'method' => 'POST',         // HTTP method
+    'action' => '/submit',      // Form action URL
+    'class' => 'custom-form',   // Additional CSS classes
+    'language' => 'en',         // Language for messages
+    'autocomplete' => true,     // Browser autocomplete
+    'liveValidation' => true,   // Real-time validation
+    'showErrors' => true,       // Display validation errors
+    'submitButton' => true,     // Auto-add submit button
+    'resetButton' => false      // Auto-add reset button
+]);
+?></code>
+                        </div>
+
+                        <h3>Configuration Options</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Option</th>
+                                    <th>Type</th>
+                                    <th>Default</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>theme</code></td>
+                                    <td>string</td>
+                                    <td>'semantic'</td>
+                                    <td>CSS framework: semantic, bootstrap, material</td>
+                                </tr>
+                                <tr>
+                                    <td><code>size</code></td>
+                                    <td>string</td>
+                                    <td>'medium'</td>
+                                    <td>Form size: mini, tiny, small, medium, large, huge</td>
+                                </tr>
+                                <tr>
+                                    <td><code>width</code></td>
+                                    <td>int|null</td>
+                                    <td>null</td>
+                                    <td>Maximum width in pixels</td>
+                                </tr>
+                                <tr>
+                                    <td><code>language</code></td>
+                                    <td>string</td>
+                                    <td>'en'</td>
+                                    <td>Language code for validation messages</td>
+                                </tr>
+                                <tr>
+                                    <td><code>liveValidation</code></td>
+                                    <td>bool</td>
+                                    <td>true</td>
+                                    <td>Enable real-time field validation</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+
+                    <!-- Field Types -->
+                    <section id="field-types">
+                        <h2>Field Types Overview</h2>
+                        <p>EasyForm supports 50+ field types, from simple inputs to complex components.</p>
+
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h3>Text Inputs</h3>
+                                        <ul>
+                                            <li>text, email, password</li>
+                                            <li>number, tel, url</li>
+                                            <li>search, textarea</li>
+                                            <li>hidden, readonly</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h3>Selection</h3>
+                                        <ul>
+                                            <li>select, multiselect</li>
+                                            <li>radio, checkbox</li>
+                                            <li>dropdown, autocomplete</li>
+                                            <li>tag, chip selector</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h3>Special Fields</h3>
+                                        <ul>
+                                            <li>date, time, datetime</li>
+                                            <li>file, image upload</li>
+                                            <li>range, color picker</li>
+                                            <li>editor, markdown</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Text Fields -->
+                    <section id="text-fields">
+                        <h2>Text Input Fields</h2>
+                        <p>The most common form fields for text input and data entry.</p>
+
+                        <h3>Basic Text Inputs</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// Magic methods for common field types
+$form->text('username', 'Username', ['required' => true])
+    ->email('email', 'Email Address', ['placeholder' => 'you@example.com'])
+    ->password('password', 'Password', ['minlength' => 8])
+    ->tel('phone', 'Phone Number', ['pattern' => '[0-9\-\+\s\(\)]+'])
+    ->url('website', 'Website', ['placeholder' => 'https://'])
+    ->search('query', 'Search', ['icon' => 'search']);
+?></code>
+                        </div>
+
+                        <h3>Number and Range Inputs</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$form->number('age', 'Age', [
+        'min' => 18,
+        'max' => 120,
+        'step' => 1
+    ])
+    ->range('experience', 'Experience (Years)', [
+        'min' => 0,
+        'max' => 50,
+        'value' => 5,
+        'step' => 1
+    ])
+    ->number('salary', 'Expected Salary', [
+        'min' => 0,
+        'step' => 1000,
+        'placeholder' => '50000'
+    ]);
+?></code>
+                        </div>
+
+                        <h3>Textarea with Options</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$form->textarea('description', 'Description', [
+        'rows' => 5,
+        'cols' => 40,
+        'maxlength' => 500,
+        'placeholder' => 'Tell us about yourself...',
+        'help' => 'Maximum 500 characters'
+    ])
+    ->textarea('notes', 'Notes', [
+        'rows' => 10,
+        'readonly' => true,
+        'value' => 'This field is read-only'
+    ]);
+?></code>
+                        </div>
+
+                        <h3>Field Options</h3>
+                        <p>All text fields support these common options:</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Option</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                    <th>Example</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>required</code></td>
+                                    <td>bool</td>
+                                    <td>Makes field mandatory</td>
+                                    <td><code>['required' => true]</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>placeholder</code></td>
+                                    <td>string</td>
+                                    <td>Placeholder text</td>
+                                    <td><code>['placeholder' => 'Enter name']</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>value</code></td>
+                                    <td>string</td>
+                                    <td>Default value</td>
+                                    <td><code>['value' => 'John Doe']</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>icon</code></td>
+                                    <td>string</td>
+                                    <td>Field icon (theme-dependent)</td>
+                                    <td><code>['icon' => 'user']</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>help</code></td>
+                                    <td>string</td>
+                                    <td>Help text below field</td>
+                                    <td><code>['help' => 'Enter your full name']</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>class</code></td>
+                                    <td>string</td>
+                                    <td>Additional CSS classes</td>
+                                    <td><code>['class' => 'large-field']</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+
+                    <!-- Selection Fields -->
+                    <section id="selection-fields">
+                        <h2>Selection Fields</h2>
+                        <p>Fields for choosing from predefined options.</p>
+
+                        <h3>Select Dropdown</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// Simple select
+$form->select('country', 'Country', [
+    'us' => 'United States',
+    'uk' => 'United Kingdom',
+    'de' => 'Germany',
+    'fr' => 'France'
+], ['required' => true]);
+
+// Grouped select
+$form->select('timezone', 'Timezone', [
+    'Americas' => [
+        'america/new_york' => 'New York',
+        'america/chicago' => 'Chicago',
+        'america/los_angeles' => 'Los Angeles'
+    ],
+    'Europe' => [
+        'europe/london' => 'London',
+        'europe/paris' => 'Paris',
+        'europe/berlin' => 'Berlin'
+    ]
+]);
+
+// Multiple select
+$form->select('skills', 'Skills', [
+    'php' => 'PHP',
+    'javascript' => 'JavaScript',
+    'python' => 'Python',
+    'java' => 'Java'
+], ['multiple' => true, 'size' => 4]);
+?></code>
+                        </div>
+
+                        <h3>Radio Buttons</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// Horizontal radio buttons
+$form->radio('gender', 'Gender', [
+    'male' => 'Male',
+    'female' => 'Female',
+    'other' => 'Other'
+], ['inline' => true]);
+
+// Vertical radio buttons with descriptions
+$form->radio('plan', 'Subscription Plan', [
+    'basic' => 'Basic - $9/month',
+    'pro' => 'Pro - $19/month',
+    'enterprise' => 'Enterprise - $49/month'
+], [
+    'value' => 'basic',  // Default selection
+    'descriptions' => [
+        'basic' => 'Perfect for individuals',
+        'pro' => 'Great for small teams',
+        'enterprise' => 'For large organizations'
+    ]
+]);
+?></code>
+                        </div>
+
+                        <h3>Checkboxes</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// Single checkbox
+$form->checkbox('newsletter', 'Subscribe to Newsletter', [
+    'value' => '1',
+    'checked' => true
+]);
+
+// Multiple checkboxes
+$form->checkbox('interests', 'Interests', [
+    'web' => 'Web Development',
+    'mobile' => 'Mobile Apps',
+    'ai' => 'Artificial Intelligence',
+    'blockchain' => 'Blockchain'
+], [
+    'multiple' => true,
+    'inline' => false,
+    'value' => ['web', 'ai']  // Pre-selected values
+]);
+
+// Checkbox with custom styling
+$form->checkbox('terms', 'I agree to the Terms and Conditions', [
+    'required' => true,
+    'class' => 'ui toggle checkbox'  // Semantic UI toggle
+]);
+?></code>
+                        </div>
+                    </section>
+
+                    <!-- Special Fields -->
+                    <section id="special-fields">
+                        <h2>Special Fields</h2>
+                        <p>Advanced field types for specific use cases.</p>
+
+                        <h3>Date and Time Fields</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// Date picker
+$form->date('birthdate', 'Date of Birth', [
+    'min' => '1950-01-01',
+    'max' => date('Y-m-d'),
+    'value' => '1990-01-01'
+]);
+
+// Time picker
+$form->time('meeting_time', 'Meeting Time', [
+    'step' => 900,  // 15-minute intervals
+    'value' => '09:00'
+]);
+
+// DateTime picker
+$form->datetime('event_start', 'Event Start', [
+    'min' => date('Y-m-d\TH:i'),
+    'step' => 900
+]);
+
+// Week and month pickers
+$form->week('project_week', 'Project Week')
+    ->month('report_month', 'Report Month');
+?></code>
+                        </div>
+
+                        <h3>File Upload</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// Single file upload
+$form->file('avatar', 'Profile Picture', [
+    'accept' => 'image/*',
+    'maxsize' => '2MB',
+    'help' => 'Maximum file size: 2MB'
+]);
+
+// Multiple file upload
+$form->file('documents', 'Upload Documents', [
+    'multiple' => true,
+    'accept' => '.pdf,.doc,.docx',
+    'maxfiles' => 5,
+    'help' => 'Upload up to 5 documents (PDF, DOC, DOCX)'
+]);
+
+// Image upload with preview
+$form->file('gallery', 'Gallery Images', [
+    'multiple' => true,
+    'accept' => 'image/*',
+    'preview' => true,
+    'dragdrop' => true,
+    'maxsize' => '5MB'
+]);
+?></code>
+                        </div>
+
+                        <h3>Color and Range</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// Color picker
+$form->color('theme_color', 'Theme Color', [
+    'value' => '#3498db'
+]);
+
+// Range slider
+$form->range('volume', 'Volume Level', [
+    'min' => 0,
+    'max' => 100,
+    'value' => 50,
+    'step' => 5,
+    'showValue' => true
+]);
+
+// Price range
+$form->range('budget', 'Budget Range', [
+    'min' => 1000,
+    'max' => 50000,
+    'value' => 10000,
+    'step' => 1000,
+    'prefix' => '$',
+    'suffix' => ' USD'
+]);
+?></code>
+                        </div>
+                    </section>
+
+                    <!-- Layout -->
+                    <section id="layout">
+                        <h2>Layout Elements</h2>
+                        <p>Organize your forms with headings, dividers, and HTML elements.</p>
+
+                        <h3>Headings and Text</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$form->heading('Personal Information', 2)
+    ->divider('Contact Details')
+    ->text('name', 'Full Name')
+    ->email('email', 'Email')
+    
+    ->heading('Professional Background', 3)
+    ->textarea('experience', 'Work Experience')
+    
+    ->html('<p class="ui message info">All fields marked with * are required.</p>');
+?></code>
+                        </div>
+
+                        <h3>Columns and Rows</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// Start a row with columns
+$form->row()
+    ->column(6)  // 50% width
+        ->text('first_name', 'First Name')
+        ->text('last_name', 'Last Name')
+    ->endColumn()
+    ->column(6)  // 50% width
+        ->email('email', 'Email')
+        ->tel('phone', 'Phone')
+    ->endColumn()
+->endRow();
+
+// Three-column layout
+$form->row()
+    ->column(4)->date('start_date', 'Start Date')->endColumn()
+    ->column(4)->date('end_date', 'End Date')->endColumn()
+    ->column(4)->select('status', 'Status', ['active' => 'Active', 'inactive' => 'Inactive'])->endColumn()
+->endRow();
+?></code>
+                        </div>
+                    </section>
+
+                    <!-- Validation -->
+                    <section id="validation">
+                        <h2>Validation System</h2>
+                        <p>Comprehensive validation with both client-side and server-side rules.</p>
+
+                        <h3>Basic Validation Rules</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$form->text('username', 'Username')
+    ->rule('username', 'required|minlength[3]|maxlength[20]|alphanumeric');
+
+$form->email('email', 'Email Address')
+    ->rule('email', 'required|email|unique[users,email]');
+
+$form->password('password', 'Password')
+    ->rule('password', 'required|minlength[8]|strength[medium]');
+
+$form->password('confirm_password', 'Confirm Password')
+    ->rule('confirm_password', 'required|matches[password]');
+?></code>
+                        </div>
+
+                        <h3>Available Validation Rules</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Rule</th>
+                                    <th>Description</th>
+                                    <th>Example</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>required</code></td>
+                                    <td>Field must not be empty</td>
+                                    <td><code>'required'</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>email</code></td>
+                                    <td>Valid email address</td>
+                                    <td><code>'email'</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>minlength[n]</code></td>
+                                    <td>Minimum length</td>
+                                    <td><code>'minlength[8]'</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>maxlength[n]</code></td>
+                                    <td>Maximum length</td>
+                                    <td><code>'maxlength[50]'</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>numeric</code></td>
+                                    <td>Must be numeric</td>
+                                    <td><code>'numeric'</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>alphanumeric</code></td>
+                                    <td>Letters and numbers only</td>
+                                    <td><code>'alphanumeric'</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>matches[field]</code></td>
+                                    <td>Must match another field</td>
+                                    <td><code>'matches[password]'</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>url</code></td>
+                                    <td>Valid URL</td>
+                                    <td><code>'url'</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>date</code></td>
+                                    <td>Valid date</td>
+                                    <td><code>'date'</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>unique[table,column]</code></td>
+                                    <td>Unique in database</td>
+                                    <td><code>'unique[users,email]'</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>Custom Validation</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// Custom validation function
+$form->text('domain', 'Domain Name')
+    ->rule('domain', 'required|callback_validate_domain');
+
+// Define custom validation
+function validate_domain($value) {
+    if (!preg_match('/^[a-zA-Z0-9\-]+\.[a-zA-Z]{2,}$/', $value)) {
+        return 'Please enter a valid domain name (e.g., example.com)';
+    }
+    return true;
+}
+
+// Complex validation with multiple conditions
+$form->number('age', 'Age')
+    ->rule('age', function($value) {
+        if (empty($value)) return 'Age is required';
+        if ($value < 18) return 'You must be at least 18 years old';
+        if ($value > 120) return 'Please enter a valid age';
+        return true;
+    });
+?></code>
+                        </div>
+                    </section>
+
+                    <!-- Groups -->
+                    <section id="groups">
+                        <h2>Groups & Tabs</h2>
+                        <p>Organize complex forms with tabs, accordions, and fieldsets.</p>
+
+                        <h3>Tab Groups</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$form = new EasyForm('application_form', ['width' => 800]);
+
+$form->heading('Job Application Form', 2)
+    
+    // Tab 1: Personal Information
+    ->group('personal', 'Personal Information', ['type' => 'tab', 'active' => true])
+        ->text('first_name', 'First Name', ['required' => true])
+        ->text('last_name', 'Last Name', ['required' => true])
+        ->date('birth_date', 'Date of Birth')
+        ->select('gender', 'Gender', ['m' => 'Male', 'f' => 'Female', 'o' => 'Other'])
+    ->endGroup()
+    
+    // Tab 2: Contact Details
+    ->group('contact', 'Contact Details', ['type' => 'tab'])
+        ->email('email', 'Email Address', ['required' => true])
+        ->tel('phone', 'Phone Number')
+        ->textarea('address', 'Address', ['rows' => 3])
+    ->endGroup()
+    
+    // Tab 3: Professional Background
+    ->group('professional', 'Professional Background', ['type' => 'tab'])
+        ->select('education', 'Education Level', [
+            'highschool' => 'High School',
+            'bachelor' => 'Bachelor\'s Degree',
+            'master' => 'Master\'s Degree',
+            'phd' => 'PhD'
+        ])
+        ->range('experience', 'Years of Experience', ['min' => 0, 'max' => 50])
+        ->file('resume', 'Upload Resume', ['accept' => '.pdf,.doc,.docx'])
+    ->endGroup()
+    
+    ->submit('Submit Application');
+?></code>
+                        </div>
+
+                        <h3>Accordion Groups</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$form->group('basic', 'Basic Information', ['type' => 'accordion', 'active' => true])
+    ->text('company_name', 'Company Name')
+    ->text('website', 'Website')
+->endGroup()
+
+->group('advanced', 'Advanced Settings', ['type' => 'accordion'])
+    ->checkbox('features', 'Features', [
+        'api' => 'API Access',
+        'analytics' => 'Analytics',
+        'support' => 'Premium Support'
+    ], ['multiple' => true])
+->endGroup()
+
+->group('billing', 'Billing Information', ['type' => 'accordion'])
+    ->text('card_number', 'Card Number')
+    ->row()
+        ->column(6)->text('expiry', 'MM/YY')->endColumn()
+        ->column(6)->text('cvv', 'CVV')->endColumn()
+    ->endRow()
+->endGroup();
+?></code>
+                        </div>
+
+                        <h3>Fieldsets</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$form->group('shipping', 'Shipping Address', ['type' => 'fieldset'])
+    ->text('ship_name', 'Full Name')
+    ->textarea('ship_address', 'Address')
+    ->row()
+        ->column(8)->text('ship_city', 'City')->endColumn()
+        ->column(4)->text('ship_zip', 'ZIP Code')->endColumn()
+    ->endRow()
+->endGroup()
+
+->group('billing', 'Billing Address', ['type' => 'fieldset'])
+    ->checkbox('same_as_shipping', 'Same as shipping address')
+    ->text('bill_name', 'Full Name')
+    ->textarea('bill_address', 'Address')
+->endGroup();
+?></code>
+                        </div>
+                    </section>
+
+                    <!-- AJAX -->
+                    <section id="ajax">
+                        <h2>AJAX Support</h2>
+                        <p>Built-in AJAX functionality for seamless user experiences.</p>
+
+                        <h3>Basic AJAX Form</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$form = new EasyForm('contact_ajax');
+
+$form->ajax([
+        'url' => '/api/contact',  // Optional: defaults to form action
+        'method' => 'POST',       // HTTP method
+        'success' => 'function(data) {
+            alert("Thank you! Your message has been sent.");
+            $("#contact_ajax")[0].reset();
+        }',
+        'error' => 'function(xhr, status, error) {
+            alert("Sorry, there was an error sending your message.");
+        }'
+    ])
+    ->text('name', 'Your Name', ['required' => true])
+    ->email('email', 'Email', ['required' => true])
+    ->textarea('message', 'Message', ['required' => true])
+    ->submit('Send Message');
+?></code>
+                        </div>
+
+                        <h3>Advanced AJAX with Callbacks</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$form->ajax([
+    'beforeSend' => 'function() {
+        $("#loading").show();
+        $("button[type=submit]").prop("disabled", true);
+    }',
+    'success' => 'function(response) {
+        $("#loading").hide();
+        if (response.success) {
+            showSuccessMessage(response.message);
+            resetForm();
+        } else {
+            showValidationErrors(response.errors);
+        }
+    }',
+    'error' => 'function(xhr) {
+        $("#loading").hide();
+        showErrorMessage("Server error occurred");
+    }',
+    'complete' => 'function() {
+        $("button[type=submit]").prop("disabled", false);
+    }'
+]);
+?></code>
+                        </div>
+
+                        <h3>Server-Side AJAX Handler</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// ajax-handler.php
+header('Content-Type: application/json');
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name = $_POST['name'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $message = $_POST['message'] ?? '';
+    
+    // Validate data
+    $errors = [];
+    if (empty($name)) $errors['name'] = 'Name is required';
+    if (empty($email)) $errors['email'] = 'Email is required';
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors['email'] = 'Invalid email';
+    
+    if (!empty($errors)) {
+        echo json_encode(['success' => false, 'errors' => $errors]);
+        exit;
+    }
+    
+    // Process form (send email, save to database, etc.)
+    $success = sendContactEmail($name, $email, $message);
+    
+    if ($success) {
+        echo json_encode([
+            'success' => true,
+            'message' => 'Thank you! Your message has been sent.'
+        ]);
+    } else {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Sorry, there was an error processing your request.'
+        ]);
+    }
+}
+?></code>
+                        </div>
+                    </section>
+
+                    <!-- Theming -->
+                    <section id="theming">
+                        <h2>Theming & Styling</h2>
+                        <p>Customize the appearance with built-in themes or create your own.</p>
+
+                        <h3>Built-in Themes</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// Semantic UI theme (default)
+$form1 = new EasyForm('semantic_form', ['theme' => 'semantic']);
+
+// Bootstrap 5 theme
+$form2 = new EasyForm('bootstrap_form', ['theme' => 'bootstrap']);
+
+// Material Design theme
+$form3 = new EasyForm('material_form', ['theme' => 'material']);
+
+// Custom theme
+$form4 = new EasyForm('custom_form', ['theme' => 'mytheme']);
+?></code>
+                        </div>
+
+                        <h3>Size Variations</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// Different form sizes
+$form->text('field1', 'Mini Size', ['size' => 'mini']);
+$form->text('field2', 'Small Size', ['size' => 'small']);
+$form->text('field3', 'Medium Size', ['size' => 'medium']);  // Default
+$form->text('field4', 'Large Size', ['size' => 'large']);
+$form->text('field5', 'Huge Size', ['size' => 'huge']);
+?></code>
+                        </div>
+
+                        <h3>Custom CSS Classes</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// Add custom classes to form
+$form = new EasyForm('styled_form', [
+    'class' => 'custom-form dark-theme',
+    'width' => 600
+]);
+
+// Add classes to individual fields
+$form->text('username', 'Username', [
+        'class' => 'highlighted-field',
+        'icon' => 'user'
+    ])
+    ->password('password', 'Password', [
+        'class' => 'secure-field',
+        'icon' => 'lock'
+    ]);
+?></code>
+                        </div>
+                    </section>
+
+                    <!-- Advanced -->
+                    <section id="advanced">
+                        <h2>Advanced Features</h2>
+                        <p>Powerful features for complex form requirements.</p>
+
+                        <h3>Conditional Fields</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$form->select('account_type', 'Account Type', [
+        'personal' => 'Personal',
+        'business' => 'Business'
+    ])
+    ->text('business_name', 'Business Name', [
+        'showIf' => 'account_type=business'
+    ])
+    ->text('tax_id', 'Tax ID', [
+        'showIf' => 'account_type=business'
+    ]);
+?></code>
+                        </div>
+
+                        <h3>Dynamic Field Addition</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$form->heading('Contact Information', 3)
+    ->html('<div id="phone-numbers">')
+    ->tel('phone_1', 'Phone Number 1')
+    ->html('</div>')
+    ->button('Add Phone Number', [
+        'type' => 'button',
+        'onclick' => 'addPhoneField()',
+        'class' => 'ui button secondary'
+    ]);
+?></code>
+                        </div>
+
+                        <h3>Form Prefilling</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// Prefill from database
+$user = getUserById($userId);
+
+$form->text('name', 'Name', ['value' => $user->name])
+    ->email('email', 'Email', ['value' => $user->email])
+    ->select('country', 'Country', $countries, ['value' => $user->country]);
+
+// Prefill from $_POST (after validation error)
+if (!empty($_POST)) {
+    $form->prefill($_POST);
+}
+?></code>
+                        </div>
+                    </section>
+
+                    <!-- Best Practices -->
+                    <section id="best-practices">
+                        <h2>Best Practices</h2>
+                        <p>Tips and recommendations for creating excellent forms.</p>
+
+                        <h3>Form Design</h3>
+                        <ul>
+                            <li><strong>Keep it simple:</strong> Only ask for essential information</li>
+                            <li><strong>Group related fields:</strong> Use tabs or fieldsets for complex forms</li>
+                            <li><strong>Provide clear labels:</strong> Make field purposes obvious</li>
+                            <li><strong>Use appropriate field types:</strong> Email for emails, tel for phones, etc.</li>
+                            <li><strong>Add helpful placeholders:</strong> Show expected format examples</li>
+                        </ul>
+
+                        <h3>Validation</h3>
+                        <ul>
+                            <li><strong>Validate early:</strong> Use live validation for immediate feedback</li>
+                            <li><strong>Clear error messages:</strong> Explain what's wrong and how to fix it</li>
+                            <li><strong>Server-side validation:</strong> Always validate on the server too</li>
+                            <li><strong>Progressive enhancement:</strong> Form should work without JavaScript</li>
+                        </ul>
+
+                        <h3>Performance</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// Good: Create form once, reuse
+$form = new EasyForm('contact', ['theme' => 'semantic']);
+$form->text('name', 'Name')->email('email', 'Email');
+
+// Good: Chain methods for cleaner code
+$form->text('first_name', 'First Name')
+    ->text('last_name', 'Last Name')
+    ->email('email', 'Email')
+    ->submit('Submit');
+
+// Good: Use appropriate validation
+$form->email('email', 'Email')
+    ->rule('email', 'required|email');  // Combined rules
+?></code>
+                        </div>
+
+                        <h3>Security</h3>
+                        <ul>
+                            <li><strong>CSRF protection:</strong> Always enabled by default</li>
+                            <li><strong>Input sanitization:</strong> Validate and sanitize all input</li>
+                            <li><strong>File upload security:</strong> Validate file types and sizes</li>
+                            <li><strong>SQL injection:</strong> Use prepared statements for database queries</li>
+                        </ul>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>EasyForm</h3>
+                    <a href="#quickstart">Quick Start</a>
+                    <a href="#field-types">Field Types</a>
+                    <a href="#validation">Validation</a>
+                    <a href="#ajax">AJAX Support</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Documentation</h3>
+                    <a href="installation.html">Installation</a>
+                    <a href="easylist.html">EasyList</a>
+                    <a href="api.html">API Reference</a>
+                    <a href="examples.html">Examples</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <a href="demos/">Interactive Demos</a>
+                    <a href="builders.html">Visual Builders</a>
+                    <a href="../examples/">Sample Code</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <a href="mailto:support@example.com">Email Support</a>
+                    <a href="https://github.com/smartform/easyform">GitHub</a>
+                    <a href="examples.html#faq">FAQ</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 EasyForm Documentation. Built for developers.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

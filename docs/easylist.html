@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyList Documentation - Modern PHP Data Table Generator</title>
+    <meta name="description" content="Complete EasyList documentation with API reference, examples, and best practices. Build powerful data tables with search, filtering, sorting, and export features.">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="../index.html">EasyForm/EasyList</a>
+                </div>
+                <nav class="nav">
+                    <a href="#overview" class="nav-link">Overview</a>
+                    <a href="#quickstart" class="nav-link">Quick Start</a>
+                    <a href="#columns" class="nav-link">Columns</a>
+                    <a href="#features" class="nav-link">Features</a>
+                    <a href="#export" class="nav-link">Export</a>
+                    <a href="easyform.html" class="nav-link">EasyForm</a>
+                    <a href="demos/" class="nav-link">Demos</a>
+                </nav>
+                <button class="mobile-menu-toggle">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container" style="margin-top: 2rem; margin-bottom: 3rem;">
+        <div class="row">
+            <!-- Sidebar Navigation -->
+            <div class="col-3">
+                <div class="doc-nav">
+                    <h3 style="margin-bottom: 1rem;">EasyList Guide</h3>
+                    <ul>
+                        <li><a href="#overview" class="active">Overview</a></li>
+                        <li><a href="#quickstart">Quick Start</a></li>
+                        <li><a href="#data-sources">Data Sources</a></li>
+                        <li><a href="#columns">Column Configuration</a></li>
+                        <li><a href="#column-types">Column Types</a></li>
+                        <li><a href="#search-filter">Search & Filtering</a></li>
+                        <li><a href="#sorting">Sorting</a></li>
+                        <li><a href="#pagination">Pagination</a></li>
+                        <li><a href="#export">Export Features</a></li>
+                        <li><a href="#actions">Action Buttons</a></li>
+                        <li><a href="#ajax">AJAX Integration</a></li>
+                        <li><a href="#styling">Styling & Themes</a></li>
+                        <li><a href="#events">Events & Callbacks</a></li>
+                        <li><a href="#advanced">Advanced Features</a></li>
+                        <li><a href="#best-practices">Best Practices</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Documentation Content -->
+            <div class="col-9">
+                <div class="doc-content">
+                    <h1 id="overview">EasyList Documentation</h1>
+                    <p class="section-subtitle">Master the powerful PHP data table generator with advanced features like search, filtering, sorting, pagination, and export capabilities.</p>
+
+                    <!-- Overview Section -->
+                    <section id="overview">
+                        <h2>What is EasyList?</h2>
+                        <p>EasyList is a powerful PHP library for creating dynamic, interactive data tables. It transforms raw data into beautiful, searchable, sortable, and exportable tables with minimal code.</p>
+                        
+                        <h3>Key Features</h3>
+                        <div class="row">
+                            <div class="col-6">
+                                <ul>
+                                    <li><strong>Fluent Interface:</strong> Chainable methods for clean code</li>
+                                    <li><strong>Multiple Data Sources:</strong> Arrays, databases, APIs</li>
+                                    <li><strong>Advanced Search:</strong> Global and column-specific filtering</li>
+                                    <li><strong>Smart Sorting:</strong> Multi-column sorting with custom rules</li>
+                                    <li><strong>Pagination:</strong> Efficient handling of large datasets</li>
+                                </ul>
+                            </div>
+                            <div class="col-6">
+                                <ul>
+                                    <li><strong>Export Options:</strong> CSV, Excel, JSON, PDF formats</li>
+                                    <li><strong>Action Buttons:</strong> Custom row and bulk actions</li>
+                                    <li><strong>Responsive Design:</strong> Mobile-friendly tables</li>
+                                    <li><strong>AJAX Support:</strong> Real-time data loading</li>
+                                    <li><strong>Customizable:</strong> Full control over appearance</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-success">
+                            <strong>Perfect For:</strong> Admin panels, dashboards, data reports, user management, product catalogs, and any application requiring data visualization.
+                        </div>
+                    </section>
+
+                    <!-- Quick Start -->
+                    <section id="quickstart">
+                        <h2>Quick Start</h2>
+                        <p>Create your first data table in minutes with this simple example.</p>
+
+                        <h3>Basic Data Table</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+require_once 'easy_form/autoload.php';
+use EasyForm\EasyList;
+
+// Sample data
+$users = [
+    ['id' => 1, 'name' => 'John Doe', 'email' => 'john@example.com', 'role' => 'Admin', 'created_at' => '2024-01-15'],
+    ['id' => 2, 'name' => 'Jane Smith', 'email' => 'jane@example.com', 'role' => 'User', 'created_at' => '2024-01-20'],
+    ['id' => 3, 'name' => 'Bob Johnson', 'email' => 'bob@example.com', 'role' => 'Moderator', 'created_at' => '2024-01-25']
+];
+
+// Create the list
+$list = new EasyList('users_table');
+
+$list->data($users)
+    ->column('id', 'ID', ['width' => '80px', 'align' => 'center'])
+    ->column('name', 'Full Name', ['sortable' => true])
+    ->column('email', 'Email Address', ['searchable' => true])
+    ->column('role', 'Role', ['filter' => ['Admin', 'User', 'Moderator']])
+    ->column('created_at', 'Created', ['type' => 'date', 'format' => 'M j, Y'])
+    ->searchable()
+    ->paginate(10)
+    ->exportable(['csv', 'excel'])
+    ->display();
+?></code>
+                        </div>
+
+                        <h3>Result Preview</h3>
+                        <p>This creates a fully functional data table with:</p>
+                        <ul>
+                            <li>Search bar for global filtering</li>
+                            <li>Sortable columns (click headers to sort)</li>
+                            <li>Role filter dropdown</li>
+                            <li>Pagination controls</li>
+                            <li>Export buttons for CSV and Excel</li>
+                            <li>Responsive design for mobile devices</li>
+                        </ul>
+                    </section>
+
+                    <!-- Data Sources -->
+                    <section id="data-sources">
+                        <h2>Data Sources</h2>
+                        <p>EasyList supports multiple data sources for maximum flexibility.</p>
+
+                        <h3>Array Data</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// Simple array
+$products = [
+    ['id' => 1, 'name' => 'Laptop', 'price' => 999.99, 'stock' => 25],
+    ['id' => 2, 'name' => 'Mouse', 'price' => 29.99, 'stock' => 100],
+    ['id' => 3, 'name' => 'Keyboard', 'price' => 79.99, 'stock' => 50]
+];
+
+$list = new EasyList('products');
+$list->data($products);
+?></code>
+                        </div>
+
+                        <h3>Database Query</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// PDO connection
+$pdo = new PDO('mysql:host=localhost;dbname=myapp', $username, $password);
+
+// Direct SQL query
+$list = new EasyList('orders');
+$list->fromDatabase('SELECT id, customer_name, total, order_date FROM orders WHERE status = "completed"', $pdo);
+
+// Query builder (if using a framework)
+$list->fromQuery(Order::where('status', 'completed')->select('id', 'customer_name', 'total', 'order_date'));
+?></code>
+                        </div>
+
+                        <h3>API Data Source</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// Load data from REST API
+$list = new EasyList('api_data');
+$list->fromApi('https://api.example.com/users', [
+    'headers' => ['Authorization' => 'Bearer ' . $token],
+    'params' => ['limit' => 100, 'active' => true]
+]);
+
+// Custom data loader
+$list->fromCallback(function($page, $limit, $search, $sort) {
+    // Your custom data loading logic
+    $data = fetchDataFromCustomSource($page, $limit, $search, $sort);
+    return [
+        'data' => $data,
+        'total' => getTotalCount(),
+        'filtered' => getFilteredCount($search)
+    ];
+});
+?></code>
+                        </div>
+
+                        <h3>JSON Data</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// Load from JSON file
+$jsonData = file_get_contents('data/users.json');
+$users = json_decode($jsonData, true);
+
+$list = new EasyList('json_data');
+$list->data($users);
+
+// Or load directly from JSON string
+$list->fromJson($jsonData);
+?></code>
+                        </div>
+                    </section>
+
+                    <!-- Columns -->
+                    <section id="columns">
+                        <h2>Column Configuration</h2>
+                        <p>Define columns with extensive customization options.</p>
+
+                        <h3>Basic Column Definition</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$list->column('field_name', 'Column Title', [
+    'sortable' => true,        // Enable sorting
+    'searchable' => true,      // Include in global search
+    'width' => '120px',        // Fixed width
+    'align' => 'center',       // left, center, right
+    'class' => 'custom-col',   // CSS class
+    'headerClass' => 'header-style' // Header CSS class
+]);
+?></code>
+                        </div>
+
+                        <h3>Column Options</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Option</th>
+                                    <th>Type</th>
+                                    <th>Default</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>sortable</code></td>
+                                    <td>bool</td>
+                                    <td>true</td>
+                                    <td>Enable column sorting</td>
+                                </tr>
+                                <tr>
+                                    <td><code>searchable</code></td>
+                                    <td>bool</td>
+                                    <td>true</td>
+                                    <td>Include in global search</td>
+                                </tr>
+                                <tr>
+                                    <td><code>width</code></td>
+                                    <td>string</td>
+                                    <td>auto</td>
+                                    <td>Column width (px, %, em)</td>
+                                </tr>
+                                <tr>
+                                    <td><code>align</code></td>
+                                    <td>string</td>
+                                    <td>left</td>
+                                    <td>Text alignment</td>
+                                </tr>
+                                <tr>
+                                    <td><code>type</code></td>
+                                    <td>string</td>
+                                    <td>text</td>
+                                    <td>Data type for formatting</td>
+                                </tr>
+                                <tr>
+                                    <td><code>format</code></td>
+                                    <td>string</td>
+                                    <td>null</td>
+                                    <td>Custom format string</td>
+                                </tr>
+                                <tr>
+                                    <td><code>template</code></td>
+                                    <td>string</td>
+                                    <td>null</td>
+                                    <td>Custom HTML template</td>
+                                </tr>
+                                <tr>
+                                    <td><code>filter</code></td>
+                                    <td>array</td>
+                                    <td>null</td>
+                                    <td>Column-specific filter options</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>Advanced Column Examples</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$list
+    // ID column with custom styling
+    ->column('id', 'ID', [
+        'width' => '60px',
+        'align' => 'center',
+        'sortable' => true,
+        'class' => 'id-column'
+    ])
+    
+    // Name with custom template
+    ->column('name', 'Full Name', [
+        'template' => '<strong>{{name}}</strong><br><small>{{email}}</small>',
+        'sortable' => true
+    ])
+    
+    // Status with badge styling
+    ->column('status', 'Status', [
+        'template' => function($row) {
+            $class = $row['status'] === 'active' ? 'success' : 'warning';
+            return "<span class=\"ui label {$class}\">{$row['status']}</span>";
+        },
+        'filter' => ['active', 'inactive', 'pending']
+    ])
+    
+    // Price with currency formatting
+    ->column('price', 'Price', [
+        'type' => 'currency',
+        'format' => '$%.2f',
+        'align' => 'right',
+        'sortable' => true
+    ]);
+?></code>
+                        </div>
+                    </section>
+
+                    <!-- Column Types -->
+                    <section id="column-types">
+                        <h2>Column Types & Formatting</h2>
+                        <p>Built-in data types with automatic formatting.</p>
+
+                        <h3>Date and Time</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$list
+    // Date formatting
+    ->column('created_at', 'Created', [
+        'type' => 'date',
+        'format' => 'M j, Y'  // Jan 15, 2024
+    ])
+    
+    // DateTime formatting
+    ->column('updated_at', 'Last Updated', [
+        'type' => 'datetime',
+        'format' => 'M j, Y g:i A'  // Jan 15, 2024 3:30 PM
+    ])
+    
+    // Relative time (time ago)
+    ->column('last_login', 'Last Login', [
+        'type' => 'timeago'  // "2 hours ago"
+    ])
+    
+    // Custom date format
+    ->column('birth_date', 'Birthday', [
+        'type' => 'date',
+        'format' => 'd/m/Y'  // European format
+    ]);
+?></code>
+                        </div>
+
+                        <h3>Numbers and Currency</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$list
+    // Currency formatting
+    ->column('price', 'Price', [
+        'type' => 'currency',
+        'format' => '$%.2f',  // $99.99
+        'align' => 'right'
+    ])
+    
+    // Percentage
+    ->column('discount', 'Discount', [
+        'type' => 'percentage',
+        'format' => '%.1f%%'  // 15.5%
+    ])
+    
+    // Number with thousands separator
+    ->column('views', 'Views', [
+        'type' => 'number',
+        'format' => 'thousands'  // 1,234,567
+    ])
+    
+    // File size formatting
+    ->column('file_size', 'Size', [
+        'type' => 'filesize'  // 1.5 MB
+    ]);
+?></code>
+                        </div>
+
+                        <h3>Boolean and Status</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$list
+    // Boolean as Yes/No
+    ->column('is_active', 'Active', [
+        'type' => 'boolean',
+        'format' => 'yesno'  // Yes/No instead of 1/0
+    ])
+    
+    // Boolean as icons
+    ->column('verified', 'Verified', [
+        'type' => 'boolean',
+        'format' => 'icons',  // ✓/✗ icons
+        'align' => 'center'
+    ])
+    
+    // Status with colors
+    ->column('status', 'Status', [
+        'type' => 'status',
+        'statusColors' => [
+            'active' => 'green',
+            'pending' => 'yellow',
+            'inactive' => 'red'
+        ]
+    ]);
+?></code>
+                        </div>
+
+                        <h3>Images and Media</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$list
+    // Image thumbnail
+    ->column('avatar', 'Photo', [
+        'type' => 'image',
+        'width' => '50px',
+        'template' => '<img src="{{avatar}}" class="ui avatar image" alt="User photo">'
+    ])
+    
+    // Link formatting
+    ->column('website', 'Website', [
+        'type' => 'link',
+        'template' => '<a href="{{website}}" target="_blank">{{website}}</a>'
+    ])
+    
+    // Email with mailto
+    ->column('email', 'Email', [
+        'type' => 'email',
+        'template' => '<a href="mailto:{{email}}">{{email}}</a>'
+    ]);
+?></code>
+                        </div>
+                    </section>
+
+                    <!-- Search & Filter -->
+                    <section id="search-filter">
+                        <h2>Search & Filtering</h2>
+                        <p>Powerful search and filtering capabilities for data discovery.</p>
+
+                        <h3>Global Search</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$list = new EasyList('searchable_table');
+
+$list->data($data)
+    ->searchable([
+        'placeholder' => 'Search users...',
+        'debounce' => 300,      // Delay in milliseconds
+        'minLength' => 2,       // Minimum characters to trigger search
+        'caseSensitive' => false,
+        'exactMatch' => false   // Allow partial matches
+    ])
+    ->column('name', 'Name', ['searchable' => true])
+    ->column('email', 'Email', ['searchable' => true])
+    ->column('phone', 'Phone', ['searchable' => false])  // Exclude from search
+    ->display();
+?></code>
+                        </div>
+
+                        <h3>Column-Specific Filters</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$list
+    // Dropdown filter
+    ->column('department', 'Department', [
+        'filter' => [
+            'all' => 'All Departments',
+            'sales' => 'Sales',
+            'marketing' => 'Marketing',
+            'engineering' => 'Engineering',
+            'hr' => 'Human Resources'
+        ]
+    ])
+    
+    // Date range filter
+    ->column('hire_date', 'Hire Date', [
+        'type' => 'date',
+        'filter' => 'daterange',
+        'filterOptions' => [
+            'format' => 'YYYY-MM-DD',
+            'ranges' => [
+                'Last 30 Days' => [date('Y-m-d', strtotime('-30 days')), date('Y-m-d')],
+                'Last Year' => [date('Y-m-d', strtotime('-1 year')), date('Y-m-d')]
+            ]
+        ]
+    ])
+    
+    // Number range filter
+    ->column('salary', 'Salary', [
+        'type' => 'currency',
+        'filter' => 'range',
+        'filterOptions' => [
+            'min' => 30000,
+            'max' => 200000,
+            'step' => 5000
+        ]
+    ]);
+?></code>
+                        </div>
+
+                        <h3>Advanced Filtering</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// Custom filter logic
+$list->addFilter('active_users', 'Active Users Only', function($query, $value) {
+    if ($value === 'active') {
+        return array_filter($query, function($row) {
+            return $row['status'] === 'active' && $row['last_login'] > date('Y-m-d', strtotime('-30 days'));
+        });
+    }
+    return $query;
+});
+
+// Multiple filter conditions
+$list->filter([
+    'status' => 'active',
+    'department' => 'engineering',
+    'hire_date' => ['>=', '2023-01-01']
+]);
+
+// Filter with custom callback
+$list->filterCallback(function($row) {
+    // Custom filtering logic
+    return $row['salary'] > 50000 && $row['performance_rating'] >= 4;
+});
+?></code>
+                        </div>
+                    </section>
+
+                    <!-- Sorting -->
+                    <section id="sorting">
+                        <h2>Sorting</h2>
+                        <p>Flexible sorting options with multi-column support.</p>
+
+                        <h3>Basic Sorting</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$list
+    // Enable sorting on columns
+    ->column('name', 'Name', ['sortable' => true])
+    ->column('created_at', 'Created', ['sortable' => true, 'defaultSort' => 'desc'])
+    ->column('status', 'Status', ['sortable' => false])  // Disable sorting
+    
+    // Set default sort
+    ->defaultSort('created_at', 'desc')
+    
+    // Enable multi-column sorting
+    ->multiSort(true);
+?></code>
+                        </div>
+
+                        <h3>Custom Sort Functions</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$list
+    // Custom sort for complex data
+    ->column('full_name', 'Full Name', [
+        'sortable' => true,
+        'sortCallback' => function($a, $b, $direction) {
+            // Sort by last name, then first name
+            $lastNameA = explode(' ', $a['full_name'])[1] ?? '';
+            $lastNameB = explode(' ', $b['full_name'])[1] ?? '';
+            
+            $result = strcmp($lastNameA, $lastNameB);
+            return $direction === 'desc' ? -$result : $result;
+        }
+    ])
+    
+    // Natural sorting for version numbers
+    ->column('version', 'Version', [
+        'sortable' => true,
+        'sortCallback' => function($a, $b, $direction) {
+            $result = version_compare($a['version'], $b['version']);
+            return $direction === 'desc' ? -$result : $result;
+        }
+    ]);
+?></code>
+                        </div>
+
+                        <h3>Sort Configuration</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$list->sortable([
+    'multiSort' => true,        // Allow sorting by multiple columns
+    'sortIcons' => true,        // Show sort direction icons
+    'rememberSort' => true,     // Remember sort in session
+    'defaultSort' => [
+        ['column' => 'priority', 'direction' => 'desc'],
+        ['column' => 'created_at', 'direction' => 'asc']
+    ]
+]);
+?></code>
+                        </div>
+                    </section>
+
+                    <!-- Pagination -->
+                    <section id="pagination">
+                        <h2>Pagination</h2>
+                        <p>Efficient pagination for large datasets with customizable options.</p>
+
+                        <h3>Basic Pagination</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$list = new EasyList('paginated_table');
+
+$list->data($largeDataset)
+    ->paginate(25)  // 25 items per page
+    ->paginationOptions([
+        'showInfo' => true,     // Show "Showing 1-25 of 100"
+        'showSizeChanger' => true,  // Allow changing page size
+        'pageSizes' => [10, 25, 50, 100],
+        'showQuickJumper' => true,  // Jump to specific page
+        'position' => 'both'    // Show pagination top and bottom
+    ]);
+?></code>
+                        </div>
+
+                        <h3>Advanced Pagination</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// Custom pagination template
+$list->paginationTemplate([
+    'info' => 'Displaying {{start}} to {{end}} of {{total}} entries',
+    'first' => 'First',
+    'last' => 'Last',
+    'previous' => '← Previous',
+    'next' => 'Next →',
+    'page' => 'Page {{page}}',
+    'pageSize' => 'Show {{size}} entries'
+]);
+
+// Server-side pagination for large datasets
+$list->serverSidePagination(true, [
+    'url' => '/api/data',
+    'params' => ['status' => 'active']
+]);
+
+// Infinite scroll pagination
+$list->infiniteScroll([
+    'threshold' => 300,     // Pixels from bottom to trigger load
+    'loadingText' => 'Loading more...',
+    'endText' => 'No more data'
+]);
+?></code>
+                        </div>
+                    </section>
+
+                    <!-- Export -->
+                    <section id="export">
+                        <h2>Export Features</h2>
+                        <p>Export data in multiple formats with customization options.</p>
+
+                        <h3>Basic Export</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$list = new EasyList('exportable_table');
+
+$list->data($data)
+    ->exportable(['csv', 'excel', 'json', 'pdf'])
+    ->exportOptions([
+        'filename' => 'users_export',
+        'includeHeaders' => true,
+        'selectedOnly' => false,    // Export all or selected rows
+        'buttonPosition' => 'top'   // top, bottom, both
+    ]);
+?></code>
+                        </div>
+
+                        <h3>Format-Specific Options</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$list->exportFormats([
+    'csv' => [
+        'delimiter' => ',',
+        'enclosure' => '"',
+        'encoding' => 'UTF-8',
+        'includeHeaders' => true
+    ],
+    'excel' => [
+        'format' => 'xlsx',        // xlsx or xls
+        'worksheet' => 'Users',
+        'autoFilter' => true,
+        'freezeRow' => 1          // Freeze header row
+    ],
+    'pdf' => [
+        'orientation' => 'landscape',  // portrait or landscape
+        'pageSize' => 'A4',
+        'title' => 'User Report',
+        'author' => 'Your App Name'
+    ],
+    'json' => [
+        'prettyPrint' => true,
+        'includeMetadata' => true
+    ]
+]);
+?></code>
+                        </div>
+
+                        <h3>Custom Export Columns</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// Exclude columns from export
+$list
+    ->column('id', 'ID', ['exportable' => false])
+    ->column('name', 'Name', ['exportable' => true])
+    ->column('actions', 'Actions', ['exportable' => false]);
+
+// Custom export formatting
+$list->column('salary', 'Salary', [
+    'type' => 'currency',
+    'exportFormat' => function($value) {
+        return number_format($value, 2);  // Remove currency symbol for export
+    }
+]);
+
+// Export callbacks
+$list->onExport(function($data, $format) {
+    // Log export activity
+    logActivity("Data exported in {$format} format", count($data) . ' records');
+    
+    // Modify data before export
+    foreach ($data as &$row) {
+        unset($row['internal_notes']);  // Remove sensitive data
+    }
+    
+    return $data;
+});
+?></code>
+                        </div>
+                    </section>
+
+                    <!-- Actions -->
+                    <section id="actions">
+                        <h2>Action Buttons</h2>
+                        <p>Add interactive buttons for row-specific and bulk operations.</p>
+
+                        <h3>Row Actions</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$list = new EasyList('actionable_table');
+
+$list->data($users)
+    // Add action buttons column
+    ->addAction('edit', 'Edit', [
+        'icon' => 'edit',
+        'class' => 'ui button small blue',
+        'url' => '/users/edit/{{id}}',
+        'confirm' => false
+    ])
+    ->addAction('delete', 'Delete', [
+        'icon' => 'trash',
+        'class' => 'ui button small red',
+        'url' => '/users/delete/{{id}}',
+        'method' => 'DELETE',
+        'confirm' => 'Are you sure you want to delete this user?'
+    ])
+    ->addAction('view', 'View Profile', [
+        'icon' => 'eye',
+        'class' => 'ui button small',
+        'modal' => true,
+        'modalUrl' => '/users/{{id}}/profile'
+    ]);
+?></code>
+                        </div>
+
+                        <h3>Conditional Actions</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// Show actions based on conditions
+$list
+    ->addAction('activate', 'Activate', [
+        'icon' => 'check',
+        'class' => 'ui button small green',
+        'url' => '/users/activate/{{id}}',
+        'showIf' => function($row) {
+            return $row['status'] === 'inactive';
+        }
+    ])
+    ->addAction('deactivate', 'Deactivate', [
+        'icon' => 'ban',
+        'class' => 'ui button small orange',
+        'url' => '/users/deactivate/{{id}}',
+        'showIf' => function($row) {
+            return $row['status'] === 'active';
+        }
+    ])
+    
+    // Permission-based actions
+    ->addAction('admin_edit', 'Admin Edit', [
+        'icon' => 'settings',
+        'class' => 'ui button small purple',
+        'url' => '/admin/users/{{id}}',
+        'permission' => 'admin.users.edit'
+    ]);
+?></code>
+                        </div>
+
+                        <h3>Bulk Actions</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$list
+    // Enable row selection
+    ->selectable(true)
+    
+    // Add bulk actions
+    ->addBulkAction('delete_selected', 'Delete Selected', [
+        'icon' => 'trash',
+        'class' => 'ui button red',
+        'url' => '/users/bulk-delete',
+        'method' => 'POST',
+        'confirm' => 'Delete {{count}} selected users?'
+    ])
+    ->addBulkAction('export_selected', 'Export Selected', [
+        'icon' => 'download',
+        'class' => 'ui button blue',
+        'callback' => 'exportSelected'
+    ])
+    ->addBulkAction('change_status', 'Change Status', [
+        'icon' => 'edit',
+        'class' => 'ui button green',
+        'dropdown' => [
+            'active' => 'Set Active',
+            'inactive' => 'Set Inactive',
+            'pending' => 'Set Pending'
+        ]
+    ]);
+?></code>
+                        </div>
+
+                        <h3>Custom Action Callbacks</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// JavaScript callback for actions
+$list->addAction('quick_edit', 'Quick Edit', [
+    'icon' => 'edit',
+    'class' => 'ui button small',
+    'callback' => 'openQuickEditModal',
+    'data' => ['user-id' => '{{id}}', 'user-name' => '{{name}}']
+]);
+
+// AJAX action
+$list->addAction('toggle_status', 'Toggle Status', [
+    'icon' => 'toggle',
+    'class' => 'ui button small',
+    'ajax' => [
+        'url' => '/users/toggle-status/{{id}}',
+        'method' => 'POST',
+        'success' => 'function(response) { 
+            if(response.success) {
+                location.reload(); 
+            }
+        }'
+    ]
+]);
+?></code>
+                        </div>
+                    </section>
+
+                    <!-- AJAX -->
+                    <section id="ajax">
+                        <h2>AJAX Integration</h2>
+                        <p>Real-time data loading and updates without page refreshes.</p>
+
+                        <h3>AJAX Data Loading</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$list = new EasyList('ajax_table');
+
+$list->ajax([
+        'url' => '/api/users',
+        'method' => 'GET',
+        'headers' => [
+            'Authorization' => 'Bearer ' . $token,
+            'Content-Type' => 'application/json'
+        ],
+        'params' => [
+            'department' => 'engineering',
+            'active' => true
+        ]
+    ])
+    ->serverSide(true)  // Enable server-side processing
+    ->column('id', 'ID')
+    ->column('name', 'Name')
+    ->column('email', 'Email')
+    ->searchable()
+    ->paginate(25);
+?></code>
+                        </div>
+
+                        <h3>Server-Side API Response</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// api/users.php - Server-side endpoint
+header('Content-Type: application/json');
+
+$page = (int)($_GET['page'] ?? 1);
+$limit = (int)($_GET['limit'] ?? 25);
+$search = $_GET['search'] ?? '';
+$sortColumn = $_GET['sort_column'] ?? 'id';
+$sortDirection = $_GET['sort_direction'] ?? 'asc';
+
+// Build query with pagination, search, and sorting
+$query = "SELECT id, name, email, created_at FROM users";
+$conditions = [];
+$params = [];
+
+if (!empty($search)) {
+    $conditions[] = "(name LIKE ? OR email LIKE ?)";
+    $params[] = "%{$search}%";
+    $params[] = "%{$search}%";
+}
+
+if (!empty($conditions)) {
+    $query .= " WHERE " . implode(' AND ', $conditions);
+}
+
+$query .= " ORDER BY {$sortColumn} {$sortDirection}";
+$query .= " LIMIT ? OFFSET ?";
+
+$params[] = $limit;
+$params[] = ($page - 1) * $limit;
+
+$stmt = $pdo->prepare($query);
+$stmt->execute($params);
+$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Get total count
+$countQuery = "SELECT COUNT(*) FROM users";
+if (!empty($conditions)) {
+    $countQuery .= " WHERE " . implode(' AND ', $conditions);
+}
+$total = $pdo->query($countQuery)->fetchColumn();
+
+echo json_encode([
+    'data' => $data,
+    'total' => (int)$total,
+    'page' => $page,
+    'limit' => $limit
+]);
+?></code>
+                        </div>
+
+                        <h3>Real-time Updates</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// Auto-refresh data
+$list->autoRefresh([
+    'interval' => 30000,  // 30 seconds
+    'onlyWhenVisible' => true,  // Pause when tab not visible
+    'showIndicator' => true     // Show refresh indicator
+]);
+
+// Manual refresh button
+$list->refreshButton([
+    'text' => 'Refresh Data',
+    'icon' => 'refresh',
+    'position' => 'top'
+]);
+
+// WebSocket integration for real-time updates
+$list->realtime([
+    'websocket' => 'ws://localhost:8080',
+    'events' => ['user.created', 'user.updated', 'user.deleted'],
+    'callback' => 'handleRealtimeUpdate'
+]);
+?></code>
+                        </div>
+                    </section>
+
+                    <!-- Styling -->
+                    <section id="styling">
+                        <h2>Styling & Themes</h2>
+                        <p>Customize the appearance with themes and CSS options.</p>
+
+                        <h3>Built-in Themes</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// Semantic UI theme (default)
+$list = new EasyList('semantic_table', ['theme' => 'semantic']);
+
+// Bootstrap theme
+$list = new EasyList('bootstrap_table', ['theme' => 'bootstrap']);
+
+// Material Design theme
+$list = new EasyList('material_table', ['theme' => 'material']);
+
+// Custom theme
+$list = new EasyList('custom_table', ['theme' => 'mytheme']);
+?></code>
+                        </div>
+
+                        <h3>Styling Options</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$list = new EasyList('styled_table');
+
+$list->styling([
+        'striped' => true,         // Alternating row colors
+        'bordered' => true,        // Table borders
+        'hover' => true,           // Hover effects
+        'compact' => false,        // Compact layout
+        'responsive' => true,      // Mobile-responsive
+        'color' => 'blue',         // Theme color
+        'size' => 'small'          // Table size: small, medium, large
+    ])
+    ->classes([
+        'table' => 'custom-table',
+        'header' => 'custom-header',
+        'row' => 'custom-row',
+        'cell' => 'custom-cell'
+    ]);
+?></code>
+                        </div>
+
+                        <h3>Custom CSS</h3>
+                        <div class="code-block" data-language="css">
+<code>/* Custom table styling */
+.custom-table {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.custom-table .custom-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: 600;
+}
+
+.custom-table .custom-row:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.custom-table .custom-row:hover {
+    background-color: #e3f2fd;
+    transform: translateY(-1px);
+    transition: all 0.2s ease;
+}
+
+/* Status column styling */
+.status-active { color: #28a745; font-weight: bold; }
+.status-inactive { color: #dc3545; }
+.status-pending { color: #ffc107; }
+
+/* Action button styling */
+.action-buttons .ui.button {
+    margin: 0 2px;
+    padding: 8px 12px;
+}
+</code>
+                        </div>
+                    </section>
+
+                    <!-- Events -->
+                    <section id="events">
+                        <h2>Events & Callbacks</h2>
+                        <p>Hook into table events for custom functionality.</p>
+
+                        <h3>Event Callbacks</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$list = new EasyList('event_table');
+
+$list->data($data)
+    // Before data processing
+    ->onBeforeLoad(function($data) {
+        // Modify data before processing
+        return array_filter($data, function($row) {
+            return !empty($row['name']);
+        });
+    })
+    
+    // After data processing
+    ->onAfterLoad(function($data) {
+        // Log or cache processed data
+        logActivity('Data loaded', count($data) . ' records');
+        return $data;
+    })
+    
+    // Row rendering
+    ->onRowRender(function($row, $index) {
+        // Add custom row attributes
+        if ($row['status'] === 'vip') {
+            return ['class' => 'vip-row', 'data-priority' => 'high'];
+        }
+        return [];
+    })
+    
+    // Cell rendering
+    ->onCellRender(function($value, $column, $row) {
+        if ($column === 'email' && $row['is_verified']) {
+            return $value . ' <i class="check circle icon green"></i>';
+        }
+        return $value;
+    });
+?></code>
+                        </div>
+
+                        <h3>JavaScript Events</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$list->jsEvents([
+    'onInit' => 'function() { console.log("Table initialized"); }',
+    'onLoad' => 'function(data) { console.log("Data loaded:", data.length); }',
+    'onSort' => 'function(column, direction) { 
+        console.log("Sorted by:", column, direction); 
+    }',
+    'onFilter' => 'function(filters) { 
+        console.log("Filters applied:", filters); 
+    }',
+    'onRowClick' => 'function(row, data) { 
+        console.log("Row clicked:", data); 
+    }',
+    'onRowSelect' => 'function(selectedRows) {
+        $("#bulk-actions").toggle(selectedRows.length > 0);
+    }'
+]);
+?></code>
+                        </div>
+                    </section>
+
+                    <!-- Advanced -->
+                    <section id="advanced">
+                        <h2>Advanced Features</h2>
+                        <p>Advanced functionality for complex requirements.</p>
+
+                        <h3>Grouping</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$list = new EasyList('grouped_table');
+
+$list->data($salesData)
+    ->groupBy('department', [
+        'showCount' => true,
+        'collapsible' => true,
+        'defaultCollapsed' => false,
+        'summaryRow' => true,
+        'summaryColumns' => ['sales_amount', 'commission']
+    ])
+    ->column('name', 'Sales Rep')
+    ->column('sales_amount', 'Sales', ['type' => 'currency', 'aggregate' => 'sum'])
+    ->column('commission', 'Commission', ['type' => 'currency', 'aggregate' => 'sum']);
+?></code>
+                        </div>
+
+                        <h3>Virtual Scrolling</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// For very large datasets
+$list = new EasyList('virtual_table');
+
+$list->data($largeDataset)
+    ->virtualScroll([
+        'height' => 400,        // Table height in pixels
+        'rowHeight' => 40,      // Fixed row height
+        'buffer' => 10,         // Extra rows to render
+        'threshold' => 50       // Minimum rows for virtual scrolling
+    ]);
+?></code>
+                        </div>
+
+                        <h3>Column Resizing & Reordering</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+$list->features([
+    'columnResize' => true,     // Allow column resizing
+    'columnReorder' => true,    // Allow column reordering
+    'columnVisibility' => true, // Show/hide columns
+    'saveLayout' => true        // Remember layout in localStorage
+]);
+?></code>
+                        </div>
+                    </section>
+
+                    <!-- Best Practices -->
+                    <section id="best-practices">
+                        <h2>Best Practices</h2>
+                        <p>Guidelines for creating efficient and user-friendly data tables.</p>
+
+                        <h3>Performance Optimization</h3>
+                        <ul>
+                            <li><strong>Use pagination:</strong> Don't load thousands of rows at once</li>
+                            <li><strong>Server-side processing:</strong> For datasets > 1000 rows</li>
+                            <li><strong>Lazy loading:</strong> Load data on demand</li>
+                            <li><strong>Debounced search:</strong> Prevent excessive API calls</li>
+                            <li><strong>Virtual scrolling:</strong> For very large datasets</li>
+                        </ul>
+
+                        <h3>User Experience</h3>
+                        <ul>
+                            <li><strong>Clear column headers:</strong> Make data purpose obvious</li>
+                            <li><strong>Appropriate data types:</strong> Use proper formatting</li>
+                            <li><strong>Consistent actions:</strong> Place action buttons logically</li>
+                            <li><strong>Loading indicators:</strong> Show progress during data loading</li>
+                            <li><strong>Error handling:</strong> Graceful degradation on failures</li>
+                        </ul>
+
+                        <h3>Code Organization</h3>
+                        <div class="code-block" data-language="php">
+<code><?php
+// Good: Organize complex tables into methods
+class UserTableBuilder {
+    public function build($data) {
+        $list = new EasyList('users');
+        
+        return $list->data($data)
+            ->columns($this->getColumns())
+            ->actions($this->getActions())
+            ->filters($this->getFilters())
+            ->pagination($this->getPaginationConfig());
+    }
+    
+    private function getColumns() {
+        return [
+            ['key' => 'id', 'label' => 'ID', 'width' => '60px'],
+            ['key' => 'name', 'label' => 'Name', 'sortable' => true],
+            ['key' => 'email', 'label' => 'Email', 'searchable' => true]
+        ];
+    }
+    
+    private function getActions() {
+        return [
+            'edit' => ['icon' => 'edit', 'url' => '/users/edit/{{id}}'],
+            'delete' => ['icon' => 'trash', 'confirm' => true]
+        ];
+    }
+}
+
+// Usage
+$builder = new UserTableBuilder();
+$table = $builder->build($users);
+$table->display();
+?></code>
+                        </div>
+
+                        <h3>Security Considerations</h3>
+                        <ul>
+                            <li><strong>Input validation:</strong> Validate all search and filter inputs</li>
+                            <li><strong>Permission checks:</strong> Verify user permissions for actions</li>
+                            <li><strong>Data sanitization:</strong> Escape output to prevent XSS</li>
+                            <li><strong>Rate limiting:</strong> Prevent API abuse</li>
+                            <li><strong>Sensitive data:</strong> Don't expose internal IDs or sensitive fields</li>
+                        </ul>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>EasyList</h3>
+                    <a href="#quickstart">Quick Start</a>
+                    <a href="#columns">Column Configuration</a>
+                    <a href="#search-filter">Search & Filtering</a>
+                    <a href="#export">Export Features</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Documentation</h3>
+                    <a href="installation.html">Installation</a>
+                    <a href="easyform.html">EasyForm</a>
+                    <a href="api.html">API Reference</a>
+                    <a href="examples.html">Examples</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <a href="demos/">Interactive Demos</a>
+                    <a href="builders.html">Visual Builders</a>
+                    <a href="../examples/">Sample Code</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <a href="mailto:support@example.com">Email Support</a>
+                    <a href="https://github.com/smartform/easyform">GitHub</a>
+                    <a href="examples.html#faq">FAQ</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 EasyList Documentation. Built for developers.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

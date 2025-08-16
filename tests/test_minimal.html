@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Minimal EasyList Test</title>
+    <script src="../jquery/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Test EasyList Loading</h1>
+    
+    <div id="test"></div>
+    
+    <script src="js/easylist.js"></script>
+    
+    <script>
+        console.log('Direct test:');
+        console.log('typeof EasyListHandler:', typeof EasyListHandler);
+        
+        if (typeof EasyListHandler !== 'undefined') {
+            console.log('SUCCESS: EasyListHandler is loaded!');
+            document.getElementById('test').innerHTML = '<h2 style="color:green">✓ EasyListHandler loaded successfully</h2>';
+        } else {
+            console.log('FAIL: EasyListHandler is NOT loaded');
+            document.getElementById('test').innerHTML = '<h2 style="color:red">✗ EasyListHandler NOT loaded</h2>';
+            
+            // Try to load it again
+            var script = document.createElement('script');
+            script.src = 'js/easylist.js';
+            script.onload = function() {
+                console.log('After reload - typeof EasyListHandler:', typeof EasyListHandler);
+            };
+            document.head.appendChild(script);
+        }
+    </script>
+</body>
+</html>

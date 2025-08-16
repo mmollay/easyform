@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Demos - EasyForm/EasyList</title>
+    <meta name="description" content="Try EasyForm and EasyList features with live, interactive demos. See the code and results side by side.">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .demo-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+        }
+        
+        .demo-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+        
+        .demo-preview {
+            height: 200px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .demo-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23667eea" fill-opacity="0.05"><circle cx="20" cy="20" r="1"/></g></g></svg>') repeat;
+        }
+        
+        .demo-preview-content {
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .demo-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+            color: white;
+        }
+        
+        .demo-content {
+            padding: 1.5rem;
+        }
+        
+        .demo-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+        }
+        
+        .demo-description {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .demo-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .demo-tag {
+            background: var(--border-light);
+            color: var(--text-light);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .demo-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .demo-btn {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+        }
+        
+        .demo-btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .demo-btn-primary:hover {
+            background: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+        }
+        
+        .demo-btn-secondary {
+            background: var(--border-color);
+            color: var(--text-color);
+        }
+        
+        .demo-btn-secondary:hover {
+            background: var(--text-muted);
+            color: white;
+            text-decoration: none;
+        }
+        
+        .category-section {
+            margin: 3rem 0;
+        }
+        
+        .category-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+        
+        .category-description {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+        
+        .quick-access {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .quick-access h3 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .quick-access-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .quick-access-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .quick-access-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .demo-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .demo-actions {
+                flex-direction: column;
+            }
+            
+            .quick-access-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="../../index.html">EasyForm/EasyList</a>
+                </div>
+                <nav class="nav">
+                    <a href="#easyform-demos" class="nav-link">EasyForm</a>
+                    <a href="#easylist-demos" class="nav-link">EasyList</a>
+                    <a href="#advanced-demos" class="nav-link">Advanced</a>
+                    <a href="../installation.html" class="nav-link">Docs</a>
+                    <a href="../builders.html" class="nav-link">Builders</a>
+                </nav>
+                <button class="mobile-menu-toggle">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Interactive Demos</h1>
+                <p>Experience EasyForm and EasyList in action. Try live examples, see the code, and understand how easy it is to build powerful forms and data tables.</p>
+                <div style="margin-top: 2rem;">
+                    <a href="#easyform-demos" class="btn btn-primary btn-lg">EasyForm Demos</a>
+                    <a href="#easylist-demos" class="btn btn-secondary btn-lg">EasyList Demos</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container" style="margin: 3rem auto;">
+        
+        <!-- Quick Access -->
+        <div class="quick-access">
+            <h3>Popular Demos</h3>
+            <p style="margin-bottom: 2rem; color: rgba(255,255,255,0.9);">Jump directly to the most requested examples</p>
+            <div class="quick-access-buttons">
+                <a href="contact-form.php" class="quick-access-btn">Contact Form</a>
+                <a href="user-registration.php" class="quick-access-btn">User Registration</a>
+                <a href="data-table.php" class="quick-access-btn">Data Table</a>
+                <a href="ajax-form.php" class="quick-access-btn">AJAX Form</a>
+                <a href="../../list_generator.php" class="quick-access-btn">Visual Builder</a>
+            </div>
+        </div>
+
+        <!-- EasyForm Demos -->
+        <section id="easyform-demos" class="category-section">
+            <h2 class="category-title">EasyForm Demos</h2>
+            <p class="category-description">
+                Explore the power of EasyForm with these interactive examples. From simple contact forms to complex multi-step wizards, see how easy it is to build professional forms.
+            </p>
+            
+            <div class="demo-grid">
+                <!-- Basic Contact Form -->
+                <div class="demo-card">
+                    <div class="demo-preview">
+                        <div class="demo-preview-content">
+                            <div class="demo-icon">📧</div>
+                            <strong>Contact Form</strong>
+                        </div>
+                    </div>
+                    <div class="demo-content">
+                        <h3 class="demo-title">Basic Contact Form</h3>
+                        <p class="demo-description">Simple contact form with validation, CSRF protection, and responsive design. Perfect starting point for any website.</p>
+                        <div class="demo-tags">
+                            <span class="demo-tag">Basic</span>
+                            <span class="demo-tag">Validation</span>
+                            <span class="demo-tag">CSRF</span>
+                        </div>
+                        <div class="demo-actions">
+                            <a href="contact-form.php" class="demo-btn demo-btn-primary">Live Demo</a>
+                            <a href="contact-form-code.html" class="demo-btn demo-btn-secondary">View Code</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Registration -->
+                <div class="demo-card">
+                    <div class="demo-preview">
+                        <div class="demo-preview-content">
+                            <div class="demo-icon">👤</div>
+                            <strong>Registration</strong>
+                        </div>
+                    </div>
+                    <div class="demo-content">
+                        <h3 class="demo-title">User Registration Form</h3>
+                        <p class="demo-description">Complete registration form with password strength checking, email validation, and terms acceptance.</p>
+                        <div class="demo-tags">
+                            <span class="demo-tag">Advanced</span>
+                            <span class="demo-tag">Password</span>
+                            <span class="demo-tag">Email</span>
+                        </div>
+                        <div class="demo-actions">
+                            <a href="user-registration.php" class="demo-btn demo-btn-primary">Live Demo</a>
+                            <a href="user-registration-code.html" class="demo-btn demo-btn-secondary">View Code</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AJAX Form -->
+                <div class="demo-card">
+                    <div class="demo-preview">
+                        <div class="demo-preview-content">
+                            <div class="demo-icon">⚡</div>
+                            <strong>AJAX Form</strong>
+                        </div>
+                    </div>
+                    <div class="demo-content">
+                        <h3 class="demo-title">AJAX Contact Form</h3>
+                        <p class="demo-description">Seamless form submission without page reload. Includes loading states, success messages, and error handling.</p>
+                        <div class="demo-tags">
+                            <span class="demo-tag">AJAX</span>
+                            <span class="demo-tag">No Reload</span>
+                            <span class="demo-tag">Real-time</span>
+                        </div>
+                        <div class="demo-actions">
+                            <a href="ajax-form.php" class="demo-btn demo-btn-primary">Live Demo</a>
+                            <a href="ajax-form-code.html" class="demo-btn demo-btn-secondary">View Code</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Multi-Step Form -->
+                <div class="demo-card">
+                    <div class="demo-preview">
+                        <div class="demo-preview-content">
+                            <div class="demo-icon">📋</div>
+                            <strong>Multi-Step</strong>
+                        </div>
+                    </div>
+                    <div class="demo-content">
+                        <h3 class="demo-title">Multi-Step Wizard</h3>
+                        <p class="demo-description">Complex application form broken into manageable steps with progress indicator and navigation controls.</p>
+                        <div class="demo-tags">
+                            <span class="demo-tag">Wizard</span>
+                            <span class="demo-tag">Progress</span>
+                            <span class="demo-tag">Complex</span>
+                        </div>
+                        <div class="demo-actions">
+                            <a href="multi-step-form.php" class="demo-btn demo-btn-primary">Live Demo</a>
+                            <a href="multi-step-code.html" class="demo-btn demo-btn-secondary">View Code</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form with Tabs -->
+                <div class="demo-card">
+                    <div class="demo-preview">
+                        <div class="demo-preview-content">
+                            <div class="demo-icon">📑</div>
+                            <strong>Tabbed Form</strong>
+                        </div>
+                    </div>
+                    <div class="demo-content">
+                        <h3 class="demo-title">Form with Tabs</h3>
+                        <p class="demo-description">Organize complex forms using tabs. Perfect for settings pages, user profiles, and detailed forms.</p>
+                        <div class="demo-tags">
+                            <span class="demo-tag">Tabs</span>
+                            <span class="demo-tag">Organized</span>
+                            <span class="demo-tag">Settings</span>
+                        </div>
+                        <div class="demo-actions">
+                            <a href="tabbed-form.php" class="demo-btn demo-btn-primary">Live Demo</a>
+                            <a href="tabbed-form-code.html" class="demo-btn demo-btn-secondary">View Code</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- File Upload Form -->
+                <div class="demo-card">
+                    <div class="demo-preview">
+                        <div class="demo-preview-content">
+                            <div class="demo-icon">📁</div>
+                            <strong>File Upload</strong>
+                        </div>
+                    </div>
+                    <div class="demo-content">
+                        <h3 class="demo-title">File Upload Form</h3>
+                        <p class="demo-description">Advanced file upload with drag & drop, preview, progress bars, and multiple file support.</p>
+                        <div class="demo-tags">
+                            <span class="demo-tag">Upload</span>
+                            <span class="demo-tag">Drag Drop</span>
+                            <span class="demo-tag">Preview</span>
+                        </div>
+                        <div class="demo-actions">
+                            <a href="file-upload.php" class="demo-btn demo-btn-primary">Live Demo</a>
+                            <a href="file-upload-code.html" class="demo-btn demo-btn-secondary">View Code</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EasyList Demos -->
+        <section id="easylist-demos" class="category-section">
+            <h2 class="category-title">EasyList Demos</h2>
+            <p class="category-description">
+                Discover EasyList's powerful data table features. From simple lists to complex dashboards with real-time updates, filtering, and export capabilities.
+            </p>
+            
+            <div class="demo-grid">
+                <!-- Basic Data Table -->
+                <div class="demo-card">
+                    <div class="demo-preview">
+                        <div class="demo-preview-content">
+                            <div class="demo-icon">📊</div>
+                            <strong>Data Table</strong>
+                        </div>
+                    </div>
+                    <div class="demo-content">
+                        <h3 class="demo-title">Basic Data Table</h3>
+                        <p class="demo-description">Simple data table with sorting, searching, and pagination. Perfect for displaying lists of users, products, or any data.</p>
+                        <div class="demo-tags">
+                            <span class="demo-tag">Basic</span>
+                            <span class="demo-tag">Sorting</span>
+                            <span class="demo-tag">Search</span>
+                        </div>
+                        <div class="demo-actions">
+                            <a href="data-table.php" class="demo-btn demo-btn-primary">Live Demo</a>
+                            <a href="data-table-code.html" class="demo-btn demo-btn-secondary">View Code</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Data Table -->
+                <div class="demo-card">
+                    <div class="demo-preview">
+                        <div class="demo-preview-content">
+                            <div class="demo-icon">🎛️</div>
+                            <strong>Advanced Table</strong>
+                        </div>
+                    </div>
+                    <div class="demo-content">
+                        <h3 class="demo-title">Advanced Data Table</h3>
+                        <p class="demo-description">Feature-rich table with column filters, export options, action buttons, and bulk operations.</p>
+                        <div class="demo-tags">
+                            <span class="demo-tag">Filters</span>
+                            <span class="demo-tag">Export</span>
+                            <span class="demo-tag">Actions</span>
+                        </div>
+                        <div class="demo-actions">
+                            <a href="advanced-table.php" class="demo-btn demo-btn-primary">Live Demo</a>
+                            <a href="advanced-table-code.html" class="demo-btn demo-btn-secondary">View Code</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AJAX Data Table -->
+                <div class="demo-card">
+                    <div class="demo-preview">
+                        <div class="demo-preview-content">
+                            <div class="demo-icon">🔄</div>
+                            <strong>AJAX Table</strong>
+                        </div>
+                    </div>
+                    <div class="demo-content">
+                        <h3 class="demo-title">AJAX Data Loading</h3>
+                        <p class="demo-description">Server-side data loading with real-time updates. Handles large datasets efficiently with lazy loading.</p>
+                        <div class="demo-tags">
+                            <span class="demo-tag">AJAX</span>
+                            <span class="demo-tag">Server-side</span>
+                            <span class="demo-tag">Real-time</span>
+                        </div>
+                        <div class="demo-actions">
+                            <a href="ajax-table.php" class="demo-btn demo-btn-primary">Live Demo</a>
+                            <a href="ajax-table-code.html" class="demo-btn demo-btn-secondary">View Code</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Export Demo -->
+                <div class="demo-card">
+                    <div class="demo-preview">
+                        <div class="demo-preview-content">
+                            <div class="demo-icon">📤</div>
+                            <strong>Export Demo</strong>
+                        </div>
+                    </div>
+                    <div class="demo-content">
+                        <h3 class="demo-title">Data Export</h3>
+                        <p class="demo-description">Export data to CSV, Excel, JSON, and PDF formats. Includes custom formatting and selective export options.</p>
+                        <div class="demo-tags">
+                            <span class="demo-tag">CSV</span>
+                            <span class="demo-tag">Excel</span>
+                            <span class="demo-tag">PDF</span>
+                        </div>
+                        <div class="demo-actions">
+                            <a href="export-demo.php" class="demo-btn demo-btn-primary">Live Demo</a>
+                            <a href="export-demo-code.html" class="demo-btn demo-btn-secondary">View Code</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Table -->
+                <div class="demo-card">
+                    <div class="demo-preview">
+                        <div class="demo-preview-content">
+                            <div class="demo-icon">📈</div>
+                            <strong>Dashboard</strong>
+                        </div>
+                    </div>
+                    <div class="demo-content">
+                        <h3 class="demo-title">Dashboard Table</h3>
+                        <p class="demo-description">Complete dashboard with charts, metrics, and interactive data tables. Perfect for admin panels and analytics.</p>
+                        <div class="demo-tags">
+                            <span class="demo-tag">Dashboard</span>
+                            <span class="demo-tag">Analytics</span>
+                            <span class="demo-tag">Admin</span>
+                        </div>
+                        <div class="demo-actions">
+                            <a href="dashboard.php" class="demo-btn demo-btn-primary">Live Demo</a>
+                            <a href="dashboard-code.html" class="demo-btn demo-btn-secondary">View Code</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Responsive -->
+                <div class="demo-card">
+                    <div class="demo-preview">
+                        <div class="demo-preview-content">
+                            <div class="demo-icon">📱</div>
+                            <strong>Mobile Ready</strong>
+                        </div>
+                    </div>
+                    <div class="demo-content">
+                        <h3 class="demo-title">Mobile Responsive</h3>
+                        <p class="demo-description">Fully responsive data tables that work perfectly on mobile devices with touch-friendly controls.</p>
+                        <div class="demo-tags">
+                            <span class="demo-tag">Mobile</span>
+                            <span class="demo-tag">Responsive</span>
+                            <span class="demo-tag">Touch</span>
+                        </div>
+                        <div class="demo-actions">
+                            <a href="mobile-table.php" class="demo-btn demo-btn-primary">Live Demo</a>
+                            <a href="mobile-table-code.html" class="demo-btn demo-btn-secondary">View Code</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advanced Demos -->
+        <section id="advanced-demos" class="category-section">
+            <h2 class="category-title">Advanced Examples</h2>
+            <p class="category-description">
+                Push the boundaries with these advanced examples combining EasyForm and EasyList for complex applications and workflows.
+            </p>
+            
+            <div class="demo-grid">
+                <!-- Visual Form Builder -->
+                <div class="demo-card">
+                    <div class="demo-preview">
+                        <div class="demo-preview-content">
+                            <div class="demo-icon">🎨</div>
+                            <strong>Visual Builder</strong>
+                        </div>
+                    </div>
+                    <div class="demo-content">
+                        <h3 class="demo-title">Visual Form Builder</h3>
+                        <p class="demo-description">Drag-and-drop form builder interface. Create complex forms visually without writing code.</p>
+                        <div class="demo-tags">
+                            <span class="demo-tag">Builder</span>
+                            <span class="demo-tag">Drag Drop</span>
+                            <span class="demo-tag">Visual</span>
+                        </div>
+                        <div class="demo-actions">
+                            <a href="../../form_builder.php" class="demo-btn demo-btn-primary">Live Demo</a>
+                            <a href="form-builder-code.html" class="demo-btn demo-btn-secondary">View Code</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- List Generator -->
+                <div class="demo-card">
+                    <div class="demo-preview">
+                        <div class="demo-preview-content">
+                            <div class="demo-icon">🔧</div>
+                            <strong>List Builder</strong>
+                        </div>
+                    </div>
+                    <div class="demo-content">
+                        <h3 class="demo-title">Visual List Builder</h3>
+                        <p class="demo-description">Build data tables visually with our interactive list generator. Configure columns, filters, and features graphically.</p>
+                        <div class="demo-tags">
+                            <span class="demo-tag">Generator</span>
+                            <span class="demo-tag">Visual</span>
+                            <span class="demo-tag">Interactive</span>
+                        </div>
+                        <div class="demo-actions">
+                            <a href="../../list_generator.php" class="demo-btn demo-btn-primary">Live Demo</a>
+                            <a href="list-generator-code.html" class="demo-btn demo-btn-secondary">View Code</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- E-commerce Example -->
+                <div class="demo-card">
+                    <div class="demo-preview">
+                        <div class="demo-preview-content">
+                            <div class="demo-icon">🛒</div>
+                            <strong>E-commerce</strong>
+                        </div>
+                    </div>
+                    <div class="demo-content">
+                        <h3 class="demo-title">E-commerce Demo</h3>
+                        <p class="demo-description">Complete e-commerce interface with product forms, order management, and customer data tables.</p>
+                        <div class="demo-tags">
+                            <span class="demo-tag">E-commerce</span>
+                            <span class="demo-tag">Products</span>
+                            <span class="demo-tag">Orders</span>
+                        </div>
+                        <div class="demo-actions">
+                            <a href="ecommerce-demo.php" class="demo-btn demo-btn-primary">Live Demo</a>
+                            <a href="ecommerce-code.html" class="demo-btn demo-btn-secondary">View Code</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CMS Example -->
+                <div class="demo-card">
+                    <div class="demo-preview">
+                        <div class="demo-preview-content">
+                            <div class="demo-icon">📝</div>
+                            <strong>CMS Demo</strong>
+                        </div>
+                    </div>
+                    <div class="demo-content">
+                        <h3 class="demo-title">CMS Interface</h3>
+                        <p class="demo-description">Content management system with article forms, media management, and user administration tables.</p>
+                        <div class="demo-tags">
+                            <span class="demo-tag">CMS</span>
+                            <span class="demo-tag">Content</span>
+                            <span class="demo-tag">Media</span>
+                        </div>
+                        <div class="demo-actions">
+                            <a href="cms-demo.php" class="demo-btn demo-btn-primary">Live Demo</a>
+                            <a href="cms-code.html" class="demo-btn demo-btn-secondary">View Code</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- API Integration -->
+                <div class="demo-card">
+                    <div class="demo-preview">
+                        <div class="demo-preview-content">
+                            <div class="demo-icon">🔌</div>
+                            <strong>API Integration</strong>
+                        </div>
+                    </div>
+                    <div class="demo-content">
+                        <h3 class="demo-title">API Integration</h3>
+                        <p class="demo-description">Forms and tables connected to external APIs. Real-time data synchronization and validation.</p>
+                        <div class="demo-tags">
+                            <span class="demo-tag">API</span>
+                            <span class="demo-tag">Integration</span>
+                            <span class="demo-tag">Sync</span>
+                        </div>
+                        <div class="demo-actions">
+                            <a href="api-integration.php" class="demo-btn demo-btn-primary">Live Demo</a>
+                            <a href="api-integration-code.html" class="demo-btn demo-btn-secondary">View Code</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Custom Themes -->
+                <div class="demo-card">
+                    <div class="demo-preview">
+                        <div class="demo-preview-content">
+                            <div class="demo-icon">🎭</div>
+                            <strong>Custom Themes</strong>
+                        </div>
+                    </div>
+                    <div class="demo-content">
+                        <h3 class="demo-title">Custom Themes</h3>
+                        <p class="demo-description">Examples of custom themes and styling. Learn how to create your own unique designs and brand integration.</p>
+                        <div class="demo-tags">
+                            <span class="demo-tag">Themes</span>
+                            <span class="demo-tag">Custom</span>
+                            <span class="demo-tag">Branding</span>
+                        </div>
+                        <div class="demo-actions">
+                            <a href="custom-themes.php" class="demo-btn demo-btn-primary">Live Demo</a>
+                            <a href="custom-themes-code.html" class="demo-btn demo-btn-secondary">View Code</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Getting Started -->
+        <section class="section section-alt" style="margin: 4rem 0; padding: 3rem; border-radius: 12px;">
+            <div class="text-center">
+                <h2>Ready to Start Building?</h2>
+                <p style="font-size: 1.1rem; color: var(--text-light); margin-bottom: 2rem;">
+                    These demos show just a fraction of what's possible. Get started with EasyForm/EasyList and build amazing interfaces in minutes.
+                </p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="../installation.html" class="btn btn-primary btn-lg">Install Now</a>
+                    <a href="../easyform.html" class="btn btn-outline btn-lg">Read Documentation</a>
+                    <a href="../examples.html" class="btn btn-outline btn-lg">Code Examples</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Interactive Demos</h3>
+                    <a href="#easyform-demos">EasyForm Demos</a>
+                    <a href="#easylist-demos">EasyList Demos</a>
+                    <a href="#advanced-demos">Advanced Examples</a>
+                    <a href="../../form_builder.php">Visual Builder</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Documentation</h3>
+                    <a href="../installation.html">Installation</a>
+                    <a href="../easyform.html">EasyForm Guide</a>
+                    <a href="../easylist.html">EasyList Guide</a>
+                    <a href="../api.html">API Reference</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Examples</h3>
+                    <a href="contact-form.php">Contact Form</a>
+                    <a href="data-table.php">Data Table</a>
+                    <a href="ajax-form.php">AJAX Examples</a>
+                    <a href="dashboard.php">Dashboard</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <a href="mailto:support@example.com">Email Support</a>
+                    <a href="https://github.com/smartform/easyform">GitHub</a>
+                    <a href="../examples.html#faq">FAQ</a>
+                    <a href="../examples.html">Code Examples</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 EasyForm/EasyList Interactive Demos. Try them all!</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>

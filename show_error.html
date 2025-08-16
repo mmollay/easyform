@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Show Error Details</title>
+    <link rel="stylesheet" href="../semantic/dist/semantic.min.css">
+</head>
+<body style="padding: 40px;">
+    <script src="../jquery/jquery.min.js"></script>
+    
+    <h1>Error Detail Test</h1>
+    
+    <button id="test" class="ui primary button">Test Submit to process.php</button>
+    
+    <h2>Response:</h2>
+    <div id="response" style="border: 2px solid red; padding: 20px; margin: 20px 0; background: #fffafa;">
+        Warte auf Test...
+    </div>
+    
+    <h2>Raw Response Text:</h2>
+    <pre id="raw" style="background: #000; color: #0f0; padding: 20px;">Warte auf Test...</pre>
+    
+    <script>
+    $('#test').click(function() {
+        console.log('Testing...');
+        
+        // Create minimal valid data
+        var data = new FormData();
+        data.append('form_id', 'application_form');
+        data.append('csrf_token', 'test');
+        data.append('firstname', 'Max');
+        data.append('lastname', 'Mustermann');
+        data.append('birthdate', '2000-01-01');
+        data.append('email', 'test@example.com');
+        data.append('education', 'abitur');
+        data.append('experience', '5');
+        data.append('terms', '1');
+        
+        // Log what we send
+        console.log('Sending:');
+        for (var pair of data.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
+        
+        $.ajax({
+            url: 'examples/process.php',
+            type: 'POST',
+            data: data,
+            processData: false,
+            contentType: false,
+            success: function(response, status, xhr) {
+                console.log('Success:', response);
+                $('#response').html('<div class="ui success message">SUCCESS: ' + JSON.stringify(response, null, 2) + '</div>');
+                $('#raw').text(xhr.responseText);
+            },
+            error: function(xhr, status, error) {
+                console.log('Error:', xhr);
+                $('#response').html('<div class="ui error message">ERROR ' + xhr.status + ': ' + error + '</div>');
+                $('#raw').text(xhr.responseText);
+                
+                // Try to parse
+                try {
+                    var json = JSON.parse(xhr.responseText);
+                    $('#response').append('<pre>' + JSON.stringify(json, null, 2) + '</pre>');
+                } catch(e) {
+                    $('#response').append('<p>Could not parse as JSON</p>');
+                }
+            },
+            complete: function(xhr) {
+                console.log('Complete. Status:', xhr.status);
+                console.log('Response Headers:', xhr.getAllResponseHeaders());
+            }
+        });
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AJAX Form Test</title>
+    <link rel="stylesheet" href="../semantic/dist/semantic.min.css">
+</head>
+<body style="padding: 40px;">
+    <script src="../jquery/jquery.min.js"></script>
+    <script src="../semantic/dist/semantic.min.js"></script>
+    
+    <h1>Direct Test - Kein PHP</h1>
+    
+    <form id="test_form" class="ui form">
+        <div class="field">
+            <label>Name</label>
+            <input type="text" name="name" required>
+        </div>
+        
+        <button type="submit" class="ui primary button">
+            <i class="send icon"></i>
+            Submit mit Icon
+        </button>
+    </form>
+    
+    <hr>
+    
+    <div id="log" style="background: #f0f0f0; padding: 10px; min-height: 100px;">
+        <strong>Event Log:</strong><br>
+    </div>
+    
+    <script>
+    function log(msg) {
+        $('#log').append(msg + '<br>');
+        console.log(msg);
+    }
+    
+    $(document).ready(function() {
+        log('Page ready');
+        
+        // Test 1: Direct button click
+        $('#test_form button[type="submit"]').on('click', function(e) {
+            log('Button clicked via direct handler');
+            e.preventDefault();
+            return false;
+        });
+        
+        // Test 2: Form submit
+        $('#test_form').on('submit', function(e) {
+            e.preventDefault();
+            log('Form submit event triggered');
+            return false;
+        });
+        
+        // Test 3: Document delegation
+        $(document).on('click', '#test_form button', function(e) {
+            log('Button clicked via delegation');
+        });
+        
+        // Test 4: Icon click
+        $('#test_form button i').on('click', function(e) {
+            log('Icon clicked');
+        });
+    });
+    </script>
+</body>
+</html>

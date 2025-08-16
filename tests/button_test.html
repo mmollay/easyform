@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Button Test</title>
+</head>
+<body style="padding: 40px;">
+    <h1>Button Click Test - Verschiedene Methoden</h1>
+    
+    <h2>Test 1: Inline onclick</h2>
+    <button onclick="alert('Button 1 clicked!')">KLICK MICH 1</button>
+    
+    <h2>Test 2: Normaler Link</h2>
+    <a href="#" onclick="alert('Link clicked!'); return false;">KLICK MICH 2</a>
+    
+    <h2>Test 3: Form mit inline onsubmit</h2>
+    <form onsubmit="alert('Form submitted!'); return false;">
+        <input type="text" placeholder="Text eingeben">
+        <button type="submit">SUBMIT 3</button>
+    </form>
+    
+    <h2>Test 4: Button mit JavaScript</h2>
+    <button id="btn4">KLICK MICH 4</button>
+    
+    <h2>Test 5: Input Button</h2>
+    <input type="button" value="KLICK MICH 5" onclick="alert('Button 5 clicked!')">
+    
+    <h2>Test 6: Div als Button</h2>
+    <div style="background: blue; color: white; padding: 10px; display: inline-block; cursor: pointer;" 
+         onclick="alert('Div clicked!')">
+        KLICK MICH 6 (DIV)
+    </div>
+    
+    <hr>
+    
+    <h2>Status:</h2>
+    <div id="status" style="background: yellow; padding: 10px;">
+        Warte auf Klicks...
+    </div>
+    
+    <script>
+    // Test ob JavaScript überhaupt läuft
+    document.getElementById('status').innerHTML = 'JavaScript läuft! Warte auf Klicks...';
+    
+    // Button 4 Handler
+    document.getElementById('btn4').onclick = function() {
+        alert('Button 4 clicked!');
+        document.getElementById('status').innerHTML = 'Button 4 wurde geklickt!';
+    };
+    
+    // Zeige in Konsole
+    console.log('Button test page loaded');
+    </script>
+</body>
+</html>

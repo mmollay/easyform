@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Builders - EasyForm/EasyList Documentation</title>
+    <meta name="description" content="Learn how to use the drag-and-drop visual builders for EasyForm and EasyList. Create forms and data tables without writing code.">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        .builder-showcase {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            margin: 2rem 0;
+            border-radius: 12px;
+        }
+        
+        .builder-showcase h2 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .builder-screenshot {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 2rem auto;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .builder-screenshot img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+        
+        .builder-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .feature-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border: 1px solid #e9ecef;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-box:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            color: white;
+        }
+        
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-description {
+            color: #6c757d;
+            line-height: 1.6;
+        }
+        
+        .step-guide {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+        }
+        
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .step-content h4 {
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+        
+        .step-content p {
+            color: #6c757d;
+            margin: 0;
+        }
+        
+        .comparison-table {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+        }
+        
+        .comparison-table table {
+            margin: 0;
+            box-shadow: none;
+        }
+        
+        .comparison-table th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .comparison-table .check {
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .comparison-table .cross {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        
+        .builder-cta {
+            text-align: center;
+            margin: 3rem 0;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 12px;
+            color: white;
+        }
+        
+        .builder-cta h3 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .builder-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        
+        .builder-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            border: 2px solid rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .builder-btn:hover {
+            background: rgba(255,255,255,0.3);
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+        
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .tip-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .tip-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .tip-card p {
+            color: #6c757d;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .builder-features {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .builder-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .builder-btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+            
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="../index.html">EasyForm/EasyList</a>
+                </div>
+                <nav class="nav">
+                    <a href="#overview" class="nav-link">Overview</a>
+                    <a href="#form-builder" class="nav-link">Form Builder</a>
+                    <a href="#list-builder" class="nav-link">List Builder</a>
+                    <a href="#features" class="nav-link">Features</a>
+                    <a href="../form_builder.php" class="nav-link">Try Now</a>
+                </nav>
+                <button class="mobile-menu-toggle">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="builder-showcase">
+        <div class="container">
+            <h1>Visual Form & List Builders</h1>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem; color: rgba(255,255,255,0.9);">
+                Create professional forms and data tables without writing a single line of code. 
+                Our drag-and-drop builders make it easy for anyone to build powerful interfaces.
+            </p>
+            
+            <div class="builder-screenshot">
+                <div style="background: #f8f9fa; height: 300px; display: flex; align-items: center; justify-content: center; color: #6c757d; font-size: 1.1rem;">
+                    🎨 Visual Builder Interface Preview
+                    <br><small>Drag & Drop • Real-time Preview • Code Generation</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container" style="margin-top: 2rem; margin-bottom: 3rem;">
+        <div class="row">
+            <!-- Sidebar Navigation -->
+            <div class="col-3">
+                <div class="doc-nav">
+                    <h3 style="margin-bottom: 1rem;">Visual Builders</h3>
+                    <ul>
+                        <li><a href="#overview" class="active">Overview</a></li>
+                        <li><a href="#benefits">Benefits</a></li>
+                        <li><a href="#form-builder">Form Builder</a></li>
+                        <li><a href="#list-builder">List Builder</a></li>
+                        <li><a href="#features">Key Features</a></li>
+                        <li><a href="#getting-started">Getting Started</a></li>
+                        <li><a href="#tips">Tips & Tricks</a></li>
+                        <li><a href="#export-options">Export Options</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Documentation Content -->
+            <div class="col-9">
+                <div class="doc-content">
+                    <!-- Overview -->
+                    <section id="overview">
+                        <h1>Visual Builders Overview</h1>
+                        <p class="section-subtitle">
+                            Build forms and data tables visually with our intuitive drag-and-drop interfaces. 
+                            Perfect for designers, developers, and anyone who wants to create professional interfaces quickly.
+                        </p>
+
+                        <h2>What Are Visual Builders?</h2>
+                        <p>
+                            Visual builders are interactive tools that let you create forms and data tables by dragging and dropping components, 
+                            configuring properties through user-friendly interfaces, and seeing results in real-time. No coding required!
+                        </p>
+
+                        <div class="alert alert-info">
+                            <strong>Perfect For:</strong> Rapid prototyping, client presentations, non-technical team members, 
+                            and anyone who wants to quickly create professional interfaces without writing code.
+                        </div>
+                    </section>
+
+                    <!-- Benefits -->
+                    <section id="benefits">
+                        <h2>Why Use Visual Builders?</h2>
+                        
+                        <div class="comparison-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Feature</th>
+                                        <th>Traditional Coding</th>
+                                        <th>Visual Builders</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Development Speed</td>
+                                        <td>Hours to days</td>
+                                        <td class="check">Minutes</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Technical Skills Required</td>
+                                        <td>High (PHP, HTML, CSS)</td>
+                                        <td class="check">None</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Real-time Preview</td>
+                                        <td class="cross">No</td>
+                                        <td class="check">Yes</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Error-free Output</td>
+                                        <td>Depends on skill</td>
+                                        <td class="check">Guaranteed</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Code Generation</td>
+                                        <td class="cross">Manual</td>
+                                        <td class="check">Automatic</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Collaboration</td>
+                                        <td>Difficult</td>
+                                        <td class="check">Easy</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- Form Builder -->
+                    <section id="form-builder">
+                        <h2>EasyForm Visual Builder</h2>
+                        <p>
+                            Create complex forms with our drag-and-drop form builder. Add fields, configure validation, 
+                            set up layouts, and generate clean PHP code automatically.
+                        </p>
+
+                        <div class="builder-features">
+                            <div class="feature-box">
+                                <div class="feature-icon">🎯</div>
+                                <h3 class="feature-title">Drag & Drop Interface</h3>
+                                <p class="feature-description">
+                                    Simply drag field types from the palette and drop them onto your form. 
+                                    Reorder fields by dragging them to new positions.
+                                </p>
+                            </div>
+                            
+                            <div class="feature-box">
+                                <div class="feature-icon">⚙️</div>
+                                <h3 class="feature-title">Property Configuration</h3>
+                                <p class="feature-description">
+                                    Click any field to configure its properties: labels, placeholders, validation rules, 
+                                    styling options, and more through an intuitive panel.
+                                </p>
+                            </div>
+                            
+                            <div class="feature-box">
+                                <div class="feature-icon">👀</div>
+                                <h3 class="feature-title">Live Preview</h3>
+                                <p class="feature-description">
+                                    See exactly how your form will look as you build it. 
+                                    Changes are reflected instantly in the preview pane.
+                                </p>
+                            </div>
+                            
+                            <div class="feature-box">
+                                <div class="feature-icon">💻</div>
+                                <h3 class="feature-title">Code Generation</h3>
+                                <p class="feature-description">
+                                    Generate clean, production-ready PHP code that you can copy, paste, 
+                                    and use in your projects immediately.
+                                </p>
+                            </div>
+                        </div>
+
+                        <h3>Available Form Elements</h3>
+                        <div class="row">
+                            <div class="col-6">
+                                <h4>Input Fields</h4>
+                                <ul>
+                                    <li>Text Input</li>
+                                    <li>Email Input</li>
+                                    <li>Password Input</li>
+                                    <li>Number Input</li>
+                                    <li>URL Input</li>
+                                    <li>Phone Input</li>
+                                    <li>Search Input</li>
+                                    <li>Textarea</li>
+                                </ul>
+                            </div>
+                            <div class="col-6">
+                                <h4>Selection & Others</h4>
+                                <ul>
+                                    <li>Select Dropdown</li>
+                                    <li>Radio Buttons</li>
+                                    <li>Checkboxes</li>
+                                    <li>Date Picker</li>
+                                    <li>Time Picker</li>
+                                    <li>File Upload</li>
+                                    <li>Range Slider</li>
+                                    <li>Color Picker</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="builder-cta">
+                            <h3>🚀 Try the Form Builder Now</h3>
+                            <p>Experience the power of visual form creation. Build your first form in minutes!</p>
+                            <div class="builder-buttons">
+                                <a href="../form_builder.php" class="builder-btn">
+                                    🎨 Launch Form Builder
+                                </a>
+                                <a href="demos/form-builder-demo.html" class="builder-btn">
+                                    📹 Watch Demo
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- List Builder -->
+                    <section id="list-builder">
+                        <h2>EasyList Visual Builder</h2>
+                        <p>
+                            Design powerful data tables with our visual list builder. Configure columns, add filters, 
+                            set up actions, and create professional data displays without any coding.
+                        </p>
+
+                        <div class="builder-features">
+                            <div class="feature-box">
+                                <div class="feature-icon">📊</div>
+                                <h3 class="feature-title">Column Designer</h3>
+                                <p class="feature-description">
+                                    Add, remove, and configure table columns with ease. Set data types, 
+                                    formatting options, and sorting preferences visually.
+                                </p>
+                            </div>
+                            
+                            <div class="feature-box">
+                                <div class="feature-icon">🔍</div>
+                                <h3 class="feature-title">Filter Configuration</h3>
+                                <p class="feature-description">
+                                    Set up search functionality and column-specific filters. 
+                                    Configure dropdown filters, date ranges, and custom options.
+                                </p>
+                            </div>
+                            
+                            <div class="feature-box">
+                                <div class="feature-icon">🎮</div>
+                                <h3 class="feature-title">Action Buttons</h3>
+                                <p class="feature-description">
+                                    Add row actions like edit, delete, view, and custom buttons. 
+                                    Configure bulk actions for multiple row operations.
+                                </p>
+                            </div>
+                            
+                            <div class="feature-box">
+                                <div class="feature-icon">📤</div>
+                                <h3 class="feature-title">Export Options</h3>
+                                <p class="feature-description">
+                                    Enable data export in various formats: CSV, Excel, JSON, and PDF. 
+                                    Configure export settings and customize file names.
+                                </p>
+                            </div>
+                        </div>
+
+                        <h3>Data Table Features</h3>
+                        <div class="tips-grid">
+                            <div class="tip-card">
+                                <h4>🔄 Sorting</h4>
+                                <p>Enable multi-column sorting with custom sort orders and data types.</p>
+                            </div>
+                            <div class="tip-card">
+                                <h4>📄 Pagination</h4>
+                                <p>Configure page sizes, navigation styles, and infinite scroll options.</p>
+                            </div>
+                            <div class="tip-card">
+                                <h4>🎨 Styling</h4>
+                                <p>Choose from multiple themes and customize colors, sizes, and layouts.</p>
+                            </div>
+                            <div class="tip-card">
+                                <h4>📱 Responsive</h4>
+                                <p>Automatic mobile optimization with collapsible columns and touch-friendly controls.</p>
+                            </div>
+                        </div>
+
+                        <div class="builder-cta">
+                            <h3>📋 Try the List Builder Now</h3>
+                            <p>Create professional data tables in minutes with our visual builder!</p>
+                            <div class="builder-buttons">
+                                <a href="../list_generator.php" class="builder-btn">
+                                    📊 Launch List Builder
+                                </a>
+                                <a href="demos/list-builder-demo.html" class="builder-btn">
+                                    📹 Watch Demo
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Key Features -->
+                    <section id="features">
+                        <h2>Key Features</h2>
+                        
+                        <div class="row">
+                            <div class="col-6">
+                                <h3>🎨 User-Friendly Interface</h3>
+                                <ul>
+                                    <li>Intuitive drag-and-drop functionality</li>
+                                    <li>Clean, modern interface design</li>
+                                    <li>Contextual property panels</li>
+                                    <li>Keyboard shortcuts for power users</li>
+                                    <li>Undo/redo functionality</li>
+                                </ul>
+                                
+                                <h3>⚡ Real-Time Features</h3>
+                                <ul>
+                                    <li>Live preview as you build</li>
+                                    <li>Instant code generation</li>
+                                    <li>Real-time validation feedback</li>
+                                    <li>Auto-save functionality</li>
+                                    <li>Responsive preview modes</li>
+                                </ul>
+                            </div>
+                            <div class="col-6">
+                                <h3>🔧 Advanced Options</h3>
+                                <ul>
+                                    <li>Custom CSS injection</li>
+                                    <li>JavaScript event handlers</li>
+                                    <li>Template customization</li>
+                                    <li>Theme selection and customization</li>
+                                    <li>Export in multiple formats</li>
+                                </ul>
+                                
+                                <h3>🤝 Integration Ready</h3>
+                                <ul>
+                                    <li>Framework-agnostic code output</li>
+                                    <li>Database integration helpers</li>
+                                    <li>API endpoint configuration</li>
+                                    <li>Version control friendly</li>
+                                    <li>Team collaboration features</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Getting Started -->
+                    <section id="getting-started">
+                        <h2>Getting Started Guide</h2>
+                        <p>Follow these steps to create your first form or data table using the visual builders.</p>
+
+                        <div class="step-guide">
+                            <h3>Creating Your First Form</h3>
+                            
+                            <div class="step-item">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <h4>Launch the Form Builder</h4>
+                                    <p>Click the "Launch Form Builder" button or navigate to form_builder.php in your browser.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="step-item">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <h4>Add Form Fields</h4>
+                                    <p>Drag field types from the left panel onto your form canvas. Start with basic fields like text and email inputs.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="step-item">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <h4>Configure Properties</h4>
+                                    <p>Click on any field to open the properties panel. Set labels, validation rules, placeholders, and styling options.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="step-item">
+                                <div class="step-number">4</div>
+                                <div class="step-content">
+                                    <h4>Preview and Test</h4>
+                                    <p>Use the preview panel to see how your form looks. Test the form functionality and validation in real-time.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="step-item">
+                                <div class="step-number">5</div>
+                                <div class="step-content">
+                                    <h4>Generate and Export</h4>
+                                    <p>When satisfied, generate the PHP code and copy it to your project. The code is ready to use immediately.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step-guide">
+                            <h3>Creating Your First Data Table</h3>
+                            
+                            <div class="step-item">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <h4>Open List Builder</h4>
+                                    <p>Access the list builder through list_generator.php or the main navigation menu.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="step-item">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <h4>Define Data Source</h4>
+                                    <p>Specify your data source: array, database query, or API endpoint. Configure connection parameters if needed.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="step-item">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <h4>Add Columns</h4>
+                                    <p>Add table columns by specifying field names and labels. Configure data types, formatting, and display options.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="step-item">
+                                <div class="step-number">4</div>
+                                <div class="step-content">
+                                    <h4>Enable Features</h4>
+                                    <p>Turn on search, filtering, sorting, pagination, and export features. Configure each feature's settings.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="step-item">
+                                <div class="step-number">5</div>
+                                <div class="step-content">
+                                    <h4>Add Actions</h4>
+                                    <p>Include action buttons for row operations (edit, delete, view) and bulk actions for multiple rows.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Tips & Tricks -->
+                    <section id="tips">
+                        <h2>Tips & Tricks</h2>
+                        <p>Maximize your productivity with these professional tips for using the visual builders.</p>
+
+                        <div class="tips-grid">
+                            <div class="tip-card">
+                                <h4>💡 Start Simple</h4>
+                                <p>Begin with basic fields and gradually add complexity. This approach helps you understand the interface better.</p>
+                            </div>
+                            
+                            <div class="tip-card">
+                                <h4>🎯 Use Templates</h4>
+                                <p>Save common field configurations as templates to speed up future form creation.</p>
+                            </div>
+                            
+                            <div class="tip-card">
+                                <h4>📱 Test Responsiveness</h4>
+                                <p>Always preview your forms and tables on different screen sizes using the responsive preview modes.</p>
+                            </div>
+                            
+                            <div class="tip-card">
+                                <h4>🔄 Organize Fields</h4>
+                                <p>Group related fields together and use proper labels to create intuitive user experiences.</p>
+                            </div>
+                            
+                            <div class="tip-card">
+                                <h4>✅ Validate Early</h4>
+                                <p>Set up validation rules as you add fields rather than at the end. This prevents mistakes.</p>
+                            </div>
+                            
+                            <div class="tip-card">
+                                <h4>💾 Save Frequently</h4>
+                                <p>Use the auto-save feature and manually save your work at regular intervals to prevent data loss.</p>
+                            </div>
+                            
+                            <div class="tip-card">
+                                <h4>🎨 Consistent Styling</h4>
+                                <p>Choose a theme and stick with it. Consistent styling creates more professional-looking interfaces.</p>
+                            </div>
+                            
+                            <div class="tip-card">
+                                <h4>🚀 Performance Tips</h4>
+                                <p>For large data tables, enable server-side processing and pagination to maintain good performance.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Export Options -->
+                    <section id="export-options">
+                        <h2>Export & Integration</h2>
+                        <p>Learn about different ways to export and integrate your built forms and tables.</p>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <h3>📄 Export Formats</h3>
+                                <div class="feature-box">
+                                    <h4>PHP Code</h4>
+                                    <p>Clean, production-ready PHP code that you can directly use in your projects. Includes all configurations and styling.</p>
+                                </div>
+                                
+                                <div class="feature-box">
+                                    <h4>HTML Output</h4>
+                                    <p>Complete HTML markup for static integration or when you need to customize the generated code further.</p>
+                                </div>
+                                
+                                <div class="feature-box">
+                                    <h4>JSON Configuration</h4>
+                                    <p>Export configuration as JSON for version control, sharing with team members, or programmatic processing.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-6">
+                                <h3>🔗 Integration Options</h3>
+                                <div class="feature-box">
+                                    <h4>Direct Copy-Paste</h4>
+                                    <p>Copy the generated code and paste it directly into your PHP files. Works immediately without modifications.</p>
+                                </div>
+                                
+                                <div class="feature-box">
+                                    <h4>File Download</h4>
+                                    <p>Download complete PHP files with all necessary includes and dependencies for easy project integration.</p>
+                                </div>
+                                
+                                <div class="feature-box">
+                                    <h4>Framework Integration</h4>
+                                    <p>Generated code works with popular frameworks like Laravel, Symfony, CodeIgniter, and WordPress.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-success">
+                            <strong>💼 Professional Tip:</strong> Always test the generated code in a development environment before deploying to production. 
+                            While the builders generate clean code, it's good practice to review and test everything thoroughly.
+                        </div>
+                    </section>
+
+                    <!-- Final CTA -->
+                    <section style="margin: 4rem 0;">
+                        <div class="builder-cta">
+                            <h2>🚀 Ready to Build?</h2>
+                            <p>Start creating professional forms and data tables without writing code. Try our visual builders today!</p>
+                            <div class="builder-buttons">
+                                <a href="../form_builder.php" class="builder-btn">
+                                    🎨 Form Builder
+                                </a>
+                                <a href="../list_generator.php" class="builder-btn">
+                                    📊 List Builder
+                                </a>
+                                <a href="demos/" class="builder-btn">
+                                    🎮 Interactive Demos
+                                </a>
+                                <a href="examples.html" class="builder-btn">
+                                    📚 Code Examples
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Visual Builders</h3>
+                    <a href="#form-builder">Form Builder</a>
+                    <a href="#list-builder">List Builder</a>
+                    <a href="#features">Key Features</a>
+                    <a href="#getting-started">Getting Started</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Access</h3>
+                    <a href="../form_builder.php">Launch Form Builder</a>
+                    <a href="../list_generator.php">Launch List Builder</a>
+                    <a href="demos/">Interactive Demos</a>
+                    <a href="examples.html">Code Examples</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Documentation</h3>
+                    <a href="installation.html">Installation</a>
+                    <a href="easyform.html">EasyForm Guide</a>
+                    <a href="easylist.html">EasyList Guide</a>
+                    <a href="api.html">API Reference</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <a href="mailto:support@example.com">Email Support</a>
+                    <a href="https://github.com/smartform/easyform">GitHub</a>
+                    <a href="examples.html#faq">FAQ</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 EasyForm/EasyList Visual Builders. Create without coding.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

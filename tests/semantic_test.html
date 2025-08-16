@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Semantic UI Test</title>
+    <link rel="stylesheet" href="../semantic/dist/semantic.min.css">
+</head>
+<body style="padding: 40px;">
+    <h1>Semantic UI Button Test</h1>
+    
+    <h2>Ohne Form:</h2>
+    <button class="ui button" onclick="alert('Button 1!')">Normal Button</button>
+    <button class="ui primary button" onclick="alert('Button 2!')">Primary Button</button>
+    <div class="ui button" onclick="alert('Div Button!')">Div als Button</div>
+    
+    <h2>Mit Form (ohne Semantic Form Klasse):</h2>
+    <form onsubmit="alert('Form 1 submitted!'); return false;">
+        <input type="text" placeholder="Text">
+        <button type="submit" class="ui button">Submit ohne Form class</button>
+    </form>
+    
+    <h2>Mit Semantic Form Klasse:</h2>
+    <form class="ui form" onsubmit="alert('Form 2 submitted!'); return false;">
+        <div class="field">
+            <input type="text" placeholder="Text">
+        </div>
+        <button type="submit" class="ui primary button">Submit mit Form class</button>
+    </form>
+    
+    <hr>
+    
+    <h2>jQuery Test:</h2>
+    <button id="jquery-test" class="ui green button">jQuery Button</button>
+    
+    <div id="output" style="margin-top: 20px; padding: 20px; background: #f0f0f0;">
+        Status: Warte...
+    </div>
+    
+    <script src="../jquery/jquery.min.js"></script>
+    <script src="../semantic/dist/semantic.min.js"></script>
+    
+    <script>
+    // Test ohne jQuery
+    document.getElementById('output').innerHTML += '<br>Vanilla JS: OK';
+    
+    // Test mit jQuery
+    if (typeof jQuery !== 'undefined') {
+        jQuery(document).ready(function($) {
+            $('#output').append('<br>jQuery: OK');
+            
+            $('#jquery-test').on('click', function() {
+                alert('jQuery button clicked!');
+                $('#output').append('<br>jQuery Button: CLICKED');
+            });
+            
+            // Semantic UI initialisieren
+            $('.ui.form').form();
+            $('#output').append('<br>Semantic UI Form: Initialized');
+        });
+    } else {
+        document.getElementById('output').innerHTML += '<br>jQuery: NICHT GELADEN!';
+    }
+    </script>
+</body>
+</html>
