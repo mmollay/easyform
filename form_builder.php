@@ -1032,13 +1032,21 @@
                     <i class="wpforms icon"></i>
                     <h2>Formular Builder</h2>
                     <div class="header-buttons">
-                        <button class="header-btn clear-btn" onclick="clearForm()">
-                            <i class="trash alternate outline icon"></i>
-                            <span>Leeren</span>
+                        <button class="header-btn" onclick="saveTemplate()" style="background: #28a745;">
+                            <i class="save icon"></i>
+                            <span>Speichern</span>
+                        </button>
+                        <button class="header-btn" onclick="loadTemplate()" style="background: #17a2b8;">
+                            <i class="folder open icon"></i>
+                            <span>Laden</span>
                         </button>
                         <button class="header-btn preview-btn" onclick="previewForm()">
                             <i class="eye icon"></i>
                             <span>Vorschau</span>
+                        </button>
+                        <button class="header-btn clear-btn" onclick="clearForm()">
+                            <i class="trash alternate outline icon"></i>
+                            <span>Leeren</span>
                         </button>
                     </div>
                 </div> <!-- Close panel-header -->
@@ -2787,6 +2795,66 @@ $form->display();'); ?></pre>
                 formElements = [];
                 renderFormBuilder();
                 generateCode();
+            }
+        }
+        
+        // Template-Funktionen für Vorlagen speichern/laden
+        function saveTemplate() {
+            if (formElements.length === 0) {
+                alert('Das Formular ist leer. Fügen Sie erst Elemente hinzu.');
+                return;
+            }
+            
+            const templateName = prompt('Geben Sie einen Namen für die Vorlage ein:');
+            if (!templateName) return;
+            
+            // Vorlagen im localStorage speichern
+            let templates = JSON.parse(localStorage.getItem('easyform_templates') || '{}');
+            templates[templateName] = {
+                name: templateName,
+                date: new Date().toISOString(),
+                elements: JSON.stringify(formElements)
+            };
+            
+            localStorage.setItem('easyform_templates', JSON.stringify(templates));
+            alert(`Vorlage "${templateName}" wurde gespeichert!`);
+        }
+        
+        function loadTemplate() {
+            let templates = JSON.parse(localStorage.getItem('easyform_templates') || '{}');
+            
+            if (Object.keys(templates).length === 0) {
+                alert('Keine gespeicherten Vorlagen vorhanden.');
+                return;
+            }
+            
+            // Template-Auswahl Dialog erstellen
+            let templateList = 'Wählen Sie eine Vorlage:\n\n';
+            let templateNames = Object.keys(templates);
+            templateNames.forEach((name, index) => {
+                const date = new Date(templates[name].date).toLocaleDateString('de-DE');
+                templateList += `${index + 1}. ${name} (${date})\n`;
+            });
+            
+            const choice = prompt(templateList + '\nGeben Sie die Nummer der Vorlage ein:');
+            if (!choice) return;
+            
+            const index = parseInt(choice) - 1;
+            if (index >= 0 && index < templateNames.length) {
+                const selectedTemplate = templates[templateNames[index]];
+                
+                if (formElements.length > 0) {
+                    if (!confirm('Das aktuelle Formular wird überschrieben. Fortfahren?')) {
+                        return;
+                    }
+                }
+                
+                formElements = JSON.parse(selectedTemplate.elements);
+                renderFormBuilder();
+                generateCode();
+                alert(`Vorlage "${selectedTemplate.name}" wurde geladen!`);
+            } else {
+                alert('Ungültige Auswahl.');
             }
         }
 
