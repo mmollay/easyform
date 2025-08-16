@@ -2853,6 +2853,60 @@ $form->display();'); ?></pre>
             }
         }
         
+        // Form Configuration Functions
+        function showFormConfig() {
+            // Load current config into modal
+            $('#config_id').val(formConfig.id);
+            $('#config_theme').val(formConfig.theme);
+            $('#config_size').val(formConfig.size);
+            $('#config_width').val(formConfig.width || '');
+            $('#config_class').val(formConfig.class);
+            $('#config_language').val(formConfig.language);
+            $('#config_autocomplete').prop('checked', formConfig.autocomplete);
+            $('#config_showErrors').prop('checked', formConfig.showErrors);
+            $('#config_liveValidation').prop('checked', formConfig.liveValidation);
+            $('#config_submitButton').prop('checked', formConfig.submitButton);
+            $('#config_resetButton').prop('checked', formConfig.resetButton);
+            $('#config_method').val(formConfig.method);
+            $('#config_action').val(formConfig.action);
+            $('#config_ajax').prop('checked', formConfig.ajax);
+            $('#config_ajaxUrl').val(formConfig.ajaxUrl);
+            
+            // Show/hide AJAX URL field
+            $('#ajaxUrlField').toggle(formConfig.ajax);
+            
+            // Show modal
+            $('#formConfigModal').modal('show');
+        }
+        
+        function saveFormConfig() {
+            // Save configuration from modal
+            formConfig.id = $('#config_id').val() || 'my_form';
+            formConfig.theme = $('#config_theme').val();
+            formConfig.size = $('#config_size').val();
+            formConfig.width = $('#config_width').val() ? parseInt($('#config_width').val()) : null;
+            formConfig.class = $('#config_class').val();
+            formConfig.language = $('#config_language').val();
+            formConfig.autocomplete = $('#config_autocomplete').is(':checked');
+            formConfig.showErrors = $('#config_showErrors').is(':checked');
+            formConfig.liveValidation = $('#config_liveValidation').is(':checked');
+            formConfig.submitButton = $('#config_submitButton').is(':checked');
+            formConfig.resetButton = $('#config_resetButton').is(':checked');
+            formConfig.method = $('#config_method').val();
+            formConfig.action = $('#config_action').val();
+            formConfig.ajax = $('#config_ajax').is(':checked');
+            formConfig.ajaxUrl = $('#config_ajaxUrl').val();
+            
+            // Update code generation
+            generateCode();
+            
+            // Close modal
+            $('#formConfigModal').modal('hide');
+            
+            // Show success message
+            alert('Konfiguration gespeichert!');
+        }
+        
         function loadTemplate() {
             let templates = JSON.parse(localStorage.getItem('easyform_templates') || '{}');
             
@@ -3246,5 +3300,128 @@ $form->display();
     <script src="semantic/dist/semantic.min.js"><\/script>
 </body>
 </html></script>
+
+    <!-- Form Configuration Modal -->
+    <div id="formConfigModal" class="ui modal">
+        <i class="close icon"></i>
+        <div class="header">
+            <i class="cog icon"></i>
+            Formular Konfiguration
+        </div>
+        <div class="content">
+            <form class="ui form">
+                <h4 class="ui dividing header">Basis-Einstellungen</h4>
+                <div class="two fields">
+                    <div class="field">
+                        <label>Formular ID</label>
+                        <input type="text" id="config_id" placeholder="my_form">
+                    </div>
+                    <div class="field">
+                        <label>Theme</label>
+                        <select id="config_theme" class="ui dropdown">
+                            <option value="semantic">Semantic UI</option>
+                            <option value="bootstrap">Bootstrap</option>
+                            <option value="material">Material Design</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="two fields">
+                    <div class="field">
+                        <label>Breite (px)</label>
+                        <input type="number" id="config_width" placeholder="600">
+                    </div>
+                    <div class="field">
+                        <label>Größe</label>
+                        <select id="config_size" class="ui dropdown">
+                            <option value="mini">Mini</option>
+                            <option value="tiny">Klein</option>
+                            <option value="small">Klein-Mittel</option>
+                            <option value="medium">Mittel</option>
+                            <option value="large">Groß</option>
+                            <option value="huge">Sehr groß</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <h4 class="ui dividing header">Verhalten</h4>
+                <div class="inline fields">
+                    <div class="field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" id="config_autocomplete" checked>
+                            <label>Autovervollständigung</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" id="config_showErrors" checked>
+                            <label>Fehler anzeigen</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" id="config_liveValidation" checked>
+                            <label>Live-Validierung</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="inline fields">
+                    <div class="field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" id="config_submitButton" checked>
+                            <label>Submit Button</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" id="config_resetButton">
+                            <label>Reset Button</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <h4 class="ui dividing header">Formular Aktion</h4>
+                <div class="two fields">
+                    <div class="field">
+                        <label>Action URL</label>
+                        <input type="text" id="config_action" placeholder="process.php">
+                    </div>
+                    <div class="field">
+                        <label>Method</label>
+                        <select id="config_method" class="ui dropdown">
+                            <option value="POST">POST</option>
+                            <option value="GET">GET</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="field">
+                    <label>Sprache</label>
+                    <select id="config_language" class="ui dropdown">
+                        <option value="de">Deutsch</option>
+                        <option value="en">English</option>
+                        <option value="fr">Français</option>
+                        <option value="es">Español</option>
+                    </select>
+                </div>
+                
+                <div class="field">
+                    <label>Zusätzliche CSS-Klassen</label>
+                    <input type="text" id="config_class" placeholder="ui segment padded">
+                </div>
+            </form>
+        </div>
+        <div class="actions">
+            <div class="ui black deny button">
+                Abbrechen
+            </div>
+            <div class="ui positive right labeled icon button" onclick="saveFormConfig()">
+                Speichern
+                <i class="checkmark icon"></i>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
