@@ -1325,6 +1325,17 @@ $form->display();'); ?></pre>
                     return;
                 }
                 
+                // Initialize Semantic UI components
+                $('.ui.dropdown').dropdown();
+                $('.ui.checkbox').checkbox();
+                $('#formConfigModal').modal({
+                    closable: true,
+                    onApprove: function() {
+                        saveFormConfig();
+                        return false; // Prevent modal from closing automatically
+                    }
+                });
+                
                 initializeDragDrop();
                 generateCode();
                 
@@ -2660,17 +2671,61 @@ $form->display();'); ?></pre>
         }
 
         function generatePHPCode() {
-            var phpTemplate = document.getElementById('php-template').innerHTML;
+            // Build configuration options
+            let configOptions = [];
             
-            // Decode HTML entities
-            phpTemplate = phpTemplate.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+            if (formConfig.width) {
+                configOptions.push(`    'width' => ${formConfig.width}`);
+            }
+            if (formConfig.theme && formConfig.theme !== 'semantic') {
+                configOptions.push(`    'theme' => '${formConfig.theme}'`);
+            }
+            if (formConfig.size && formConfig.size !== 'medium') {
+                configOptions.push(`    'size' => '${formConfig.size}'`);
+            }
+            if (formConfig.class) {
+                configOptions.push(`    'class' => '${formConfig.class}'`);
+            }
+            if (!formConfig.autocomplete) {
+                configOptions.push(`    'autocomplete' => false`);
+            }
+            if (!formConfig.showErrors) {
+                configOptions.push(`    'showErrors' => false`);
+            }
+            if (!formConfig.liveValidation) {
+                configOptions.push(`    'liveValidation' => false`);
+            }
+            if (!formConfig.submitButton) {
+                configOptions.push(`    'submitButton' => false`);
+            }
+            if (formConfig.resetButton) {
+                configOptions.push(`    'resetButton' => true`);
+            }
+            if (formConfig.language && formConfig.language !== 'de') {
+                configOptions.push(`    'language' => '${formConfig.language}'`);
+            }
+            
+            let configString = configOptions.length > 0 
+                ? '[\n' + configOptions.join(',\n') + '\n]'
+                : '[]';
             
             var elementsCode = '';
             
             formElements.forEach(function(element, index) {
-                if (index > 0) elementsCode += '\n    ';
+                if (index > 0) elementsCode += '\n';
                 elementsCode += generateElementPHPCode(element);
             });
+            
+            // Build method and action code
+            let methodActionCode = '';
+            if (formConfig.action) {
+                methodActionCode += `\n$form->action('${formConfig.action}')`;
+            }
+            if (formConfig.method && formConfig.method !== 'POST') {
+                methodActionCode += `\n     ->method('${formConfig.method}')`;
+            } else if (formConfig.action) {
+                methodActionCode += `\n     ->method('POST')`;
+            }
             
             var hasAjax = hasAjaxCapableFields();
             var ajaxCode = hasAjax ? `->ajax([
@@ -2681,9 +2736,17 @@ $form->display();'); ?></pre>
         }'
     ])` : '';
 
-            var finalCode = phpTemplate
-                .replace('{{AJAX_CODE}}', ajaxCode ? '\n    ' + ajaxCode : '')
-                .replace('{{ELEMENTS_CODE}}', elementsCode);
+            // Build complete PHP code
+            var finalCode = `<?php
+use EasyForm\\EasyForm;
+
+$form = new EasyForm('${formConfig.id}', ${configString});
+${methodActionCode}${ajaxCode ? '\n     ' + ajaxCode : ''};
+
+${elementsCode}
+
+$form->display();
+?>`;
             
             // Clean up extra whitespace and format nicely
             finalCode = finalCode
