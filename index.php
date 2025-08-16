@@ -597,7 +597,7 @@
             <div class="footer-links">
                 <a href="docs/">Dokumentation</a>
                 <a href="examples/">Beispiele</a>
-                <a href="https://github.com/easyform/easyform">GitHub</a>
+                <a href="https://github.com/mmollay/easyform">GitHub</a>
                 <a href="LICENSE">Lizenz</a>
             </div>
             <div class="footer-divider"></div>

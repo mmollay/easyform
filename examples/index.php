@@ -284,7 +284,7 @@
                 </div>
             </a>
             
-            <a href="https://github.com/easyform/easyform" class="example-card">
+            <a href="https://github.com/mmollay/easyform" class="example-card">
                 <div class="example-icon">
                     <i class="github icon"></i>
                 </div>
