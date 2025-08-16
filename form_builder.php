@@ -1032,6 +1032,10 @@
                     <i class="wpforms icon"></i>
                     <h2>Formular Builder</h2>
                     <div class="header-buttons">
+                        <button class="header-btn" onclick="showFormConfig()" style="background: #6c757d;">
+                            <i class="cog icon"></i>
+                            <span>Konfig</span>
+                        </button>
                         <button class="header-btn" onclick="saveTemplate()" style="background: #28a745;">
                             <i class="save icon"></i>
                             <span>Speichern</span>
@@ -1124,6 +1128,25 @@ $form->display();'); ?></pre>
         let formElements = [];
         let currentEditingElement = null;
         let elementCounter = 0;
+        
+        // Form Configuration
+        let formConfig = {
+            id: 'my_form',
+            theme: 'semantic',
+            size: 'medium',
+            width: null,
+            class: '',
+            autocomplete: true,
+            showErrors: true,
+            liveValidation: true,
+            submitButton: true,
+            resetButton: false,
+            language: 'de',
+            method: 'POST',
+            action: '',
+            ajax: false,
+            ajaxUrl: 'process.php'
+        };
 
         // Cleanup function to prevent memory leaks and TypeError
         function cleanupAllSortables() {
@@ -2808,16 +2831,26 @@ $form->display();'); ?></pre>
             const templateName = prompt('Geben Sie einen Namen für die Vorlage ein:');
             if (!templateName) return;
             
-            // Vorlagen im localStorage speichern
-            let templates = JSON.parse(localStorage.getItem('easyform_templates') || '{}');
-            templates[templateName] = {
-                name: templateName,
-                date: new Date().toISOString(),
-                elements: JSON.stringify(formElements)
-            };
-            
-            localStorage.setItem('easyform_templates', JSON.stringify(templates));
-            alert(`Vorlage "${templateName}" wurde gespeichert!`);
+            try {
+                // Vorlagen im localStorage speichern
+                let templates = JSON.parse(localStorage.getItem('easyform_templates') || '{}');
+                
+                // Erstelle eine Kopie der formElements für sicheres Speichern
+                const elementsToSave = JSON.parse(JSON.stringify(formElements));
+                
+                templates[templateName] = {
+                    name: templateName,
+                    date: new Date().toISOString(),
+                    elements: elementsToSave // Speichere direkt als Array, nicht als String
+                };
+                
+                localStorage.setItem('easyform_templates', JSON.stringify(templates));
+                console.log('Template gespeichert:', templates[templateName]);
+                alert(`Vorlage "${templateName}" wurde gespeichert!`);
+            } catch (error) {
+                console.error('Fehler beim Speichern der Vorlage:', error);
+                alert('Fehler beim Speichern der Vorlage.');
+            }
         }
         
         function loadTemplate() {
@@ -2849,10 +2882,28 @@ $form->display();'); ?></pre>
                     }
                 }
                 
-                formElements = JSON.parse(selectedTemplate.elements);
-                renderFormBuilder();
-                generateCode();
-                alert(`Vorlage "${selectedTemplate.name}" wurde geladen!`);
+                try {
+                    // Elements ist jetzt direkt ein Array, nicht mehr ein String
+                    if (typeof selectedTemplate.elements === 'string') {
+                        // Alte Vorlagen (falls vorhanden) - kompatibel bleiben
+                        formElements = JSON.parse(selectedTemplate.elements);
+                    } else {
+                        // Neue Vorlagen
+                        formElements = selectedTemplate.elements;
+                    }
+                    
+                    console.log('Geladene Elemente:', formElements);
+                    
+                    // UI aktualisieren
+                    renderFormBuilder();
+                    generateCode();
+                    previewForm(); // Preview auch aktualisieren
+                    
+                    alert(`Vorlage "${selectedTemplate.name}" wurde geladen!`);
+                } catch (error) {
+                    console.error('Fehler beim Laden der Vorlage:', error);
+                    alert('Fehler beim Laden der Vorlage. Die Vorlage könnte beschädigt sein.');
+                }
             } else {
                 alert('Ungültige Auswahl.');
             }
