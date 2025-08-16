@@ -2916,7 +2916,7 @@ $form->display();'); ?></pre>
         });
 
         // Utility functions
-        function clearForm() {
+        window.clearForm = function() {
             if (confirm('Möchten Sie wirklich alle Elemente löschen?')) {
                 formElements = [];
                 renderFormBuilder();
@@ -2925,7 +2925,7 @@ $form->display();'); ?></pre>
         }
         
         // Template-Funktionen für Vorlagen speichern/laden
-        function saveTemplate() {
+        window.saveTemplate = function() {
             if (formElements.length === 0) {
                 alert('Das Formular ist leer. Fügen Sie erst Elemente hinzu.');
                 return;
@@ -2957,7 +2957,7 @@ $form->display();'); ?></pre>
         }
         
         // Form Configuration Functions
-        function showFormConfig() {
+        window.showFormConfig = function() {
             // Load current config into modal
             $('#config_id').val(formConfig.id);
             $('#config_theme').val(formConfig.theme);
@@ -2982,7 +2982,7 @@ $form->display();'); ?></pre>
             $('#formConfigModal').modal('show');
         }
         
-        function saveFormConfig() {
+        window.saveFormConfig = function() {
             // Save configuration from modal
             formConfig.id = $('#config_id').val() || 'my_form';
             formConfig.theme = $('#config_theme').val();
@@ -3010,7 +3010,7 @@ $form->display();'); ?></pre>
             alert('Konfiguration gespeichert!');
         }
         
-        function loadTemplate() {
+        window.loadTemplate = function() {
             let templates = JSON.parse(localStorage.getItem('easyform_templates') || '{}');
             
             if (Object.keys(templates).length === 0) {
@@ -3054,7 +3054,6 @@ $form->display();'); ?></pre>
                     // UI aktualisieren
                     renderFormBuilder();
                     generateCode();
-                    previewForm(); // Preview auch aktualisieren
                     
                     alert(`Vorlage "${selectedTemplate.name}" wurde geladen!`);
                 } catch (error) {
@@ -3095,7 +3094,7 @@ $form->display();'); ?></pre>
             return finalCode;
         }
 
-        function previewForm() {
+        window.previewForm = function() {
             try {
                 // Create preview HTML
                 const previewHTML = `
@@ -3321,7 +3320,7 @@ $form->display();'); ?></pre>
             }
         }
 
-        function copyCode() {
+        window.copyCode = function() {
             const code = $('#codeContent').text();
             navigator.clipboard.writeText(code).then(() => {
                 const btn = $('.copy-btn');
