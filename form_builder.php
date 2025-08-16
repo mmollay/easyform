@@ -777,89 +777,192 @@
             box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2) !important;
         }
 
-        /* Header Buttons Styling */
+        /* Header Buttons Styling - Modern Beautiful Design */
         .header-buttons {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             margin-left: auto;
+            align-items: center;
         }
 
         .header-btn {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            padding: 8px 16px;
+            gap: 8px;
+            padding: 10px 20px;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 13px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(10px);
         }
 
         .header-btn::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
         }
 
         .header-btn:hover::before {
-            transform: translateX(100%);
+            width: 300px;
+            height: 300px;
+        }
+
+        .header-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 12px;
+            padding: 2px;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .header-btn:hover::after {
+            opacity: 1;
         }
 
         .header-btn span {
             position: relative;
             z-index: 1;
+            font-size: 11px;
+            font-weight: 600;
         }
 
         .header-btn i {
             position: relative;
             z-index: 1;
-            font-size: 14px;
+            font-size: 16px;
+            transition: transform 0.3s;
         }
 
-        /* Clear Button */
-        .header-btn.clear-btn {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            color: #4a5568;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        .header-btn:hover i {
+            transform: scale(1.1) rotate(5deg);
         }
 
-        .header-btn.clear-btn:hover {
-            background: linear-gradient(135deg, #e9ecef 0%, #b8c6db 100%);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.12);
-        }
-
-        .header-btn.clear-btn:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-        }
-
-        /* Preview Button */
-        .header-btn.preview-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        /* Config Button - Elegant Gray */
+        .header-btn.config-btn {
+            background: linear-gradient(135deg, #718096 0%, #4a5568 100%);
             color: white;
-            box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 15px rgba(71, 80, 96, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .header-btn.config-btn:hover {
+            background: linear-gradient(135deg, #5a6578 0%, #3d4452 100%);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(71, 80, 96, 0.4), inset 0 1px 0 rgba(255,255,255,0.3);
+        }
+
+        /* Save Button - Success Green */
+        .header-btn.save-btn {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .header-btn.save-btn:hover {
+            background: linear-gradient(135deg, #38a169 0%, #2f855a 100%);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4), inset 0 1px 0 rgba(255,255,255,0.3);
+        }
+
+        /* Load Button - Info Blue */
+        .header-btn.load-btn {
+            background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(66, 153, 225, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .header-btn.load-btn:hover {
+            background: linear-gradient(135deg, #3182ce 0%, #2c5282 100%);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(66, 153, 225, 0.4), inset 0 1px 0 rgba(255,255,255,0.3);
+        }
+
+        /* Preview Button - Premium Purple */
+        .header-btn.preview-btn {
+            background: linear-gradient(135deg, #9f7aea 0%, #805ad5 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(159, 122, 234, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
         }
 
         .header-btn.preview-btn:hover {
-            background: linear-gradient(135deg, #5a67d8 0%, #6b4197 100%);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            background: linear-gradient(135deg, #805ad5 0%, #6b46c1 100%);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(159, 122, 234, 0.4), inset 0 1px 0 rgba(255,255,255,0.3);
         }
 
-        .header-btn.preview-btn:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+        /* Clear Button - Danger Red with caution */
+        .header-btn.clear-btn {
+            background: linear-gradient(135deg, #fc8181 0%, #f56565 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(252, 129, 129, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .header-btn.clear-btn:hover {
+            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(252, 129, 129, 0.4), inset 0 1px 0 rgba(255,255,255,0.3);
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateY(-2px) scale(1.02) translateX(0); }
+            25% { transform: translateY(-2px) scale(1.02) translateX(-2px); }
+            75% { transform: translateY(-2px) scale(1.02) translateX(2px); }
+        }
+
+        /* Active state for all buttons */
+        .header-btn:active {
+            transform: translateY(0) scale(0.98);
+            transition: transform 0.1s;
+        }
+
+        /* Pulse animation on hover for some buttons */
+        @keyframes pulse {
+            0% { box-shadow: 0 4px 15px rgba(159, 122, 234, 0.3), inset 0 1px 0 rgba(255,255,255,0.2); }
+            50% { box-shadow: 0 4px 25px rgba(159, 122, 234, 0.5), inset 0 1px 0 rgba(255,255,255,0.3); }
+            100% { box-shadow: 0 4px 15px rgba(159, 122, 234, 0.3), inset 0 1px 0 rgba(255,255,255,0.2); }
+        }
+
+        .header-btn.preview-btn:hover {
+            animation: pulse 2s infinite;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .header-buttons {
+                gap: 8px;
+            }
+            
+            .header-btn {
+                padding: 8px 12px;
+            }
+            
+            .header-btn span {
+                display: none;
+            }
+            
+            .header-btn i {
+                font-size: 18px;
+            }
         }
 
         /* Beautiful form buttons - compact */
@@ -1032,23 +1135,23 @@
                     <i class="wpforms icon"></i>
                     <h2>Formular Builder</h2>
                     <div class="header-buttons">
-                        <button class="header-btn" onclick="showFormConfig()" style="background: #6c757d;">
+                        <button class="header-btn config-btn" onclick="showFormConfig()" title="Formular konfigurieren">
                             <i class="cog icon"></i>
                             <span>Konfig</span>
                         </button>
-                        <button class="header-btn" onclick="saveTemplate()" style="background: #28a745;">
+                        <button class="header-btn save-btn" onclick="saveTemplate()" title="Vorlage speichern">
                             <i class="save icon"></i>
                             <span>Speichern</span>
                         </button>
-                        <button class="header-btn" onclick="loadTemplate()" style="background: #17a2b8;">
+                        <button class="header-btn load-btn" onclick="loadTemplate()" title="Vorlage laden">
                             <i class="folder open icon"></i>
                             <span>Laden</span>
                         </button>
-                        <button class="header-btn preview-btn" onclick="previewForm()">
+                        <button class="header-btn preview-btn" onclick="previewForm()" title="Formular-Vorschau">
                             <i class="eye icon"></i>
                             <span>Vorschau</span>
                         </button>
-                        <button class="header-btn clear-btn" onclick="clearForm()">
+                        <button class="header-btn clear-btn" onclick="clearForm()" title="Alle Felder löschen">
                             <i class="trash alternate outline icon"></i>
                             <span>Leeren</span>
                         </button>
