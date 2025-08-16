@@ -597,23 +597,32 @@
             opacity: 0.5;
         }
 
-        /* Grid Layout Styles */
+        /* Grid Layout Styles - Kompakt = Inline nebeneinander */
+        .ui.grid.compact-content {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            align-items: center !important;
+            gap: 0.5rem !important;
+        }
+        
         .ui.grid.compact-content .column {
-            padding-left: 0.5rem !important;
-            padding-right: 0.5rem !important;
+            width: auto !important;
+            flex: 0 0 auto !important;
+            padding: 0 !important;
         }
         
         .ui.grid.compact-content .field {
-            margin-bottom: 0.5rem !important;
+            margin-bottom: 0 !important;
+            display: inline-block !important;
         }
         
         .ui.grid.compact-content .form-element {
             display: inline-block !important;
             width: auto !important;
             min-width: auto !important;
-            margin-right: 0.5rem !important;
+            margin: 0 !important;
             position: relative !important;
-            vertical-align: top !important;
+            vertical-align: middle !important;
         }
         
         .ui.grid.compact-content .form-element .button {
@@ -621,11 +630,15 @@
             white-space: nowrap !important;
         }
         
-        .ui.grid.compact-content .column {
-            display: flex !important;
-            flex-wrap: wrap !important;
-            align-items: flex-start !important;
+        /* In der Vorschau auch */
+        .preview-content .ui.grid.compact-content {
+            display: inline-flex !important;
             gap: 0.5rem !important;
+        }
+        
+        .preview-content .ui.grid.compact-content .column {
+            width: auto !important;
+            flex: none !important;
         }
         
         .ui.grid.compact-content .column-drop-zone {
@@ -917,8 +930,8 @@
                         <i class="puzzle piece icon"></i>
                         <h2>Komponenten</h2>
                     </div>
-                    <a href="../landing.php" style="color: #667eea; text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 5px; padding: 5px 10px; border-radius: 5px; transition: background 0.2s;">
-                        <i class="arrow left icon"></i> Zurück
+                    <a href="index.php" style="color: #667eea; text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 5px; padding: 5px 10px; border-radius: 5px; transition: background 0.2s;">
+                        <i class="arrow left icon"></i> Zurück zur Startseite
                     </a>
                 </div>
                 

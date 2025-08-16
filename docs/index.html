@@ -296,6 +296,19 @@
             </div>
             
             <div class="menu-section">
+                <div class="menu-title">Listen & Tabellen</div>
+                <a href="#easylist" class="menu-item">
+                    <i class="table icon"></i> EasyList Grundlagen
+                </a>
+                <a href="#list-features" class="menu-item">
+                    <i class="filter icon"></i> Filter & Sortierung
+                </a>
+                <a href="#list-export" class="menu-item">
+                    <i class="download icon"></i> Export Funktionen
+                </a>
+            </div>
+            
+            <div class="menu-section">
                 <div class="menu-title">Erweitert</div>
                 <a href="#layouts" class="menu-item">
                     <i class="grid layout icon"></i> Layouts & Grids
@@ -625,6 +638,185 @@ chmod -R 644 easyform/*</pre>
             </div>
         </div>
         
+        <!-- EasyList Documentation -->
+        <div class="doc-section" id="easylist">
+            <h2>📊 EasyList - Datentabellen</h2>
+            
+            <h3>Was ist EasyList?</h3>
+            <p>
+                EasyList ist ein leistungsstarker Tabellen-Generator mit Sortierung, Filterung, 
+                Pagination und Export-Funktionen. Perfekt für die Darstellung von Datenbankinhalten, 
+                Berichten und Listen aller Art.
+            </p>
+            
+            <h3>Einfaches Beispiel</h3>
+            <div class="code-example">
+<pre><span class="keyword">use</span> EasyForm\EasyList;
+
+<span class="comment">// Neue Liste erstellen</span>
+<span class="variable">$list</span> = <span class="keyword">new</span> <span class="method">EasyList</span>(<span class="string">'users'</span>);
+
+<span class="comment">// Spalten definieren</span>
+<span class="variable">$list</span>-><span class="method">column</span>(<span class="string">'id'</span>, <span class="string">'ID'</span>)
+     -><span class="method">column</span>(<span class="string">'name'</span>, <span class="string">'Name'</span>, [<span class="string">'sortable'</span> => <span class="keyword">true</span>])
+     -><span class="method">column</span>(<span class="string">'email'</span>, <span class="string">'E-Mail'</span>, [<span class="string">'sortable'</span> => <span class="keyword">true</span>])
+     -><span class="method">column</span>(<span class="string">'created'</span>, <span class="string">'Erstellt'</span>, [
+         <span class="string">'format'</span> => <span class="string">'date'</span>,
+         <span class="string">'sortable'</span> => <span class="keyword">true</span>
+     ]);
+
+<span class="comment">// Daten laden (aus Datenbank oder Array)</span>
+<span class="variable">$list</span>-><span class="method">data</span>(<span class="variable">$users</span>);
+
+<span class="comment">// Features aktivieren</span>
+<span class="variable">$list</span>-><span class="method">searchable</span>(<span class="keyword">true</span>)
+     -><span class="method">paginate</span>(<span class="string">25</span>)
+     -><span class="method">exportable</span>([<span class="string">'csv'</span>, <span class="string">'json'</span>, <span class="string">'excel'</span>]);
+
+<span class="comment">// Liste anzeigen</span>
+<span class="variable">$list</span>-><span class="method">display</span>();</pre>
+            </div>
+            
+            <div class="alert info">
+                <i class="info circle icon"></i>
+                <strong>Visual List Generator:</strong> Nutzen Sie den <a href="../list_generator.php">List Generator</a> 
+                um Datentabellen visuell zu erstellen!
+            </div>
+        </div>
+        
+        <!-- List Features -->
+        <div class="doc-section" id="list-features">
+            <h2>🔍 Liste Features</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4><i class="search icon"></i> Live-Suche</h4>
+                    <p>Echtzeit-Filterung während der Eingabe</p>
+                </div>
+                <div class="feature-card">
+                    <h4><i class="sort icon"></i> Sortierung</h4>
+                    <p>Klickbare Spaltenköpfe für auf-/absteigende Sortierung</p>
+                </div>
+                <div class="feature-card">
+                    <h4><i class="filter icon"></i> Spaltenfilter</h4>
+                    <p>Individuelle Filter für jede Spalte</p>
+                </div>
+                <div class="feature-card">
+                    <h4><i class="numbered list icon"></i> Pagination</h4>
+                    <p>Automatische Seitennummerierung mit Größenauswahl</p>
+                </div>
+                <div class="feature-card">
+                    <h4><i class="download icon"></i> Export</h4>
+                    <p>CSV, JSON, Excel, PDF Export</p>
+                </div>
+                <div class="feature-card">
+                    <h4><i class="chart bar icon"></i> Gruppierung</h4>
+                    <p>Gruppierung nach Spalten mit Aggregation</p>
+                </div>
+            </div>
+            
+            <h3>Erweiterte Features</h3>
+            <div class="code-example">
+<pre><span class="comment">// Aktionen hinzufügen</span>
+<span class="variable">$list</span>-><span class="method">action</span>(<span class="string">'edit'</span>, <span class="string">'Bearbeiten'</span>, [
+    <span class="string">'icon'</span> => <span class="string">'edit'</span>,
+    <span class="string">'url'</span> => <span class="string">'edit.php?id={id}'</span>,
+    <span class="string">'class'</span> => <span class="string">'blue'</span>
+]);
+
+<span class="comment">// Bulk Actions</span>
+<span class="variable">$list</span>-><span class="method">bulkAction</span>(<span class="string">'delete'</span>, <span class="string">'Löschen'</span>, [
+    <span class="string">'icon'</span> => <span class="string">'trash'</span>,
+    <span class="string">'confirm'</span> => <span class="string">'Wirklich löschen?'</span>,
+    <span class="string">'url'</span> => <span class="string">'delete.php'</span>
+]);
+
+<span class="comment">// Custom Rendering</span>
+<span class="variable">$list</span>-><span class="method">column</span>(<span class="string">'status'</span>, <span class="string">'Status'</span>, [
+    <span class="string">'render'</span> => <span class="keyword">function</span>(<span class="variable">$value</span>) {
+        <span class="keyword">return</span> <span class="variable">$value</span> == <span class="string">'active'</span> 
+            ? <span class="string">'&lt;span class="ui green label"&gt;Aktiv&lt;/span&gt;'</span>
+            : <span class="string">'&lt;span class="ui red label"&gt;Inaktiv&lt;/span&gt;'</span>;
+    }
+]);</pre>
+            </div>
+        </div>
+        
+        <!-- Export -->
+        <div class="doc-section" id="list-export">
+            <h2>📤 Export Funktionen</h2>
+            
+            <h3>Verfügbare Export-Formate</h3>
+            <ul>
+                <li><strong>CSV:</strong> Für Excel und Datenimport</li>
+                <li><strong>JSON:</strong> Für APIs und JavaScript</li>
+                <li><strong>Excel:</strong> Native Excel-Dateien (.xlsx)</li>
+                <li><strong>PDF:</strong> Für Berichte und Archivierung</li>
+                <li><strong>Print:</strong> Druckoptimierte Ansicht</li>
+            </ul>
+            
+            <div class="code-example">
+<pre><span class="comment">// Export konfigurieren</span>
+<span class="variable">$list</span>-><span class="method">export</span>([
+    <span class="string">'csv'</span> => [
+        <span class="string">'filename'</span> => <span class="string">'users_' . date('Y-m-d')</span>,
+        <span class="string">'delimiter'</span> => <span class="string">';'</span>
+    ],
+    <span class="string">'excel'</span> => [
+        <span class="string">'filename'</span> => <span class="string">'users_report'</span>,
+        <span class="string">'creator'</span> => <span class="string">'EasyForm System'</span>
+    ],
+    <span class="string">'pdf'</span> => [
+        <span class="string">'orientation'</span> => <span class="string">'landscape'</span>,
+        <span class="string">'format'</span> => <span class="string">'A4'</span>
+    ]
+]);</pre>
+            </div>
+        </div>
+        
+        <!-- Visual Builders -->
+        <div class="doc-section" id="builders">
+            <h2>🛠️ Visual Builder Tools</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-card" style="grid-column: span 2;">
+                    <h4><i class="paint brush icon"></i> Form Builder</h4>
+                    <p>
+                        Der visuelle Form Builder ermöglicht die Erstellung von Formularen per Drag & Drop 
+                        ohne eine einzige Zeile Code. Perfekt für schnelle Prototypen und Endbenutzer.
+                    </p>
+                    <ul style="margin-top: 15px;">
+                        <li>Drag & Drop Interface</li>
+                        <li>Live-Vorschau</li>
+                        <li>Code-Export</li>
+                        <li>Über 50 Feldtypen</li>
+                        <li>Layout-Optionen (Grid, Tabs, Gruppen)</li>
+                    </ul>
+                    <a href="../form_builder.php" class="btn btn-primary" style="margin-top: 15px;">
+                        <i class="paint brush icon"></i> Form Builder öffnen
+                    </a>
+                </div>
+                
+                <div class="feature-card" style="grid-column: span 2;">
+                    <h4><i class="table icon"></i> List Generator</h4>
+                    <p>
+                        Der List Generator erstellt professionelle Datentabellen mit allen Features 
+                        visuell und generiert den passenden Code automatisch.
+                    </p>
+                    <ul style="margin-top: 15px;">
+                        <li>Spalten-Konfiguration</li>
+                        <li>Filter & Sortierung Setup</li>
+                        <li>Export-Optionen</li>
+                        <li>Styling & Themes</li>
+                        <li>AJAX Data Loading</li>
+                    </ul>
+                    <a href="../list_generator.php" class="btn btn-primary" style="margin-top: 15px;">
+                        <i class="table icon"></i> List Generator öffnen
+                    </a>
+                </div>
+            </div>
+        </div>
+        
         <!-- Actions -->
         <div class="btn-group">
             <a href="../examples/" class="btn btn-primary">
@@ -632,6 +824,9 @@ chmod -R 644 easyform/*</pre>
             </a>
             <a href="../form_builder.php" class="btn btn-secondary">
                 <i class="paint brush icon"></i> Form Builder öffnen
+            </a>
+            <a href="../list_generator.php" class="btn btn-secondary">
+                <i class="table icon"></i> List Generator öffnen
             </a>
         </div>
     </div>
