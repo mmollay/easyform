@@ -2977,10 +2977,17 @@ $form->display();'); ?></pre>
 
         // Utility functions
         window.clearForm = function() {
+            console.log('clearForm called');
             if (confirm('Möchten Sie wirklich alle Elemente löschen?')) {
+                console.log('User confirmed clear');
                 formElements = [];
                 renderFormBuilder();
                 generateCode();
+                // Reinitialize drag and drop after clearing
+                setTimeout(function() {
+                    reinitializeDragDrop();
+                }, 100);
+                console.log('Form cleared successfully');
             }
         }
         
@@ -3071,12 +3078,21 @@ $form->display();'); ?></pre>
         }
         
         window.loadTemplate = function() {
-            let templates = JSON.parse(localStorage.getItem('easyform_templates') || '{}');
+            console.log('loadTemplate called');
+            let templates = {};
+            try {
+                templates = JSON.parse(localStorage.getItem('easyform_templates') || '{}');
+            } catch (e) {
+                console.error('Error parsing templates from localStorage:', e);
+                alert('Fehler beim Laden der gespeicherten Vorlagen.');
+                return;
+            }
             
             if (Object.keys(templates).length === 0) {
                 alert('Keine gespeicherten Vorlagen vorhanden.');
                 return;
             }
+            console.log('Found templates:', templates);
             
             // Template-Auswahl Dialog erstellen
             let templateList = 'Wählen Sie eine Vorlage:\n\n';
@@ -3115,10 +3131,16 @@ $form->display();'); ?></pre>
                     renderFormBuilder();
                     generateCode();
                     
+                    // Reinitialize drag and drop after loading template
+                    setTimeout(function() {
+                        reinitializeDragDrop();
+                        initializeColumnDropZones();
+                    }, 100);
+                    
                     alert(`Vorlage "${selectedTemplate.name}" wurde geladen!`);
                 } catch (error) {
                     console.error('Fehler beim Laden der Vorlage:', error);
-                    alert('Fehler beim Laden der Vorlage. Die Vorlage könnte beschädigt sein.');
+                    alert('Fehler beim Laden der Vorlage: ' + error.message);
                 }
             } else {
                 alert('Ungültige Auswahl.');
