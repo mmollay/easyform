@@ -1707,62 +1707,64 @@ session_start();
             // Table with responsive wrapper - matching actual EasyList
             html += '<div class="table-responsive" style="border: 1px solid #d4d4d5; border-radius: 8px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">';
             
-            let tableClasses = ['ui'];
+            // Use the getTableClasses function which includes theme settings
+            let tableClasses = getTableClasses();
             
-            // Add celled first if selected (important for Semantic UI)
-            if (styles.celled) tableClasses.push('celled');
+            // Also apply the style checkboxes if they're still needed
+            let additionalClasses = [];
             
-            // Then add table class
-            tableClasses.push('table');
-            
-            // Other design options
-            if (styles.striped) tableClasses.push('striped');
-            if (styles.definition) tableClasses.push('definition');
-            if (styles.structured) tableClasses.push('structured');
-            if (styles.inverted) tableClasses.push('inverted');
-            if (styles.collapsing) tableClasses.push('collapsing');
-            if (styles.fixed) tableClasses.push('fixed');
-            if (styles.singleLine) tableClasses.push('single line');
-            if (styles.compact) tableClasses.push('compact');
-            if (styles.selectable) tableClasses.push('selectable');
+            // Other design options from checkboxes
+            if (styles.striped) additionalClasses.push('striped');
+            if (styles.definition) additionalClasses.push('definition');
+            if (styles.structured) additionalClasses.push('structured');
+            if (styles.inverted) additionalClasses.push('inverted');
+            if (styles.collapsing) additionalClasses.push('collapsing');
+            if (styles.fixed) additionalClasses.push('fixed');
+            if (styles.singleLine) additionalClasses.push('single line');
+            if (styles.compact && !currentTableStyle.includes('compact')) additionalClasses.push('compact');
+            if (styles.selectable) additionalClasses.push('selectable');
+            if (styles.celled && currentTableStyle !== 'celled') additionalClasses.push('celled');
             
             // Lines style
             if (styles.basic) {
-                tableClasses.push('basic');
+                additionalClasses.push('basic');
             }
             
             // Alignment options
-            if (styles.leftAligned) tableClasses.push('left aligned');
-            if (styles.centerAligned) tableClasses.push('center aligned');
-            if (styles.rightAligned) tableClasses.push('right aligned');
+            if (styles.leftAligned) additionalClasses.push('left aligned');
+            if (styles.centerAligned) additionalClasses.push('center aligned');
+            if (styles.rightAligned) additionalClasses.push('right aligned');
             
             // Stacking (mutually exclusive)
             if (styles.unstackable) {
-                tableClasses.push('unstackable');
+                additionalClasses.push('unstackable');
             } else if (styles.stackable) {
-                tableClasses.push('stackable');
+                additionalClasses.push('stackable');
             }
             
             // Special effects
-            if (styles.sortable) tableClasses.push('sortable');
-            if (styles.scrolling) tableClasses.push('scrolling');
+            if (styles.sortable) additionalClasses.push('sortable');
+            if (styles.scrolling) additionalClasses.push('scrolling');
             
             // Padding style (padded, relaxed, or very relaxed - mutually exclusive)
             if (styles.veryRelaxed) {
-                tableClasses.push('very relaxed');
+                additionalClasses.push('very relaxed');
             } else if (styles.relaxed) {
-                tableClasses.push('relaxed');
-            } else if (styles.padded) {
-                tableClasses.push('padded');
+                additionalClasses.push('relaxed');
+            } else if (styles.padded && currentTableStyle !== 'padded') {
+                additionalClasses.push('padded');
             }
             
-            // Color scheme
-            if (styles.color) tableClasses.push(styles.color);
+            // Color scheme (only if not already set by theme)
+            if (styles.color && !currentColorScheme) additionalClasses.push(styles.color);
             
-            // Size
-            if (styles.size) tableClasses.push(styles.size);
+            // Size (only if not already set by style)
+            if (styles.size) additionalClasses.push(styles.size);
             
-            html += `<table class="${tableClasses.join(' ')}" style="margin: 0; border-radius: 0;">`;
+            // Combine classes
+            const finalClasses = tableClasses + (additionalClasses.length > 0 ? ' ' + additionalClasses.join(' ') : '');
+            
+            html += `<table class="${finalClasses}" style="margin: 0; border-radius: 0;">`;
             
             // Header
             html += '<thead><tr>';
@@ -1982,16 +1984,8 @@ session_start();
         }
         
         function updatePreview() {
-            // Update table classes in the preview
-            const previewTable = document.querySelector('#preview-container table');
-            if (previewTable) {
-                previewTable.className = getTableClasses();
-            }
-            
-            // Re-render the preview if needed
-            if (typeof renderList === 'function') {
-                renderList();
-            }
+            // Simply refresh the preview with new theme settings
+            refreshPreview();
         }
         
         function getTableClasses() {
