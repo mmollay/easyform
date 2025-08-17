@@ -2737,16 +2737,13 @@ $form->display();'); ?></pre>
     ])` : '';
 
             // Build complete PHP code
-            var finalCode = `<?php
-use EasyForm\\EasyForm;
-
-$form = new EasyForm('${formConfig.id}', ${configString});
-${methodActionCode}${ajaxCode ? '\n     ' + ajaxCode : ''};
-
-${elementsCode}
-
-$form->display();
-?>`;
+            var finalCode = '<' + '?php\n' +
+                'use EasyForm\\EasyForm;\n\n' +
+                '$form = new EasyForm(\'' + formConfig.id + '\', ' + configString + ');\n' +
+                methodActionCode + (ajaxCode ? '\n     ' + ajaxCode : '') + ';\n\n' +
+                elementsCode + '\n\n' +
+                '$form->display();\n' +
+                '?' + '>';
             
             // Clean up extra whitespace and format nicely
             finalCode = finalCode
