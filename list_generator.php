@@ -721,6 +721,54 @@ session_start();
     <div class="main-container">
         <!-- Sidebar -->
         <div class="sidebar-panel">
+            <!-- Theme Selection -->
+            <div class="panel-section">
+                <div class="panel-title">
+                    <i class="paint brush icon"></i> Theme
+                </div>
+                <div class="ui form">
+                    <div class="field">
+                        <select id="theme-select" class="ui dropdown" onchange="updateTheme(this.value)">
+                            <option value="semantic">Semantic UI</option>
+                            <option value="bootstrap">Bootstrap</option>
+                            <option value="material">Material Design</option>
+                            <option value="minimal">Minimal</option>
+                            <option value="dark">Dark Mode</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Tabellen-Stil</label>
+                        <select id="table-style" class="ui dropdown" onchange="updateTableStyle(this.value)">
+                            <option value="basic">Basic</option>
+                            <option value="striped">Striped</option>
+                            <option value="celled">Celled</option>
+                            <option value="padded">Padded</option>
+                            <option value="compact">Compact</option>
+                            <option value="very compact">Very Compact</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Farb-Schema</label>
+                        <select id="color-scheme" class="ui dropdown" onchange="updateColorScheme(this.value)">
+                            <option value="">Standard</option>
+                            <option value="red">Rot</option>
+                            <option value="orange">Orange</option>
+                            <option value="yellow">Gelb</option>
+                            <option value="olive">Olive</option>
+                            <option value="green">Grün</option>
+                            <option value="teal">Teal</option>
+                            <option value="blue">Blau</option>
+                            <option value="violet">Violett</option>
+                            <option value="purple">Lila</option>
+                            <option value="pink">Pink</option>
+                            <option value="brown">Braun</option>
+                            <option value="grey">Grau</option>
+                            <option value="black">Schwarz</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
             <!-- Data Source -->
             <div class="panel-section">
                 <div class="panel-title">
@@ -1271,6 +1319,11 @@ session_start();
         let sortableLeft = null;
         let sortableRight = null;
         let sortableSingle = null;
+        
+        // Theme configuration
+        let currentTheme = 'semantic';
+        let currentTableStyle = 'basic';
+        let currentColorScheme = '';
         
         // ========================================
         // SAMPLE DATA SETS
@@ -1907,6 +1960,76 @@ session_start();
             }, 100);
         }
         
+        // ========================================
+        // THEME FUNCTIONS
+        // ========================================
+        function updateTheme(theme) {
+            currentTheme = theme;
+            updatePreview();
+            generateCode();
+        }
+        
+        function updateTableStyle(style) {
+            currentTableStyle = style;
+            updatePreview();
+            generateCode();
+        }
+        
+        function updateColorScheme(scheme) {
+            currentColorScheme = scheme;
+            updatePreview();
+            generateCode();
+        }
+        
+        function updatePreview() {
+            // Update table classes in the preview
+            const previewTable = document.querySelector('#preview-container table');
+            if (previewTable) {
+                previewTable.className = getTableClasses();
+            }
+            
+            // Re-render the preview if needed
+            if (typeof renderList === 'function') {
+                renderList();
+            }
+        }
+        
+        function getTableClasses() {
+            let classes = ['ui', 'table'];
+            
+            // Add table style
+            if (currentTableStyle && currentTableStyle !== 'basic') {
+                if (currentTableStyle === 'very compact') {
+                    classes.push('very', 'compact');
+                } else {
+                    classes.push(currentTableStyle);
+                }
+            }
+            
+            // Add color scheme
+            if (currentColorScheme) {
+                classes.push(currentColorScheme);
+            }
+            
+            // Add theme-specific classes
+            if (currentTheme === 'bootstrap') {
+                classes = ['table', 'table-hover'];
+                if (currentTableStyle === 'striped') {
+                    classes.push('table-striped');
+                }
+                if (currentColorScheme === 'dark') {
+                    classes.push('table-dark');
+                }
+            } else if (currentTheme === 'material') {
+                classes = ['mdl-data-table', 'mdl-js-data-table'];
+                if (currentTableStyle === 'compact') {
+                    classes.push('mdl-data-table--compact');
+                }
+            }
+            
+            return classes.join(' ');
+        }
+        
         function generateCode() {
             const features = {
                 search: document.getElementById('feature-search')?.checked || false,
@@ -1960,8 +2083,27 @@ session_start();
             codeLines.push("require_once 'easy_form/autoload.php';");
             codeLines.push('use EasyForm\\\\EasyList;');
             codeLines.push('');
-            codeLines.push('// Erstelle eine neue Liste');
-            codeLines.push("$list = new EasyList('data_list');");
+            codeLines.push('// Erstelle eine neue Liste mit Theme-Konfiguration');
+            let listOptions = [];
+            if (currentTheme !== 'semantic') {
+                listOptions.push("'theme' => '" + currentTheme + "'");
+            }
+            if (currentTableStyle !== 'basic') {
+                listOptions.push("'style' => '" + currentTableStyle + "'");
+            }
+            if (currentColorScheme) {
+                listOptions.push("'color' => '" + currentColorScheme + "'");
+            }
+            
+            if (listOptions.length > 0) {
+                codeLines.push("$list = new EasyList('data_list', [");
+                listOptions.forEach((opt, index) => {
+                    codeLines.push("    " + opt + (index < listOptions.length - 1 ? ',' : ''));
+                });
+                codeLines.push("]);");
+            } else {
+                codeLines.push("$list = new EasyList('data_list');");
+            }
             codeLines.push('');
             codeLines.push('// Datenquelle festlegen');
             codeLines.push('$list->data($data); // $data = Array mit Ihren Daten');
