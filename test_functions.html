@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Functions</title>
+    <script src="jquery/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Form Builder Function Test</h1>
+    <iframe id="formBuilder" src="form_builder.php" style="width: 100%; height: 600px; border: 1px solid #ccc;"></iframe>
+    
+    <div style="margin-top: 20px;">
+        <h2>Test Buttons (Direct Call)</h2>
+        <button onclick="testClearForm()">Test Clear</button>
+        <button onclick="testLoadTemplate()">Test Load</button>
+        <button onclick="testSaveTemplate()">Test Save</button>
+        <button onclick="checkFunctions()">Check Functions</button>
+    </div>
+    
+    <div id="results" style="margin-top: 20px; padding: 10px; background: #f0f0f0;">
+        <h3>Results:</h3>
+        <pre id="output"></pre>
+    </div>
+    
+    <script>
+        function testClearForm() {
+            try {
+                var iframe = document.getElementById('formBuilder');
+                var iframeWindow = iframe.contentWindow;
+                if (iframeWindow.clearForm) {
+                    iframeWindow.clearForm();
+                    document.getElementById('output').textContent = 'clearForm called successfully';
+                } else {
+                    document.getElementById('output').textContent = 'clearForm is not defined in iframe';
+                }
+            } catch(e) {
+                document.getElementById('output').textContent = 'Error: ' + e.message;
+            }
+        }
+        
+        function testLoadTemplate() {
+            try {
+                var iframe = document.getElementById('formBuilder');
+                var iframeWindow = iframe.contentWindow;
+                if (iframeWindow.loadTemplate) {
+                    iframeWindow.loadTemplate();
+                    document.getElementById('output').textContent = 'loadTemplate called successfully';
+                } else {
+                    document.getElementById('output').textContent = 'loadTemplate is not defined in iframe';
+                }
+            } catch(e) {
+                document.getElementById('output').textContent = 'Error: ' + e.message;
+            }
+        }
+        
+        function testSaveTemplate() {
+            try {
+                var iframe = document.getElementById('formBuilder');
+                var iframeWindow = iframe.contentWindow;
+                if (iframeWindow.saveTemplate) {
+                    iframeWindow.saveTemplate();
+                    document.getElementById('output').textContent = 'saveTemplate called successfully';
+                } else {
+                    document.getElementById('output').textContent = 'saveTemplate is not defined in iframe';
+                }
+            } catch(e) {
+                document.getElementById('output').textContent = 'Error: ' + e.message;
+            }
+        }
+        
+        function checkFunctions() {
+            try {
+                var iframe = document.getElementById('formBuilder');
+                var iframeWindow = iframe.contentWindow;
+                var functions = [
+                    'clearForm',
+                    'loadTemplate',
+                    'saveTemplate',
+                    'showFormConfig',
+                    'previewForm',
+                    'copyCode'
+                ];
+                
+                var results = 'Function availability:\n';
+                functions.forEach(function(func) {
+                    results += func + ': ' + (typeof iframeWindow[func] === 'function' ? 'YES' : 'NO') + '\n';
+                });
+                
+                document.getElementById('output').textContent = results;
+            } catch(e) {
+                document.getElementById('output').textContent = 'Error: ' + e.message;
+            }
+        }
+        
+        // Check functions after iframe loads
+        window.onload = function() {
+            setTimeout(checkFunctions, 2000);
+        };
+    </script>
+</body>
+</html>

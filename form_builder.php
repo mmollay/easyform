@@ -3489,6 +3489,47 @@ $form->display();'); ?></pre>
         });
     </script>
     
+    <!-- Ensure functions are globally available -->
+    <script>
+        // Fallback definitions to ensure functions are always available
+        if (typeof window.clearForm !== 'function') {
+            window.clearForm = function() {
+                alert('clearForm function was not properly initialized. Please refresh the page.');
+            };
+        }
+        if (typeof window.loadTemplate !== 'function') {
+            window.loadTemplate = function() {
+                alert('loadTemplate function was not properly initialized. Please refresh the page.');
+            };
+        }
+        if (typeof window.saveTemplate !== 'function') {
+            window.saveTemplate = function() {
+                alert('saveTemplate function was not properly initialized. Please refresh the page.');
+            };
+        }
+        
+        // Debug: Log function availability
+        $(document).ready(function() {
+            setTimeout(function() {
+                console.log('Function availability check:');
+                console.log('clearForm:', typeof window.clearForm);
+                console.log('loadTemplate:', typeof window.loadTemplate);
+                console.log('saveTemplate:', typeof window.saveTemplate);
+                console.log('showFormConfig:', typeof window.showFormConfig);
+                console.log('previewForm:', typeof window.previewForm);
+                
+                // Check for any JavaScript errors
+                if (window.console && window.console.error) {
+                    var originalError = console.error;
+                    console.error = function() {
+                        alert('JavaScript Error: ' + Array.prototype.slice.call(arguments).join(' '));
+                        originalError.apply(console, arguments);
+                    };
+                }
+            }, 1000);
+        });
+    </script>
+    
     <!-- Hidden PHP Template -->
     <script type="text/template" id="php-template">&lt;?php
 use EasyForm\EasyForm;
