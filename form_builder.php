@@ -1452,13 +1452,19 @@ $form->display();'); ?></pre>
             if (!sortableInitialized) {
                 try {
                     dropZoneSortable = new Sortable(dropZone, {
-                        group: 'form-elements', // Same group as columns to allow cross-movement
+                        group: {
+                            name: 'form-elements',
+                            pull: true,
+                            put: true
+                        },
                         animation: 150,
                         ghostClass: 'sortable-ghost',
                         handle: '.drag-handle',
                         disabled: false,
                         // Prevent interference with native HTML5 drag & drop
                         dataIdAttr: 'data-sortable-id',
+                        sort: true, // Enable sorting
+                        draggable: '.form-element', // Only form elements are draggable
                         // Add more robust event handlers
                         onStart: function(evt) {
                             console.log('Main area drag started:', evt.oldIndex);
@@ -1482,13 +1488,27 @@ $form->display();'); ?></pre>
                             }
                         },
                         onAdd: function(evt) {
-                            // Element was moved TO main area FROM a column
-                            const element = evt.item;
-                            const elementId = element.dataset.id;
-                            const newIndex = evt.newIndex;
+                            // Check if this is a new element from component panel
+                            const dragSource = evt.originalEvent && evt.originalEvent.dataTransfer ? 
+                                evt.originalEvent.dataTransfer.getData('application/x-drag-source') : null;
                             
-                            console.log('Moving element FROM column TO main area at position', newIndex);
-                            moveElementToMainArea(elementId, newIndex);
+                            if (dragSource === 'component-panel') {
+                                // This is a new element being added
+                                const type = evt.originalEvent.dataTransfer.getData('text/plain');
+                                const newIndex = evt.newIndex;
+                                
+                                console.log('Adding new element via Sortable at index:', newIndex);
+                                evt.item.remove(); // Remove the placeholder
+                                addElement(type, newIndex);
+                            } else {
+                                // Element was moved TO main area FROM a column
+                                const element = evt.item;
+                                const elementId = element.dataset.id;
+                                const newIndex = evt.newIndex;
+                                
+                                console.log('Moving element FROM column TO main area at position', newIndex);
+                                moveElementToMainArea(elementId, newIndex);
+                            }
                         },
                         onRemove: function(evt) {
                             // Element was moved FROM main area TO a column
@@ -1565,8 +1585,24 @@ $form->display();'); ?></pre>
                         if (type && dragSource === 'component-panel') {
                             // Check if the target is actually the main drop zone, not a nested element
                             if (e.target === this || $(e.target).closest('.column-drop-zone').length === 0) {
-                                console.log('Adding new element from component panel to main area:', type);
-                                addElement(type);
+                                // Calculate the drop position based on mouse position
+                                const dropY = e.originalEvent.clientY;
+                                let insertIndex = formElements.length; // Default to end
+                                
+                                // Find all existing form elements and their positions
+                                const formElementDivs = $(this).find('> .form-element');
+                                formElementDivs.each(function(index) {
+                                    const rect = this.getBoundingClientRect();
+                                    const midY = rect.top + rect.height / 2;
+                                    
+                                    if (dropY < midY) {
+                                        insertIndex = index;
+                                        return false; // Break the loop
+                                    }
+                                });
+                                
+                                console.log('Adding new element from component panel at index:', insertIndex);
+                                addElement(type, insertIndex);
                             } else {
                                 console.log('Drop target is nested element, ignoring main drop');
                             }
@@ -1700,11 +1736,19 @@ $form->display();'); ?></pre>
             });
         }
 
-        function addElement(type) {
-            console.log('Adding element of type:', type);
+        function addElement(type, index = null) {
+            console.log('Adding element of type:', type, 'at index:', index);
             const element = createFormElement(type);
             console.log('Created element:', element);
-            formElements.push(element);
+            
+            if (index !== null && index >= 0 && index <= formElements.length) {
+                // Insert at specific position
+                formElements.splice(index, 0, element);
+            } else {
+                // Add at the end
+                formElements.push(element);
+            }
+            
             renderFormBuilder();
             generateCode();
         }
