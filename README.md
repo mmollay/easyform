@@ -1,9 +1,21 @@
-# EasyForm - Moderner PHP Formular Generator
+# 🚀 EasyForm & EasyList - Moderner PHP Form & Data Table Generator
+
+<div align="center">
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PHP Version](https://img.shields.io/badge/PHP-%3E%3D7.4-blue.svg)](https://php.net)
+[![Semantic UI](https://img.shields.io/badge/Semantic%20UI-2.9.3-teal.svg)](https://semantic-ui.com)
+[![Made with Love](https://img.shields.io/badge/Made%20with-❤️-red.svg)]()
 
-EasyForm ist ein leistungsstarker und intuitiver PHP Form Generator mit Fluent Interface, visuellen Buildern und über 50 Feldtypen.
+**Erstellen Sie professionelle Formulare und Datentabellen in Sekunden - ohne HTML/CSS schreiben zu müssen!**
+
+[🎮 Live Demo](http://localhost/easy_form) | [📚 Dokumentation](http://localhost/easy_form/docs) | [🎨 Form Builder](http://localhost/easy_form/form_builder.php) | [📊 List Generator](http://localhost/easy_form/list_generator.php)
+
+</div>
+
+---
+
+EasyForm ist ein leistungsstarker und intuitiver PHP Form Generator mit Fluent Interface, visuellen Buildern und über 50 Feldtypen. EasyList ergänzt das System mit einem mächtigen Datentabellen-Generator.
 
 ## 🚀 Features
 

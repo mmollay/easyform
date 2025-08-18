@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Installation Guide - EasyForm/EasyList Documentation</title>
-    <meta name="description" content="Complete installation guide for EasyForm and EasyList PHP libraries. Get up and running in minutes with our step-by-step instructions.">
+    <title>Installationsanleitung - EasyForm/EasyList Dokumentation</title>
+    <meta name="description" content="Vollständige Installationsanleitung für EasyForm und EasyList PHP-Bibliotheken. Starten Sie in Minuten mit unseren Schritt-für-Schritt-Anleitungen.">
     
     <!-- Stylesheets -->
     <link rel="stylesheet" href="assets/css/main.css">
@@ -21,10 +21,10 @@
                     <a href="../index.html">EasyForm/EasyList</a>
                 </div>
                 <nav class="nav">
-                    <a href="#requirements" class="nav-link">Requirements</a>
+                    <a href="#requirements" class="nav-link">Anforderungen</a>
                     <a href="#installation" class="nav-link">Installation</a>
-                    <a href="#configuration" class="nav-link">Configuration</a>
-                    <a href="#verification" class="nav-link">Verification</a>
+                    <a href="#configuration" class="nav-link">Konfiguration</a>
+                    <a href="#verification" class="nav-link">Überprüfung</a>
                     <a href="easyform.html" class="nav-link">EasyForm</a>
                     <a href="easylist.html" class="nav-link">EasyList</a>
                     <a href="demos/" class="nav-link">Demos</a>
@@ -40,17 +40,17 @@
             <!-- Sidebar Navigation -->
             <div class="col-3">
                 <div class="doc-nav">
-                    <h3 style="margin-bottom: 1rem;">Installation Guide</h3>
+                    <h3 style="margin-bottom: 1rem;">Installationsanleitung</h3>
                     <ul>
-                        <li><a href="#overview" class="active">Overview</a></li>
-                        <li><a href="#requirements">Requirements</a></li>
-                        <li><a href="#installation">Installation Methods</a></li>
-                        <li><a href="#composer">Composer Install</a></li>
-                        <li><a href="#manual">Manual Install</a></li>
-                        <li><a href="#configuration">Configuration</a></li>
-                        <li><a href="#verification">Verification</a></li>
-                        <li><a href="#troubleshooting">Troubleshooting</a></li>
-                        <li><a href="#next-steps">Next Steps</a></li>
+                        <li><a href="#overview" class="active">Übersicht</a></li>
+                        <li><a href="#requirements">Anforderungen</a></li>
+                        <li><a href="#installation">Installationsmethoden</a></li>
+                        <li><a href="#composer">Composer-Installation</a></li>
+                        <li><a href="#manual">Manuelle Installation</a></li>
+                        <li><a href="#configuration">Konfiguration</a></li>
+                        <li><a href="#verification">Überprüfung</a></li>
+                        <li><a href="#troubleshooting">Fehlerbehebung</a></li>
+                        <li><a href="#next-steps">Nächste Schritte</a></li>
                     </ul>
                 </div>
             </div>
@@ -58,25 +58,25 @@
             <!-- Main Documentation Content -->
             <div class="col-9">
                 <div class="doc-content">
-                    <h1 id="overview">Installation Guide</h1>
-                    <p class="section-subtitle">Get EasyForm and EasyList up and running in your project quickly and easily. Choose between Composer installation or manual setup.</p>
+                    <h1 id="overview">Installationsanleitung</h1>
+                    <p class="section-subtitle">Bringen Sie EasyForm und EasyList schnell und einfach in Ihrem Projekt zum Laufen. Wählen Sie zwischen Composer-Installation oder manueller Einrichtung.</p>
 
                     <!-- Requirements Section -->
                     <section id="requirements">
-                        <h2>System Requirements</h2>
-                        <p>Before installing EasyForm/EasyList, ensure your system meets these requirements:</p>
+                        <h2>Systemanforderungen</h2>
+                        <p>Bevor Sie EasyForm/EasyList installieren, stellen Sie sicher, dass Ihr System diese Anforderungen erfüllt:</p>
                         
                         <div class="alert alert-info">
-                            <strong>Minimum Requirements:</strong> These are the minimum versions needed for basic functionality.
+                            <strong>Mindestanforderungen:</strong> Dies sind die Mindestversionen, die für die Grundfunktionalität erforderlich sind.
                         </div>
 
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Component</th>
-                                    <th>Minimum Version</th>
-                                    <th>Recommended</th>
-                                    <th>Notes</th>
+                                    <th>Komponente</th>
+                                    <th>Mindestversion</th>
+                                    <th>Empfohlen</th>
+                                    <th>Hinweise</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -84,49 +84,49 @@
                                     <td>PHP</td>
                                     <td>7.4</td>
                                     <td>8.1+</td>
-                                    <td>Full type hints and modern features</td>
+                                    <td>Vollständige Typ-Hinweise und moderne Features</td>
                                 </tr>
                                 <tr>
                                     <td>Web Server</td>
                                     <td>Apache 2.4 / Nginx 1.18</td>
-                                    <td>Latest stable</td>
-                                    <td>Any modern web server</td>
+                                    <td>Neueste stabile Version</td>
+                                    <td>Jeder moderne Webserver</td>
                                 </tr>
                                 <tr>
                                     <td>MySQL (optional)</td>
                                     <td>5.7</td>
                                     <td>8.0+</td>
-                                    <td>For database integration</td>
+                                    <td>Für Datenbankintegration</td>
                                 </tr>
                                 <tr>
-                                    <td>Browser Support</td>
+                                    <td>Browser-Unterstützung</td>
                                     <td>Chrome 90+, Firefox 88+, Safari 14+</td>
-                                    <td>Latest browsers</td>
-                                    <td>For visual builders and AJAX features</td>
+                                    <td>Neueste Browser</td>
+                                    <td>Für visuelle Builder und AJAX-Funktionen</td>
                                 </tr>
                             </tbody>
                         </table>
 
-                        <h3>PHP Extensions</h3>
-                        <p>The following PHP extensions are required or recommended:</p>
+                        <h3>PHP-Erweiterungen</h3>
+                        <p>Die folgenden PHP-Erweiterungen sind erforderlich oder empfohlen:</p>
                         
                         <div class="row">
                             <div class="col-6">
-                                <h4>Required Extensions</h4>
+                                <h4>Erforderliche Erweiterungen</h4>
                                 <ul>
-                                    <li><code>json</code> - JSON processing</li>
-                                    <li><code>mbstring</code> - Multi-byte string handling</li>
-                                    <li><code>session</code> - Session management</li>
-                                    <li><code>filter</code> - Input validation</li>
+                                    <li><code>json</code> - JSON-Verarbeitung</li>
+                                    <li><code>mbstring</code> - Multi-Byte-String-Verarbeitung</li>
+                                    <li><code>session</code> - Session-Verwaltung</li>
+                                    <li><code>filter</code> - Eingabevalidierung</li>
                                 </ul>
                             </div>
                             <div class="col-6">
-                                <h4>Optional Extensions</h4>
+                                <h4>Optionale Erweiterungen</h4>
                                 <ul>
-                                    <li><code>pdo</code> - Database connectivity</li>
-                                    <li><code>curl</code> - HTTP requests</li>
-                                    <li><code>gd</code> - Image processing</li>
-                                    <li><code>intl</code> - Internationalization</li>
+                                    <li><code>pdo</code> - Datenbankverbindung</li>
+                                    <li><code>curl</code> - HTTP-Anfragen</li>
+                                    <li><code>gd</code> - Bildverarbeitung</li>
+                                    <li><code>intl</code> - Internationalisierung</li>
                                 </ul>
                             </div>
                         </div>
@@ -134,35 +134,35 @@
 
                     <!-- Installation Methods -->
                     <section id="installation">
-                        <h2>Installation Methods</h2>
-                        <p>Choose the installation method that best fits your workflow:</p>
+                        <h2>Installationsmethoden</h2>
+                        <p>Wählen Sie die Installationsmethode, die am besten zu Ihrem Workflow passt:</p>
 
                         <div class="row">
                             <div class="col-6">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h3>🎯 Composer (Recommended)</h3>
-                                        <p>Best for modern PHP projects with dependency management.</p>
+                                        <h3>🎯 Composer (Empfohlen)</h3>
+                                        <p>Am besten für moderne PHP-Projekte mit Abhängigkeitsverwaltung.</p>
                                         <ul>
-                                            <li>Automatic dependency resolution</li>
-                                            <li>Easy updates</li>
-                                            <li>PSR-4 autoloading</li>
+                                            <li>Automatische Abhängigkeitsauflösung</li>
+                                            <li>Einfache Updates</li>
+                                            <li>PSR-4 Autoloading</li>
                                         </ul>
-                                        <a href="#composer" class="btn btn-primary">Use Composer</a>
+                                        <a href="#composer" class="btn btn-primary">Composer verwenden</a>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h3>📁 Manual Installation</h3>
-                                        <p>Direct file download for simple projects or custom setups.</p>
+                                        <h3>📁 Manuelle Installation</h3>
+                                        <p>Direkter Datei-Download für einfache Projekte oder benutzerdefinierte Setups.</p>
                                         <ul>
-                                            <li>No external dependencies</li>
-                                            <li>Full control over files</li>
-                                            <li>Works with any project structure</li>
+                                            <li>Keine externen Abhängigkeiten</li>
+                                            <li>Volle Kontrolle über Dateien</li>
+                                            <li>Funktioniert mit jeder Projektstruktur</li>
                                         </ul>
-                                        <a href="#manual" class="btn btn-outline">Manual Setup</a>
+                                        <a href="#manual" class="btn btn-outline">Manuelles Setup</a>
                                     </div>
                                 </div>
                             </div>
@@ -171,35 +171,35 @@
 
                     <!-- Composer Installation -->
                     <section id="composer">
-                        <h2>Composer Installation</h2>
-                        <p>The easiest way to install EasyForm/EasyList is via Composer. This method handles all dependencies and autoloading automatically.</p>
+                        <h2>Composer-Installation</h2>
+                        <p>Der einfachste Weg, EasyForm/EasyList zu installieren, ist über Composer. Diese Methode behandelt alle Abhängigkeiten und das Autoloading automatisch.</p>
 
-                        <h3>Step 1: Install via Composer</h3>
+                        <h3>Schritt 1: Installation über Composer</h3>
                         <div class="code-block" data-language="bash">
-<code># Install the latest stable version
+<code># Installiere die neueste stabile Version
 composer require smartform/easyform
 
-# Or install a specific version
+# Oder installiere eine spezifische Version
 composer require smartform/easyform:^1.0</code>
                         </div>
 
-                        <h3>Step 2: Include Composer Autoloader</h3>
+                        <h3>Schritt 2: Composer Autoloader einbinden</h3>
                         <div class="code-block" data-language="php">
 <code><?php
-// Include Composer's autoloader
+// Composer Autoloader einbinden
 require_once 'vendor/autoload.php';
 
-// Import the classes
+// Klassen importieren
 use EasyForm\EasyForm;
 use EasyForm\EasyList;
 
-// You're ready to go!
+// Jetzt können Sie loslegen!
 $form = new EasyForm('my_form');
 ?></code>
                         </div>
 
-                        <h3>Step 3: Verify Installation</h3>
-                        <p>Create a simple test file to verify everything is working:</p>
+                        <h3>Schritt 3: Installation überprüfen</h3>
+                        <p>Erstellen Sie eine einfache Testdatei, um zu überprüfen, ob alles funktioniert:</p>
                         <div class="code-block" data-language="php">
 <code><?php
 require_once 'vendor/autoload.php';
@@ -210,39 +210,39 @@ $form->text('name', 'Your Name')
     ->submit('Test')
     ->display();
 
-echo "✅ EasyForm is working correctly!";
+echo "✅ EasyForm funktioniert korrekt!";
 ?></code>
                         </div>
 
                         <div class="alert alert-success">
-                            <strong>That's it!</strong> You're now ready to start building amazing forms and data tables.
+                            <strong>Das war's!</strong> Sie können jetzt mit dem Erstellen großartiger Formulare und Datentabellen beginnen.
                         </div>
                     </section>
 
                     <!-- Manual Installation -->
                     <section id="manual">
-                        <h2>Manual Installation</h2>
-                        <p>If you prefer not to use Composer or need more control over the installation, you can install EasyForm/EasyList manually.</p>
+                        <h2>Manuelle Installation</h2>
+                        <p>Wenn Sie Composer nicht verwenden möchten oder mehr Kontrolle über die Installation benötigen, können Sie EasyForm/EasyList manuell installieren.</p>
 
-                        <h3>Step 1: Download Files</h3>
-                        <p>Download the EasyForm/EasyList package and extract it to your project directory:</p>
+                        <h3>Schritt 1: Dateien herunterladen</h3>
+                        <p>Laden Sie das EasyForm/EasyList-Paket herunter und entpacken Sie es in Ihr Projektverzeichnis:</p>
                         
                         <div class="code-block" data-language="bash">
-<code># Download from GitHub
+<code># Von GitHub herunterladen
 wget https://github.com/smartform/easyform/archive/main.zip
 unzip main.zip
 
-# Or clone the repository
+# Oder das Repository klonen
 git clone https://github.com/smartform/easyform.git</code>
                         </div>
 
-                        <h3>Step 2: Copy Files to Your Project</h3>
+                        <h3>Schritt 2: Dateien in Ihr Projekt kopieren</h3>
                         <div class="code-block" data-language="bash">
-<code># Copy the easy_form directory to your project
-cp -r easy_form/ /path/to/your/project/
+<code># Kopieren Sie das easy_form Verzeichnis in Ihr Projekt
+cp -r easy_form/ /pfad/zu/ihrem/projekt/
 
-# Your project structure should look like:
-/your-project/
+# Ihre Projektstruktur sollte so aussehen:
+/ihr-projekt/
 ├── easy_form/
 │   ├── EasyForm.php
 │   ├── src/
@@ -254,25 +254,25 @@ cp -r easy_form/ /path/to/your/project/
 └── ...</code>
                         </div>
 
-                        <h3>Step 3: Include the Autoloader</h3>
+                        <h3>Schritt 3: Autoloader einbinden</h3>
                         <div class="code-block" data-language="php">
 <code><?php
-// Include the EasyForm autoloader
+// EasyForm Autoloader einbinden
 require_once 'easy_form/autoload.php';
 
-// Import the classes
+// Klassen importieren
 use EasyForm\EasyForm;
 use EasyForm\EasyList;
 
-// Start building!
+// Loslegen!
 $form = new EasyForm('contact_form');
 ?></code>
                         </div>
 
-                        <h3>Step 4: Set Up File Permissions</h3>
-                        <p>Ensure proper file permissions for web server access:</p>
+                        <h3>Schritt 4: Dateiberechtigungen einrichten</h3>
+                        <p>Stellen Sie sicher, dass die Dateiberechtigungen für den Webserver-Zugriff korrekt sind:</p>
                         <div class="code-block" data-language="bash">
-<code># Set appropriate permissions
+<code># Geeignete Berechtigungen setzen
 chmod -R 755 easy_form/
 chmod -R 644 easy_form/*.php
 chmod -R 644 easy_form/src/*.php</code>
@@ -281,71 +281,71 @@ chmod -R 644 easy_form/src/*.php</code>
 
                     <!-- Configuration -->
                     <section id="configuration">
-                        <h2>Configuration</h2>
-                        <p>EasyForm/EasyList works out of the box with sensible defaults, but you can customize the configuration as needed.</p>
+                        <h2>Konfiguration</h2>
+                        <p>EasyForm/EasyList funktioniert direkt mit sinnvollen Standardeinstellungen, aber Sie können die Konfiguration nach Bedarf anpassen.</p>
 
-                        <h3>Basic Configuration</h3>
+                        <h3>Grundkonfiguration</h3>
                         <div class="code-block" data-language="php">
 <code><?php
 require_once 'easy_form/autoload.php';
 use EasyForm\EasyForm;
 
-// Create form with custom configuration
+// Formular mit benutzerdefinierter Konfiguration erstellen
 $form = new EasyForm('my_form', [
     'theme' => 'semantic',      // semantic, bootstrap, material
     'size' => 'large',          // mini, tiny, small, medium, large, huge
-    'width' => 800,             // Max width in pixels
-    'language' => 'en',         // Language for validation messages
-    'ajax' => true,             // Enable AJAX by default
-    'liveValidation' => true,   // Real-time validation
-    'showErrors' => true        // Show validation errors
+    'width' => 800,             // Maximale Breite in Pixeln
+    'language' => 'de',         // Sprache für Validierungsmeldungen
+    'ajax' => true,             // AJAX standardmäßig aktivieren
+    'liveValidation' => true,   // Echtzeit-Validierung
+    'showErrors' => true        // Validierungsfehler anzeigen
 ]);
 ?></code>
                         </div>
 
-                        <h3>Global Configuration</h3>
-                        <p>You can set global defaults for all forms in your application:</p>
+                        <h3>Globale Konfiguration</h3>
+                        <p>Sie können globale Standardeinstellungen für alle Formulare in Ihrer Anwendung festlegen:</p>
                         <div class="code-block" data-language="php">
 <code><?php
-// config.php - Include this at the start of your application
+// config.php - Am Anfang Ihrer Anwendung einbinden
 require_once 'easy_form/autoload.php';
 
-// Set global defaults
+// Globale Standardeinstellungen festlegen
 EasyForm\EasyForm::setGlobalDefaults([
     'theme' => 'bootstrap',
     'size' => 'medium',
-    'language' => 'en',
+    'language' => 'de',
     'liveValidation' => true
 ]);
 
-// All forms will now use these defaults
-$form1 = new EasyForm\EasyForm('form1'); // Uses global defaults
-$form2 = new EasyForm\EasyForm('form2', ['theme' => 'semantic']); // Overrides theme
+// Alle Formulare verwenden jetzt diese Standardeinstellungen
+$form1 = new EasyForm\EasyForm('form1'); // Verwendet globale Standards
+$form2 = new EasyForm\EasyForm('form2', ['theme' => 'semantic']); // Überschreibt Theme
 ?></code>
                         </div>
 
-                        <h3>CSS and JavaScript Assets</h3>
-                        <p>Include the required CSS and JavaScript files in your HTML:</p>
+                        <h3>CSS- und JavaScript-Ressourcen</h3>
+                        <p>Binden Sie die erforderlichen CSS- und JavaScript-Dateien in Ihr HTML ein:</p>
                         <div class="code-block" data-language="html">
 <code><!DOCTYPE html>
 <html>
 <head>
-    <!-- Semantic UI CSS (or your preferred framework) -->
+    <!-- Semantic UI CSS (oder Ihr bevorzugtes Framework) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
     
-    <!-- EasyForm custom styles (optional) -->
+    <!-- EasyForm benutzerdefinierte Stile (optional) -->
     <link rel="stylesheet" href="easy_form/css/easyform.css">
 </head>
 <body>
-    <!-- Your content here -->
+    <!-- Ihr Inhalt hier -->
     
-    <!-- jQuery (required for AJAX and interactions) -->
+    <!-- jQuery (erforderlich für AJAX und Interaktionen) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
     <!-- Semantic UI JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
     
-    <!-- EasyList JavaScript (if using EasyList) -->
+    <!-- EasyList JavaScript (wenn EasyList verwendet wird) -->
     <script src="easy_form/js/easylist.js"></script>
 </body>
 </html></code>
@@ -354,10 +354,10 @@ $form2 = new EasyForm\EasyForm('form2', ['theme' => 'semantic']); // Overrides t
 
                     <!-- Verification -->
                     <section id="verification">
-                        <h2>Verify Installation</h2>
-                        <p>Let's create a comprehensive test to ensure everything is working correctly.</p>
+                        <h2>Installation überprüfen</h2>
+                        <p>Lassen Sie uns einen umfassenden Test erstellen, um sicherzustellen, dass alles korrekt funktioniert.</p>
 
-                        <h3>Complete Test Example</h3>
+                        <h3>Vollständiges Testbeispiel</h3>
                         <div class="code-block" data-language="php">
 <code><?php
 // test-installation.php
@@ -365,24 +365,24 @@ require_once 'easy_form/autoload.php';
 use EasyForm\EasyForm;
 use EasyForm\EasyList;
 
-echo "<h1>EasyForm/EasyList Installation Test</h1>";
+echo "<h1>EasyForm/EasyList Installationstest</h1>";
 
-// Test 1: Basic Form Creation
-echo "<h2>Test 1: Basic Form</h2>";
+// Test 1: Grundlegende Formularerstellung
+echo "<h2>Test 1: Grundlegendes Formular</h2>";
 try {
     $form = new EasyForm('test_form');
     $form->text('name', 'Your Name', ['required' => true])
         ->email('email', 'Email Address')
         ->submit('Test Form');
     
-    echo "✅ EasyForm: Basic form creation successful<br>";
+    echo "✅ EasyForm: Grundlegende Formularerstellung erfolgreich<br>";
     $form->display();
 } catch (Exception $e) {
-    echo "❌ EasyForm: Error - " . $e->getMessage() . "<br>";
+    echo "❌ EasyForm: Fehler - " . $e->getMessage() . "<br>";
 }
 
-// Test 2: EasyList Creation
-echo "<h2>Test 2: Data List</h2>";
+// Test 2: EasyList-Erstellung
+echo "<h2>Test 2: Datenliste</h2>";
 try {
     $sampleData = [
         ['id' => 1, 'name' => 'John Doe', 'email' => 'john@example.com'],
@@ -397,132 +397,132 @@ try {
         ->searchable()
         ->display();
     
-    echo "✅ EasyList: Data list creation successful<br>";
+    echo "✅ EasyList: Datenlistenerstellung erfolgreich<br>";
 } catch (Exception $e) {
-    echo "❌ EasyList: Error - " . $e->getMessage() . "<br>";
+    echo "❌ EasyList: Fehler - " . $e->getMessage() . "<br>";
 }
 
-// Test 3: Configuration
-echo "<h2>Test 3: Configuration</h2>";
+// Test 3: Konfiguration
+echo "<h2>Test 3: Konfiguration</h2>";
 try {
     $configuredForm = new EasyForm('config_test', [
         'theme' => 'semantic',
         'size' => 'large',
         'liveValidation' => true
     ]);
-    echo "✅ Configuration: Custom settings applied successfully<br>";
+    echo "✅ Konfiguration: Benutzerdefinierte Einstellungen erfolgreich angewendet<br>";
 } catch (Exception $e) {
-    echo "❌ Configuration: Error - " . $e->getMessage() . "<br>";
+    echo "❌ Konfiguration: Fehler - " . $e->getMessage() . "<br>";
 }
 
-echo "<h2>🎉 Installation Test Complete!</h2>";
-echo "<p>If you see checkmarks above, your installation is working correctly.</p>";
+echo "<h2>🎉 Installationstest abgeschlossen!</h2>";
+echo "<p>Wenn Sie oben Häkchen sehen, funktioniert Ihre Installation korrekt.</p>";
 ?></code>
                         </div>
 
-                        <h3>Visual Verification</h3>
-                        <p>After running the test, you should see:</p>
+                        <h3>Visuelle Überprüfung</h3>
+                        <p>Nach dem Ausführen des Tests sollten Sie Folgendes sehen:</p>
                         <ul>
-                            <li>✅ Green checkmarks for successful tests</li>
-                            <li>A functional contact form</li>
-                            <li>A data table with sample data</li>
-                            <li>No error messages</li>
+                            <li>✅ Grüne Häkchen für erfolgreiche Tests</li>
+                            <li>Ein funktionsfähiges Kontaktformular</li>
+                            <li>Eine Datentabelle mit Beispieldaten</li>
+                            <li>Keine Fehlermeldungen</li>
                         </ul>
 
                         <div class="alert alert-warning">
-                            <strong>Troubleshooting:</strong> If you see any red X marks or error messages, check the <a href="#troubleshooting">troubleshooting section</a> below.
+                            <strong>Fehlerbehebung:</strong> Wenn Sie rote X-Markierungen oder Fehlermeldungen sehen, überprüfen Sie den <a href="#troubleshooting">Abschnitt zur Fehlerbehebung</a> unten.
                         </div>
                     </section>
 
                     <!-- Troubleshooting -->
                     <section id="troubleshooting">
-                        <h2>Troubleshooting</h2>
-                        <p>Common installation issues and their solutions:</p>
+                        <h2>Fehlerbehebung</h2>
+                        <p>Häufige Installationsprobleme und ihre Lösungen:</p>
 
-                        <h3>Class Not Found Errors</h3>
+                        <h3>Klasse nicht gefunden Fehler</h3>
                         <div class="alert alert-error">
                             <strong>Error:</strong> <code>Fatal error: Class 'EasyForm\EasyForm' not found</code>
                         </div>
-                        <p><strong>Solutions:</strong></p>
+                        <p><strong>Lösungen:</strong></p>
                         <ul>
-                            <li>Verify the autoloader is included: <code>require_once 'easy_form/autoload.php';</code></li>
-                            <li>Check file paths are correct</li>
-                            <li>Ensure files have proper read permissions</li>
-                            <li>Verify namespace usage: <code>use EasyForm\EasyForm;</code></li>
+                            <li>Überprüfen Sie, ob der Autoloader eingebunden ist: <code>require_once 'easy_form/autoload.php';</code></li>
+                            <li>Prüfen Sie, ob die Dateipfade korrekt sind</li>
+                            <li>Stellen Sie sicher, dass Dateien ordnungsgemäße Leseberechtigungen haben</li>
+                            <li>Überprüfen Sie die Namespace-Verwendung: <code>use EasyForm\EasyForm;</code></li>
                         </ul>
 
-                        <h3>CSS/JavaScript Not Loading</h3>
+                        <h3>CSS/JavaScript wird nicht geladen</h3>
                         <div class="alert alert-error">
-                            <strong>Issue:</strong> Forms look unstyled or features don't work
+                            <strong>Problem:</strong> Formulare sehen unformatiert aus oder Funktionen funktionieren nicht
                         </div>
-                        <p><strong>Solutions:</strong></p>
+                        <p><strong>Lösungen:</strong></p>
                         <ul>
-                            <li>Include required CSS framework (Semantic UI, Bootstrap, etc.)</li>
-                            <li>Include jQuery for AJAX functionality</li>
-                            <li>Check browser console for 404 errors</li>
-                            <li>Verify file paths in HTML includes</li>
+                            <li>Erforderliches CSS-Framework einbinden (Semantic UI, Bootstrap, etc.)</li>
+                            <li>jQuery für AJAX-Funktionalität einbinden</li>
+                            <li>Browser-Konsole auf 404-Fehler überprüfen</li>
+                            <li>Dateipfade in HTML-Includes überprüfen</li>
                         </ul>
 
-                        <h3>Permission Errors</h3>
+                        <h3>Berechtigungsfehler</h3>
                         <div class="alert alert-error">
-                            <strong>Error:</strong> <code>Permission denied</code> when accessing files
+                            <strong>Fehler:</strong> <code>Permission denied</code> beim Zugriff auf Dateien
                         </div>
-                        <p><strong>Solutions:</strong></p>
+                        <p><strong>Lösungen:</strong></p>
                         <div class="code-block" data-language="bash">
-<code># Fix file permissions
+<code># Dateiberechtigungen korrigieren
 chmod -R 755 easy_form/
-chown -R www-data:www-data easy_form/  # On Linux/Apache
-chown -R _www:_www easy_form/           # On macOS/Apache</code>
+chown -R www-data:www-data easy_form/  # Auf Linux/Apache
+chown -R _www:_www easy_form/           # Auf macOS/Apache</code>
                         </div>
 
-                        <h3>PHP Version Issues</h3>
+                        <h3>PHP-Versionsprobleme</h3>
                         <div class="alert alert-error">
-                            <strong>Error:</strong> Syntax errors or features not working
+                            <strong>Fehler:</strong> Syntaxfehler oder Funktionen funktionieren nicht
                         </div>
-                        <p><strong>Solutions:</strong></p>
+                        <p><strong>Lösungen:</strong></p>
                         <ul>
-                            <li>Upgrade to PHP 7.4 or higher</li>
-                            <li>Enable required PHP extensions</li>
-                            <li>Check <code>phpinfo()</code> for current configuration</li>
+                            <li>Auf PHP 7.4 oder höher aktualisieren</li>
+                            <li>Erforderliche PHP-Erweiterungen aktivieren</li>
+                            <li><code>phpinfo()</code> für aktuelle Konfiguration prüfen</li>
                         </ul>
 
-                        <h3>Memory Issues</h3>
+                        <h3>Speicherprobleme</h3>
                         <div class="alert alert-error">
-                            <strong>Error:</strong> <code>Fatal error: Allowed memory size exhausted</code>
+                            <strong>Fehler:</strong> <code>Fatal error: Allowed memory size exhausted</code>
                         </div>
-                        <p><strong>Solutions:</strong></p>
+                        <p><strong>Lösungen:</strong></p>
                         <div class="code-block" data-language="php">
 <code><?php
-// Increase memory limit temporarily
+// Speicherlimit temporär erhöhen
 ini_set('memory_limit', '256M');
 
-// Or permanently in php.ini
+// Oder dauerhaft in php.ini
 // memory_limit = 256M
 ?></code>
                         </div>
 
-                        <h3>Getting Help</h3>
-                        <p>If you're still experiencing issues:</p>
+                        <h3>Hilfe erhalten</h3>
+                        <p>Wenn Sie weiterhin Probleme haben:</p>
                         <ul>
-                            <li>Check the <a href="examples.html#faq">FAQ section</a></li>
-                            <li>Review the <a href="examples.html">code examples</a></li>
-                            <li>Search existing issues on GitHub</li>
-                            <li>Create a new issue with detailed error information</li>
+                            <li>Überprüfen Sie den <a href="examples.html#faq">FAQ-Bereich</a></li>
+                            <li>Durchsuchen Sie die <a href="examples.html">Code-Beispiele</a></li>
+                            <li>Suchen Sie nach bestehenden Issues auf GitHub</li>
+                            <li>Erstellen Sie ein neues Issue mit detaillierten Fehlerinformationen</li>
                         </ul>
                     </section>
 
                     <!-- Next Steps -->
                     <section id="next-steps">
-                        <h2>Next Steps</h2>
-                        <p>Congratulations! You've successfully installed EasyForm/EasyList. Here's what to do next:</p>
+                        <h2>Nächste Schritte</h2>
+                        <p>Herzlichen Glückwunsch! Sie haben EasyForm/EasyList erfolgreich installiert. Hier ist, was als Nächstes zu tun ist:</p>
 
                         <div class="row">
                             <div class="col-4">
                                 <div class="card">
                                     <div class="card-body text-center">
-                                        <h3>📚 Learn the Basics</h3>
-                                        <p>Start with simple forms and gradually explore advanced features.</p>
-                                        <a href="easyform.html" class="btn btn-primary">EasyForm Guide</a>
+                                        <h3>📚 Grundlagen lernen</h3>
+                                        <p>Beginnen Sie mit einfachen Formularen und erkunden Sie schrittweise erweiterte Funktionen.</p>
+                                        <a href="easyform.html" class="btn btn-primary">EasyForm Anleitung</a>
                                     </div>
                                 </div>
                             </div>
@@ -530,9 +530,9 @@ ini_set('memory_limit', '256M');
                             <div class="col-4">
                                 <div class="card">
                                     <div class="card-body text-center">
-                                        <h3>🎮 Try Examples</h3>
-                                        <p>Explore interactive demos and copy code for your projects.</p>
-                                        <a href="demos/" class="btn btn-primary">View Demos</a>
+                                        <h3>🎮 Beispiele ausprobieren</h3>
+                                        <p>Erkunden Sie interaktive Demos und kopieren Sie Code für Ihre Projekte.</p>
+                                        <a href="demos/" class="btn btn-primary">Demos ansehen</a>
                                     </div>
                                 </div>
                             </div>
@@ -540,27 +540,27 @@ ini_set('memory_limit', '256M');
                             <div class="col-4">
                                 <div class="card">
                                     <div class="card-body text-center">
-                                        <h3>🔧 Build Something</h3>
-                                        <p>Start building your first form or data table right away.</p>
-                                        <a href="examples.html" class="btn btn-primary">Code Examples</a>
+                                        <h3>🔧 Etwas erstellen</h3>
+                                        <p>Beginnen Sie sofort mit dem Erstellen Ihres ersten Formulars oder Ihrer ersten Datentabelle.</p>
+                                        <a href="examples.html" class="btn btn-primary">Code-Beispiele</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <h3>Recommended Learning Path</h3>
+                        <h3>Empfohlener Lernpfad</h3>
                         <ol>
-                            <li><strong>Start Simple:</strong> Create a basic contact form</li>
-                            <li><strong>Add Validation:</strong> Learn about form validation rules</li>
-                            <li><strong>Explore Layouts:</strong> Try groups, tabs, and columns</li>
-                            <li><strong>Add Interactivity:</strong> Implement AJAX functionality</li>
-                            <li><strong>Master Data Lists:</strong> Create searchable, sortable tables</li>
-                            <li><strong>Use Visual Builders:</strong> Try the drag-and-drop interface</li>
-                            <li><strong>Advanced Features:</strong> Custom themes and complex workflows</li>
+                            <li><strong>Einfach beginnen:</strong> Erstellen Sie ein einfaches Kontaktformular</li>
+                            <li><strong>Validierung hinzufügen:</strong> Lernen Sie Formularvalidierungsregeln kennen</li>
+                            <li><strong>Layouts erkunden:</strong> Probieren Sie Gruppen, Tabs und Spalten aus</li>
+                            <li><strong>Interaktivität hinzufügen:</strong> Implementieren Sie AJAX-Funktionalität</li>
+                            <li><strong>Datenlisten meistern:</strong> Erstellen Sie durchsuchbare, sortierbare Tabellen</li>
+                            <li><strong>Visuelle Builder verwenden:</strong> Probieren Sie die Drag-and-Drop-Oberfläche aus</li>
+                            <li><strong>Erweiterte Funktionen:</strong> Benutzerdefinierte Themes und komplexe Workflows</li>
                         </ol>
 
                         <div class="alert alert-success">
-                            <strong>Pro Tip:</strong> Start with the <a href="examples.html">code examples</a> and modify them to fit your needs. This is the fastest way to learn!
+                            <strong>Profi-Tipp:</strong> Beginnen Sie mit den <a href="examples.html">Code-Beispielen</a> und passen Sie sie an Ihre Bedürfnisse an. Das ist der schnellste Weg zu lernen!
                         </div>
                     </section>
                 </div>
@@ -574,37 +574,37 @@ ini_set('memory_limit', '256M');
             <div class="footer-content">
                 <div class="footer-section">
                     <h3>Installation</h3>
-                    <a href="#requirements">System Requirements</a>
-                    <a href="#composer">Composer Installation</a>
-                    <a href="#manual">Manual Installation</a>
-                    <a href="#troubleshooting">Troubleshooting</a>
+                    <a href="#requirements">Systemanforderungen</a>
+                    <a href="#composer">Composer-Installation</a>
+                    <a href="#manual">Manuelle Installation</a>
+                    <a href="#troubleshooting">Fehlerbehebung</a>
                 </div>
                 
                 <div class="footer-section">
-                    <h3>Documentation</h3>
-                    <a href="easyform.html">EasyForm Guide</a>
-                    <a href="easylist.html">EasyList Guide</a>
-                    <a href="api.html">API Reference</a>
-                    <a href="examples.html">Code Examples</a>
+                    <h3>Dokumentation</h3>
+                    <a href="easyform.html">EasyForm Anleitung</a>
+                    <a href="easylist.html">EasyList Anleitung</a>
+                    <a href="api.html">API-Referenz</a>
+                    <a href="examples.html">Code-Beispiele</a>
                 </div>
                 
                 <div class="footer-section">
-                    <h3>Resources</h3>
-                    <a href="demos/">Interactive Demos</a>
-                    <a href="builders.html">Visual Builders</a>
-                    <a href="../examples/">Example Files</a>
+                    <h3>Ressourcen</h3>
+                    <a href="demos/">Interaktive Demos</a>
+                    <a href="builders.html">Visuelle Builder</a>
+                    <a href="../examples/">Beispieldateien</a>
                 </div>
                 
                 <div class="footer-section">
                     <h3>Support</h3>
-                    <a href="mailto:support@example.com">Email Support</a>
+                    <a href="mailto:support@example.com">E-Mail Support</a>
                     <a href="https://github.com/smartform/easyform">GitHub</a>
-                    <a href="examples.html#faq">FAQ</a>
+                    <a href="examples.html#faq">Häufige Fragen</a>
                 </div>
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2024 EasyForm/EasyList Documentation. Built for developers.</p>
+                <p>&copy; 2024 EasyForm/EasyList Dokumentation. Entwickelt für Entwickler.</p>
             </div>
         </div>
     </footer>

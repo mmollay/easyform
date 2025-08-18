@@ -31,6 +31,10 @@ config.local.php
 # Test files
 /tests/coverage/
 /archive/
+test*.php
+test*.html
+show_error.html
+working_example.html
 
 # Build files
 /dist/

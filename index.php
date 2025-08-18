@@ -55,8 +55,14 @@
         
         .nav-menu {
             display: flex;
-            gap: 30px;
+            gap: 20px;
             list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-menu > li {
+            position: relative;
         }
         
         .nav-menu a {
@@ -67,10 +73,60 @@
             display: flex;
             align-items: center;
             gap: 5px;
+            padding: 8px 12px;
+            border-radius: 6px;
         }
         
         .nav-menu a:hover {
             color: #667eea;
+            background: rgba(102, 126, 234, 0.08);
+        }
+        
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            min-width: 220px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            border-radius: 12px;
+            padding: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            color: #4a5568;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+        }
+        
+        .dropdown-menu a:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .dropdown-menu a i {
+            width: 20px;
         }
         
         /* Hero Section */
@@ -387,11 +443,32 @@
         <div class="nav-container">
             <div class="nav-logo">EasyForm</div>
             <ul class="nav-menu">
-                <li><a href="#features"><i class="star icon"></i> Funktionen</a></li>
-                <li><a href="examples/"><i class="code icon"></i> Beispiele</a></li>
-                <li><a href="docs/"><i class="book icon"></i> Dokumentation</a></li>
-                <li><a href="form_builder.php"><i class="paint brush icon"></i> Form Builder</a></li>
-                <li><a href="list_generator.php"><i class="table icon"></i> List Generator</a></li>
+                <li class="dropdown">
+                    <a href="#features"><i class="star icon"></i> Features <i class="angle down icon"></i></a>
+                    <div class="dropdown-menu">
+                        <a href="#form-features"><i class="wpforms icon"></i> EasyForm Features</a>
+                        <a href="#list-features"><i class="list icon"></i> EasyList Features</a>
+                        <a href="#builders"><i class="tools icon"></i> Visual Builders</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="docs/"><i class="book icon"></i> Dokumentation <i class="angle down icon"></i></a>
+                    <div class="dropdown-menu">
+                        <a href="docs/easyform.html"><i class="file alternate icon"></i> EasyForm API</a>
+                        <a href="docs/easylist.html"><i class="table icon"></i> EasyList API</a>
+                        <a href="docs/installation.html"><i class="download icon"></i> Installation</a>
+                        <a href="docs/examples.html"><i class="code icon"></i> Code-Beispiele</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#tools"><i class="tools icon"></i> Tools <i class="angle down icon"></i></a>
+                    <div class="dropdown-menu">
+                        <a href="form_builder.php"><i class="paint brush icon"></i> Form Builder</a>
+                        <a href="list_generator.php"><i class="table icon"></i> List Generator</a>
+                        <a href="beispiel_formular.php"><i class="eye icon"></i> Demo Formular</a>
+                    </div>
+                </li>
+                <li><a href="#contact"><i class="envelope icon"></i> Kontakt</a></li>
             </ul>
         </div>
     </nav>
@@ -417,9 +494,9 @@
     
     <!-- Features Section -->
     <section class="features-section" id="features">
-        <h2 class="section-title">Warum EasyForm?</h2>
+        <h2 class="section-title">Warum EasyForm & EasyList?</h2>
         <p class="section-subtitle">
-            Alles was Sie brauchen für moderne Webformulare und Datenverwaltung
+            Die komplette Lösung für moderne Webformulare und Datenverwaltung
         </p>
         
         <div class="features-grid">
@@ -481,6 +558,103 @@
                 <p class="feature-description">
                     Von einfachen Textfeldern bis zu komplexen Komponenten wie Datepicker
                 </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- EasyList Features Section -->
+    <section class="features-section" id="list-features" style="background: white;">
+        <h2 class="section-title">EasyList - Datentabellen leicht gemacht</h2>
+        <p class="section-subtitle">
+            Erstellen Sie professionelle Datentabellen mit Sortierung, Filterung und Export-Funktionen
+        </p>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <i class="table icon"></i>
+                </div>
+                <h3 class="feature-title">Automatische Tabellen</h3>
+                <p class="feature-description">
+                    Generiert automatisch responsive Tabellen aus Arrays, Datenbanken oder APIs
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    <i class="search icon"></i>
+                </div>
+                <h3 class="feature-title">Intelligente Suche & Filter</h3>
+                <p class="feature-description">
+                    Eingebaute Suchfunktion mit spaltenspezifischen Filtern und Echtzeit-Suche
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    <i class="sort icon"></i>
+                </div>
+                <h3 class="feature-title">Sortierung & Pagination</h3>
+                <p class="feature-description">
+                    Multi-Spalten-Sortierung mit konfigurierbarer Pagination für große Datenmengen
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                    <i class="download icon"></i>
+                </div>
+                <h3 class="feature-title">Export-Funktionen</h3>
+                <p class="feature-description">
+                    Export in CSV, Excel, JSON und PDF mit einem Klick
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                    <i class="bolt icon"></i>
+                </div>
+                <h3 class="feature-title">Bulk Actions</h3>
+                <p class="feature-description">
+                    Massenaktionen für mehrere Zeilen gleichzeitig mit Checkbox-Auswahl
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);">
+                    <i class="mobile alternate icon"></i>
+                </div>
+                <h3 class="feature-title">Responsive Design</h3>
+                <p class="feature-description">
+                    Automatische Anpassung für mobile Geräte mit Touch-optimierten Kontrollen
+                </p>
+            </div>
+        </div>
+        
+        <!-- EasyList Code Example -->
+        <div style="max-width: 900px; margin: 80px auto 0; padding: 0 20px;">
+            <h3 style="text-align: center; margin-bottom: 30px; color: #2c3e50;">EasyList in Aktion</h3>
+            <div style="background: #1e1e1e; border-radius: 12px; padding: 30px; overflow-x: auto;">
+                <pre style="color: #e0e0e0; margin: 0;"><code><span style="color: #ce9178;">use</span> <span style="color: #4ec9b0;">EasyForm\EasyList</span>;
+
+<span style="color: #608b4e;">// Erstelle eine Datentabelle mit allen Features</span>
+<span style="color: #9cdcfe;">$list</span> = <span style="color: #c586c0;">new</span> <span style="color: #4ec9b0;">EasyList</span>(<span style="color: #ce9178;">'users'</span>, [
+    <span style="color: #ce9178;">'data'</span> => <span style="color: #9cdcfe;">$users</span>,
+    <span style="color: #ce9178;">'searchable'</span> => <span style="color: #569cd6;">true</span>,
+    <span style="color: #ce9178;">'sortable'</span> => <span style="color: #569cd6;">true</span>,
+    <span style="color: #ce9178;">'exportable'</span> => [<span style="color: #ce9178;">'csv'</span>, <span style="color: #ce9178;">'excel'</span>, <span style="color: #ce9178;">'pdf'</span>]
+]);
+
+<span style="color: #9cdcfe;">$list</span>
+    -><span style="color: #dcdcaa;">column</span>(<span style="color: #ce9178;">'name'</span>, <span style="color: #ce9178;">'Name'</span>)
+    -><span style="color: #dcdcaa;">column</span>(<span style="color: #ce9178;">'email'</span>, <span style="color: #ce9178;">'E-Mail'</span>)
+    -><span style="color: #dcdcaa;">column</span>(<span style="color: #ce9178;">'role'</span>, <span style="color: #ce9178;">'Rolle'</span>)
+    -><span style="color: #dcdcaa;">column</span>(<span style="color: #ce9178;">'created_at'</span>, <span style="color: #ce9178;">'Erstellt'</span>, [<span style="color: #ce9178;">'format'</span> => <span style="color: #ce9178;">'date'</span>])
+    -><span style="color: #dcdcaa;">action</span>(<span style="color: #ce9178;">'edit'</span>, <span style="color: #ce9178;">'<i class="edit icon"></i>'</span>, [<span style="color: #ce9178;">'class'</span> => <span style="color: #ce9178;">'primary'</span>])
+    -><span style="color: #dcdcaa;">action</span>(<span style="color: #ce9178;">'delete'</span>, <span style="color: #ce9178;">'<i class="trash icon"></i>'</span>, [<span style="color: #ce9178;">'class'</span> => <span style="color: #ce9178;">'red'</span>])
+    -><span style="color: #dcdcaa;">bulkAction</span>(<span style="color: #ce9178;">'delete'</span>, <span style="color: #ce9178;">'Löschen'</span>)
+    -><span style="color: #dcdcaa;">pagination</span>(<span style="color: #b5cea8;">20</span>)
+    -><span style="color: #dcdcaa;">display</span>();</code></pre>
             </div>
         </div>
     </section>
@@ -592,17 +766,107 @@
     </section>
     
     <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-links">
-                <a href="docs/">Dokumentation</a>
-                <a href="examples/">Beispiele</a>
-                <a href="https://github.com/mmollay/easyform">GitHub</a>
-                <a href="LICENSE">Lizenz</a>
+    <!-- Kontakt Section -->
+    <section class="contact-section" id="contact" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 80px 0; color: white;">
+        <div style="max-width: 800px; margin: 0 auto; text-align: center; padding: 0 20px;">
+            <h2 style="font-size: 2.5rem; margin-bottom: 20px;">Bereit durchzustarten?</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 40px; opacity: 0.95;">
+                Beginnen Sie noch heute mit EasyForm & EasyList und erleben Sie, 
+                wie einfach moderne Webentwicklung sein kann.
+            </p>
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                <a href="form_builder.php" class="btn-primary" style="background: white; color: #667eea;">
+                    <i class="paint brush icon"></i> Form Builder starten
+                </a>
+                <a href="list_generator.php" class="btn-secondary" style="background: transparent; border: 2px solid white;">
+                    <i class="table icon"></i> List Generator öffnen
+                </a>
+                <a href="docs/" class="btn-secondary" style="background: transparent; border: 2px solid white;">
+                    <i class="book icon"></i> Dokumentation lesen
+                </a>
             </div>
-            <div class="footer-divider"></div>
-            <p class="footer-copyright">
-                © 2024 EasyForm. Mit ❤️ entwickelt für moderne PHP-Entwickler.
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content" style="max-width: 1200px; margin: 0 auto; padding: 60px 20px 40px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 40px;">
+                <!-- Über EasyForm -->
+                <div>
+                    <h3 style="color: #667eea; margin-bottom: 15px; font-size: 1.3rem;">
+                        <i class="wpforms icon"></i> EasyForm & EasyList
+                    </h3>
+                    <p style="color: #718096; line-height: 1.8; font-size: 0.95rem;">
+                        Die moderne PHP-Bibliothek für professionelle Formulare und Datentabellen. 
+                        Entwickelt für Entwickler, die Wert auf sauberen Code und Effizienz legen.
+                    </p>
+                </div>
+                
+                <!-- Schnellzugriff -->
+                <div>
+                    <h4 style="margin-bottom: 15px; color: #2d3748;">Schnellzugriff</h4>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <a href="form_builder.php" style="color: #718096; text-decoration: none; transition: color 0.3s;">
+                            <i class="angle right icon"></i> Form Builder
+                        </a>
+                        <a href="list_generator.php" style="color: #718096; text-decoration: none; transition: color 0.3s;">
+                            <i class="angle right icon"></i> List Generator
+                        </a>
+                        <a href="beispiel_formular.php" style="color: #718096; text-decoration: none; transition: color 0.3s;">
+                            <i class="angle right icon"></i> Demo Formular
+                        </a>
+                        <a href="test_list_themes.html" style="color: #718096; text-decoration: none; transition: color 0.3s;">
+                            <i class="angle right icon"></i> Theme Test
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Dokumentation -->
+                <div>
+                    <h4 style="margin-bottom: 15px; color: #2d3748;">Dokumentation</h4>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <a href="docs/" style="color: #718096; text-decoration: none; transition: color 0.3s;">
+                            <i class="angle right icon"></i> Übersicht
+                        </a>
+                        <a href="docs/installation.html" style="color: #718096; text-decoration: none; transition: color 0.3s;">
+                            <i class="angle right icon"></i> Installation
+                        </a>
+                        <a href="docs/easyform.html" style="color: #718096; text-decoration: none; transition: color 0.3s;">
+                            <i class="angle right icon"></i> EasyForm API
+                        </a>
+                        <a href="docs/easylist.html" style="color: #718096; text-decoration: none; transition: color 0.3s;">
+                            <i class="angle right icon"></i> EasyList API
+                        </a>
+                        <a href="docs/examples.html" style="color: #718096; text-decoration: none; transition: color 0.3s;">
+                            <i class="angle right icon"></i> Code-Beispiele
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Community -->
+                <div>
+                    <h4 style="margin-bottom: 15px; color: #2d3748;">Community & Support</h4>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <a href="https://github.com/mmollay/easyform" style="color: #718096; text-decoration: none; transition: color 0.3s;">
+                            <i class="github icon"></i> GitHub Repository
+                        </a>
+                        <a href="#" style="color: #718096; text-decoration: none; transition: color 0.3s;">
+                            <i class="bug icon"></i> Fehler melden
+                        </a>
+                        <a href="#" style="color: #718096; text-decoration: none; transition: color 0.3s;">
+                            <i class="lightbulb icon"></i> Feature vorschlagen
+                        </a>
+                        <a href="LICENSE" style="color: #718096; text-decoration: none; transition: color 0.3s;">
+                            <i class="certificate icon"></i> MIT Lizenz
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-divider" style="border-top: 1px solid #e2e8f0; margin: 40px 0 20px;"></div>
+            
+            <p class="footer-copyright" style="text-align: center; color: #718096; font-size: 0.9rem;">
+                © 2024 EasyForm & EasyList. Mit <i class="heart icon" style="color: #e53e3e;"></i> entwickelt für die moderne PHP-Community.
             </p>
         </div>
     </footer>

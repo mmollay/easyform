@@ -6,90 +6,500 @@
     <title>EasyForm Builder - Drag & Drop Form Generator</title>
     <link rel="stylesheet" href="semantic/dist/semantic.min.css">
     <link rel="stylesheet" href="js/sortable.min.css">
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/inline/ckeditor.js"></script>
     <style>
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(120deg, #f6f8fb 0%, #e9ecf0 100%);
-            margin: 0;
-            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        .builder-container {
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            grid-template-rows: 1fr auto;
-            gap: 20px;
-            max-width: 1600px;
-            margin: 0 auto;
-            height: calc(100vh - 40px);
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
         }
-
-        .top-row {
-            grid-column: 1 / -1;
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 20px;
-            height: 70vh; /* Fixed height for top section */
-            min-height: 500px; /* Minimum height to prevent too small */
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
         }
-
-        .code-panel {
-            grid-column: 1 / -1;
+        
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
         }
-
-        .builder-panel {
-            background: white;
-            border-radius: 15px;
-            padding: 0;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #667eea;
+        }
+        
+        /* Main Header */
+        .main-header {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 15px 30px;
+            margin-bottom: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
             display: flex;
-            flex-direction: column;
-            height: 100%;
-            overflow: hidden;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1800px;
+            margin: 0 auto;
         }
-
-        .panel-header {
+        
+        .header-title {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 20px 20px 15px 20px;
-            border-bottom: 2px solid #f0f0f0;
-            flex-shrink: 0; /* Prevent header from shrinking */
+            gap: 15px;
         }
-
-        .panel-header h2 {
-            margin: 0;
-            font-size: 1.3rem;
+        
+        .header-title h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
             color: #2d3748;
+            margin: 0;
+        }
+        
+        .header-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        /* Moderne Button-Stile */
+        .header-actions .ui.button {
+            border-radius: 8px;
+            font-weight: 500;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .header-actions .ui.button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        /* Template-Buttons Gruppe */
+        .template-buttons {
+            display: inline-flex;
+            background: rgba(102, 126, 234, 0.08);
+            border-radius: 10px;
+            padding: 3px;
+            gap: 4px;
+        }
+        
+        .template-buttons .ui.button {
+            background: white !important;
+            border: 1px solid #e0e0e0 !important;
+            color: #667eea !important;
+            margin: 0 !important;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+        }
+        
+        .template-buttons .ui.button:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            color: white !important;
+            border-color: transparent !important;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+        }
+        
+        /* Config Button */
+        .config-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            color: white !important;
+            border: none !important;
+        }
+        
+        .config-button:hover {
+            background: linear-gradient(135deg, #5a67d8 0%, #6b3d8f 100%) !important;
+        }
+        
+        /* Preview Button */
+        .preview-button {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%) !important;
+            color: white !important;
+            border: none !important;
+        }
+        
+        .preview-button:hover {
+            background: linear-gradient(135deg, #38a169 0%, #2f855a 100%) !important;
+        }
+        
+        /* Clear Button - Verstärkt */
+        .header-actions .clear-button,
+        .ui.button.clear-button {
+            background: white !important;
+            color: #dc3545 !important;
+            border: 2px solid #dc3545 !important;
+            opacity: 1 !important;
+            font-weight: 600 !important;
+        }
+        
+        .header-actions .clear-button:hover,
+        .ui.button.clear-button:hover {
+            background: #dc3545 !important;
+            color: white !important;
+            border-color: #dc3545 !important;
+            opacity: 1 !important;
+        }
+        
+        /* Back Button - Verstärkt */
+        .header-actions .back-button,
+        .ui.button.back-button,
+        a.ui.button.back-button {
+            background: white !important;
+            color: #2d3748 !important;
+            border: 2px solid #4a5568 !important;
+            opacity: 1 !important;
+            font-weight: 600 !important;
+        }
+        
+        .header-actions .back-button:hover,
+        .ui.button.back-button:hover,
+        a.ui.button.back-button:hover {
+            background: #2d3748 !important;
+            color: white !important;
+            border-color: #2d3748 !important;
+            opacity: 1 !important;
+            transform: translateY(-2px);
+        }
+        
+        /* Main Container - 3 columns layout */
+        .main-container {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 0 20px 20px;
+            height: calc(100vh - 120px);
         }
 
-        .panel-header i {
-            color: #667eea;
-            font-size: 1.5rem;
-        }
-
-        /* Panel Content Areas */
-        .panel-content {
-            flex: 1;
+        /* Sidebar Panel */
+        .sidebar-panel {
+            width: 320px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             overflow-y: auto;
+            flex-shrink: 0;
+        }
+        
+        /* Panel Sections */
+        .panel-section {
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .panel-section:last-child {
+            border-bottom: none;
+        }
+        
+        .panel-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .panel-title i {
+            color: #667eea;
+        }
+
+        /* Builder Panel */
+        .builder-panel {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            flex: 1;
+            transition: flex 0.3s ease;
             padding: 20px;
         }
         
-        /* Components Panel */
-        .components-panel .panel-content {
+        .preview-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: -20px -20px 20px -20px;
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .preview-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .preview-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin: 0 -10px -10px -10px;
+        }
+        
+        /* Code Panel */
+        .code-panel {
+            width: 450px;
+            background: #1e1e1e;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+            transition: width 0.3s ease, margin 0.3s ease;
+        }
+        
+        .code-panel.collapsed {
+            width: 50px;
+            cursor: pointer;
+        }
+        
+        .code-panel.collapsed .code-tabs,
+        .code-panel.collapsed .code-content {
+            display: none;
+        }
+        
+        /* Panel Toggle Button */
+        .panel-toggle {
+            position: absolute;
+            left: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #667eea;
+            border: none;
+            color: white;
+            width: 30px;
+            height: 60px;
+            border-radius: 5px 0 0 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: all 0.3s;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+        }
+        
+        .panel-toggle:hover {
+            background: #764ba2;
+            width: 35px;
+        }
+        
+        .code-panel.collapsed .panel-toggle {
+            left: auto;
+            right: -15px;
+            border-radius: 0 5px 5px 0;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+        }
+        
+        /* Expand builder panel when code panel is collapsed */
+        .builder-panel.expanded {
+            flex: 2;
+        }
+        
+        /* CKEditor Styles */
+        .html-content-editable {
+            min-height: 100px;
             padding: 15px;
+            background: white;
+            border: 2px dashed #e0e0e0;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: text;
+            position: relative;
+        }
+        
+        .html-content-editable:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+        
+        .html-content-editable.ck-focused {
+            border-color: #667eea;
+            border-style: solid;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .html-content-placeholder {
+            color: #999;
+            font-style: italic;
+        }
+        
+        /* CKEditor Toolbar Customization */
+        .ck-toolbar {
+            border-radius: 8px !important;
+            background: linear-gradient(135deg, #f5f7fa 0%, #ffffff 100%) !important;
+        }
+        
+        .ck-toolbar__items {
+            gap: 5px;
+        }
+        
+        .ck-button {
+            border-radius: 6px !important;
+        }
+        
+        .ck-button:hover {
+            background: rgba(102, 126, 234, 0.1) !important;
+        }
+        
+        .ck-editor__editable {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .edit-html-hint {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #667eea;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        
+        .html-content-editable:hover .edit-html-hint {
+            opacity: 1;
+        }
+        
+        .code-tabs {
+            display: flex;
+            background: #2d2d2d;
+            padding: 0;
+            border-bottom: 1px solid #3e3e3e;
+        }
+        
+        .code-tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            color: #969696;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .code-tab:hover {
+            color: #fff;
+        }
+        
+        .code-tab.active {
+            color: #fff;
+            background: #1e1e1e;
+            border-bottom-color: #667eea;
+        }
+        
+        .code-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            position: relative;
+        }
+        
+        /* Collapsible Code Block */
+        .code-collapse-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #969696;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+        
+        .code-collapse-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        .code-collapsed #codeContent {
+            max-height: 100px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .code-collapsed #codeContent::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: linear-gradient(to bottom, transparent, #1e1e1e);
+        }
+        
+        .code-collapsed .code-collapse-btn i::before {
+            content: '\\f077';
+        }
+        
+        .code-content pre {
+            margin: 0;
+            color: #d4d4d4;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
         }
 
+        /* Component Styles */
         .component-group {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .component-group h3 {
-            font-size: 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
             color: #4a5568;
             margin-bottom: 10px;
             text-transform: uppercase;
@@ -138,14 +548,18 @@
         }
 
         .drop-zone {
-            flex: 1;
-            min-height: 400px;
+            height: calc(100% - 100px); /* Account for title and padding */
+            min-height: 500px;
             border: 3px dashed #cbd5e0;
-            border-radius: 10px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 20px;
             position: relative;
             transition: all 0.3s ease;
             overflow-y: auto;
+            background: #f8f9fa;
+            display: flex;
+            flex-direction: column;
         }
 
         .drop-zone.drag-over {
@@ -157,12 +571,40 @@
             text-align: center;
             padding: 60px 20px;
             color: #a0aec0;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .drop-zone-placeholder i {
             font-size: 3rem;
             margin-bottom: 15px;
             display: block;
+            color: #cbd5e0;
+        }
+        
+        .drop-zone-placeholder h3 {
+            color: #4a5568;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .drop-zone-placeholder p {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+        
+        .drop-zone.has-elements .drop-zone-placeholder {
+            display: none;
+        }
+        
+        /* Better spacing when zone has elements */
+        .drop-zone.has-elements {
+            justify-content: flex-start;
+            align-items: stretch;
+            padding: 40px;
         }
 
         .form-element {
@@ -1023,23 +1465,44 @@
     </style>
 </head>
 <body>
-    <div class="builder-container">
-        <!-- Top Row: Components and Form Builder -->
-        <div class="top-row">
-            <!-- Components Panel -->
-            <div class="builder-panel components-panel">
-                <div class="panel-header" style="display: flex; align-items: center; justify-content: space-between;">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <i class="puzzle piece icon"></i>
-                        <h2>Komponenten</h2>
-                    </div>
-                    <a href="index.php" style="color: #667eea; text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 5px; padding: 5px 10px; border-radius: 5px; transition: background 0.2s;">
-                        <i class="arrow left icon"></i> Zurück zur Startseite
-                    </a>
+    <!-- Header -->
+    <div class="main-header">
+        <div class="header-content">
+            <div class="header-title">
+                <h1><i class="wpforms icon"></i> EasyForm Builder</h1>
+                <span class="header-badge">BETA</span>
+            </div>
+            <div class="header-actions">
+                <div class="template-buttons">
+                    <button class="ui button" onclick="showTemplateManager()">
+                        <i class="save icon"></i> Templates
+                    </button>
                 </div>
-                
-                <div class="panel-content">
-                    <div class="component-group">
+                <button class="ui button config-button" onclick="showFormConfig()">
+                    <i class="cog icon"></i> Konfiguration
+                </button>
+                <button class="ui button preview-button" onclick="previewForm()">
+                    <i class="eye icon"></i> Vorschau
+                </button>
+                <button class="ui button clear-button" onclick="clearForm()">
+                    <i class="trash icon"></i> Leeren
+                </button>
+                <a href="index.php" class="ui button back-button">
+                    <i class="arrow left icon"></i> Zurück
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar with Components -->
+        <div class="sidebar-panel">
+            <div class="panel-section">
+                <div class="panel-title">
+                    <i class="puzzle piece icon"></i> Komponenten
+                </div>
+                <div class="component-group">
                 <h3>Eingabefelder</h3>
                 <div class="component-item" draggable="true" data-type="text">
                     <i class="font icon"></i>
@@ -1126,66 +1589,37 @@
                     <span>Reset Button</span>
                 </div>
             </div>
-                </div> <!-- Close panel-content -->
-            </div> <!-- Close components-panel -->
-
-            <!-- Form Builder Area -->
-            <div class="builder-panel builder-area">
-                <div class="panel-header">
-                    <i class="wpforms icon"></i>
-                    <h2>Formular Builder</h2>
-                    <div class="header-buttons">
-                        <button class="header-btn config-btn" onclick="showFormConfig()" title="Formular konfigurieren">
-                            <i class="cog icon"></i>
-                            <span>Konfig</span>
-                        </button>
-                        <button class="header-btn save-btn" onclick="saveTemplate()" title="Vorlage speichern">
-                            <i class="save icon"></i>
-                            <span>Speichern</span>
-                        </button>
-                        <button class="header-btn load-btn" onclick="loadTemplate()" title="Vorlage laden">
-                            <i class="folder open icon"></i>
-                            <span>Laden</span>
-                        </button>
-                        <button class="header-btn preview-btn" onclick="previewForm()" title="Formular-Vorschau">
-                            <i class="eye icon"></i>
-                            <span>Vorschau</span>
-                        </button>
-                        <button class="header-btn clear-btn" onclick="clearForm()" title="Alle Felder löschen">
-                            <i class="trash alternate outline icon"></i>
-                            <span>Leeren</span>
-                        </button>
-                    </div>
-                </div> <!-- Close panel-header -->
-
-                <div class="panel-content">
-                    <div class="drop-zone" id="dropZone">
-                        <div class="drop-zone-placeholder">
-                            <i class="plus icon"></i>
-                            <h3>Komponenten hier hineinziehen</h3>
-                            <p>Ziehen Sie Felder aus der linken Sidebar in diesen Bereich</p>
-                        </div>
-                    </div>
-                </div> <!-- Close panel-content -->
-            </div> <!-- Close builder-area -->
-        </div> <!-- Close top-row -->
-
-        <!-- Code Output Panel -->
-        <div class="builder-panel code-panel">
-            <div class="panel-header">
-                <i class="code icon"></i>
-                <h2>Generierter Code</h2>
+            </div> <!-- End panel-section -->
+        </div> <!-- End sidebar-panel -->
+        
+        <!-- Form Builder Panel -->
+        <div class="builder-panel">
+            <div class="panel-title" style="margin-bottom: 20px;">
+                <i class="wpforms icon"></i> Formular Builder
             </div>
-
-            <div class="panel-content">
-                <div class="code-tabs">
+            <div class="drop-zone" id="dropZone">
+                <div class="drop-zone-placeholder">
+                    <i class="plus icon"></i>
+                    <h3>Komponenten hier hineinziehen</h3>
+                    <p>Ziehen Sie Felder aus der linken Sidebar in diesen Bereich</p>
+                </div>
+            </div>
+        </div> <!-- End builder-panel -->
+        
+        <!-- Code Panel -->
+        <div class="code-panel" id="codePanel">
+            <div class="panel-toggle" onclick="toggleCodePanel()" title="Code-Panel ein-/ausklappen">
+                <i class="chevron right icon" id="panelToggleIcon"></i>
+            </div>
+            <div class="code-tabs">
                 <button class="code-tab active" data-tab="php">PHP Code</button>
                 <button class="code-tab" data-tab="html">HTML</button>
                 <button class="code-tab" data-tab="json">JSON Config</button>
             </div>
-
-            <div class="code-output" id="codeOutput">
-                <button class="copy-btn" onclick="copyCode()">Kopieren</button>
+            <div class="code-content" id="codeContentWrapper">
+                <button class="code-collapse-btn" onclick="toggleCodeCollapse()">
+                    <i class="chevron down icon"></i> Ein-/Ausklappen
+                </button>
                 <pre id="codeContent"><?php echo htmlspecialchars('// Ziehen Sie Komponenten in den Builder
 // Der generierte Code erscheint hier
 
@@ -1198,10 +1632,9 @@ $form = new EasyForm(\'my_form\', [
 // Ihre Felder werden hier erscheinen...
 
 $form->display();'); ?></pre>
-                </div>
-            </div> <!-- Close panel-content -->
-        </div> <!-- Close code-panel -->
-    </div> <!-- Close builder-container -->
+            </div>
+        </div>
+    </div>
 
     <!-- Field Configuration Modal -->
     <div class="config-overlay" id="configOverlay">
@@ -1308,6 +1741,114 @@ $form->display();'); ?></pre>
                 }, 100);
             }
         }
+        
+        // Helper function to find element by ID
+        window.findElementById = function(id) {
+            // Search in main formElements array
+            for (let element of formElements) {
+                if (element.id === id) {
+                    return element;
+                }
+                // Search in nested elements (for rows)
+                if (element.type === 'row' && element.children) {
+                    for (let column of element.children) {
+                        if (column) {
+                            for (let field of column) {
+                                if (field.id === id) {
+                                    return field;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return null;
+        };
+        
+        // CKEditor 5 Inline Editor Functions
+        let activeEditors = {};
+        
+        window.initializeInlineEditor = function(elementId) {
+            const editorElement = document.getElementById('html-editor-' + elementId);
+            
+            if (!editorElement || activeEditors[elementId]) {
+                return; // Already initialized or element not found
+            }
+            
+            // Remove placeholder if it exists
+            const placeholder = editorElement.querySelector('.html-content-placeholder');
+            if (placeholder) {
+                placeholder.remove();
+            }
+            
+            // Initialize CKEditor 5 Inline
+            InlineEditor
+                .create(editorElement, {
+                    toolbar: {
+                        items: [
+                            'heading', '|',
+                            'bold', 'italic', 'underline', 'strikethrough', 'code', 'subscript', 'superscript', '|',
+                            'link', 'uploadImage', 'blockQuote', 'codeBlock', '|',
+                            'bulletedList', 'numberedList', 'todoList', '|',
+                            'outdent', 'indent', 'alignment', '|',
+                            'insertTable', 'tableColumn', 'tableRow', 'mergeTableCells', '|',
+                            'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
+                            'horizontalLine', 'pageBreak', 'specialCharacters', '|',
+                            'undo', 'redo', '|',
+                            'findAndReplace', 'selectAll', '|',
+                            'sourceEditing'
+                        ],
+                        shouldNotGroupWhenFull: true
+                    },
+                    language: 'de',
+                    image: {
+                        toolbar: [
+                            'imageTextAlternative', 'toggleImageCaption', 'imageStyle:inline',
+                            'imageStyle:block', 'imageStyle:side', 'linkImage'
+                        ]
+                    },
+                    table: {
+                        contentToolbar: [
+                            'tableColumn', 'tableRow', 'mergeTableCells',
+                            'tableCellProperties', 'tableProperties'
+                        ]
+                    }
+                })
+                .then(editor => {
+                    activeEditors[elementId] = editor;
+                    
+                    // Update element content when editor changes
+                    editor.model.document.on('change:data', () => {
+                        const element = window.findElementById(elementId);
+                        if (element) {
+                            element.content = editor.getData();
+                            generateCode(); // Update generated code
+                        }
+                    });
+                    
+                    // Remove hint when focused
+                    const hint = editorElement.querySelector('.edit-html-hint');
+                    if (hint) {
+                        hint.style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error initializing inline editor:', error);
+                });
+        };
+        
+        // Cleanup editors when element is removed
+        window.cleanupEditor = function(elementId) {
+            if (activeEditors[elementId]) {
+                activeEditors[elementId].destroy()
+                    .then(() => {
+                        delete activeEditors[elementId];
+                    })
+                    .catch(error => {
+                        console.error('Error destroying editor:', error);
+                    });
+            }
+        };
         
         // Initialize drag and drop
         $(document).ready(function() {
@@ -2198,7 +2739,17 @@ $form->display();'); ?></pre>
                 case 'divider':
                     return `<div class="ui divider"></div>`;
                 case 'html':
-                    return `<div class="ui segment">${element.content}</div>`;
+                    return `
+                        <div class="html-content-wrapper">
+                            <div class="html-content-editable" 
+                                 id="html-editor-${element.id}" 
+                                 data-element-id="${element.id}"
+                                 onclick="initializeInlineEditor('${element.id}')">
+                                <span class="edit-html-hint">Klicken zum Bearbeiten</span>
+                                ${element.content || '<p class="html-content-placeholder">Klicken Sie hier, um HTML-Inhalt hinzuzufügen...</p>'}
+                            </div>
+                        </div>
+                    `;
                 case 'submit':
                     return `
                         <button class="ui ${element.buttonClass} button" disabled>
@@ -2435,6 +2986,11 @@ $form->display();'); ?></pre>
 
         function deleteElement(index) {
             if (confirm('Möchten Sie dieses Element wirklich löschen?')) {
+                const element = formElements[index];
+                // Clean up CKEditor if it's an HTML element
+                if (element && element.type === 'html' && element.id) {
+                    cleanupEditor(element.id);
+                }
                 formElements.splice(index, 1);
                 renderFormBuilder();
                 generateCode();
@@ -2586,8 +3142,44 @@ $form->display();'); ?></pre>
                     html = `
                         <div class="field">
                             <label>HTML Content</label>
-                            <textarea name="content" rows="6">${element.content}</textarea>
+                            <div id="htmlContentEditor">${element.content || '<p>Geben Sie hier Ihren HTML-Inhalt ein...</p>'}</div>
+                            <textarea name="content" id="htmlContentHidden" style="display:none;">${element.content || ''}</textarea>
                         </div>
+                        <script>
+                            // Initialize CKEditor 5
+                            setTimeout(function() {
+                                if (typeof ClassicEditor !== 'undefined' && !window.currentHtmlEditor) {
+                                    ClassicEditor
+                                        .create(document.querySelector('#htmlContentEditor'), {
+                                            toolbar: {
+                                                items: [
+                                                    'heading', '|',
+                                                    'bold', 'italic', 'underline', 'strikethrough', '|',
+                                                    'link', 'bulletedList', 'numberedList', '|',
+                                                    'outdent', 'indent', '|',
+                                                    'blockQuote', 'insertTable', 'horizontalLine', '|',
+                                                    'fontSize', 'fontColor', 'fontBackgroundColor', '|',
+                                                    'undo', 'redo', '|',
+                                                    'sourceEditing'
+                                                ]
+                                            },
+                                            language: 'de',
+                                            height: '200px'
+                                        })
+                                        .then(editor => {
+                                            window.currentHtmlEditor = editor;
+                                            
+                                            // Update hidden textarea when content changes
+                                            editor.model.document.on('change:data', () => {
+                                                document.getElementById('htmlContentHidden').value = editor.getData();
+                                            });
+                                        })
+                                        .catch(error => {
+                                            console.error('CKEditor initialization error:', error);
+                                        });
+                                }
+                            }, 100);
+                        <\/script>
                     `;
                     break;
                 case 'submit':
@@ -2972,7 +3564,23 @@ $form->display();'); ?></pre>
             
             const optionsStr = options.length > 0 ? '[\n        ' + options.join(',\n        ') + '\n    ]' : '[]';
             
-            return `$form->row(${optionsStr})`;
+            let code = `$form->row(${optionsStr})`;
+            
+            // Generate code for fields in each column (using children array)
+            if (element.children) {
+                for (let colIndex = 0; colIndex < element.columns; colIndex++) {
+                    if (element.children[colIndex] && element.children[colIndex].length > 0) {
+                        code += `\n    ->column(${colIndex})`;
+                        element.children[colIndex].forEach(field => {
+                            const fieldCode = generateElementPHPCode(field);
+                            // Indent the field code and chain it
+                            code += '\n        ' + fieldCode.replace('$form->', '->');
+                        });
+                    }
+                }
+            }
+            
+            return code;
         }
 
         function hasAjaxCapableFields() {
@@ -3018,6 +3626,47 @@ $form->display();'); ?></pre>
             $(this).addClass('active');
             generateCode();
         });
+        
+        // Toggle code collapse
+        window.toggleCodeCollapse = function() {
+            $('#codeContentWrapper').toggleClass('code-collapsed');
+            const btn = $('.code-collapse-btn');
+            const icon = btn.find('i');
+            
+            if ($('#codeContentWrapper').hasClass('code-collapsed')) {
+                icon.removeClass('chevron down').addClass('chevron up');
+                btn.html('<i class="chevron up icon"></i> Erweitern');
+            } else {
+                icon.removeClass('chevron up').addClass('chevron down');
+                btn.html('<i class="chevron down icon"></i> Ein-/Ausklappen');
+            }
+        };
+        
+        // Toggle entire code panel
+        window.toggleCodePanel = function() {
+            const codePanel = $('#codePanel');
+            const builderPanel = $('.builder-panel');
+            const icon = $('#panelToggleIcon');
+            
+            codePanel.toggleClass('collapsed');
+            builderPanel.toggleClass('expanded');
+            
+            if (codePanel.hasClass('collapsed')) {
+                icon.removeClass('chevron right').addClass('chevron left');
+                // Store state in localStorage
+                localStorage.setItem('codePanelCollapsed', 'true');
+            } else {
+                icon.removeClass('chevron left').addClass('chevron right');
+                localStorage.removeItem('codePanelCollapsed');
+            }
+        };
+        
+        // Restore panel state on load
+        $(document).ready(function() {
+            if (localStorage.getItem('codePanelCollapsed') === 'true') {
+                toggleCodePanel();
+            }
+        });
 
         // Utility functions
         window.clearForm = function() {
@@ -3032,6 +3681,205 @@ $form->display();'); ?></pre>
                     reinitializeDragDrop();
                 }, 100);
                 console.log('Form cleared successfully');
+            }
+        };
+        
+        // Template Manager Functions
+        window.showTemplateManager = function() {
+            loadTemplateList();
+            $('#templateManagerModal').modal({
+                closable: false,
+                onApprove: false
+            }).modal('show');
+            
+            // Initialize tabs
+            $('#templateManagerModal .menu .item').tab();
+        };
+        
+        window.loadTemplateList = function() {
+            const templates = JSON.parse(localStorage.getItem('easyform_templates') || '{}');
+            const templateList = $('#templateList');
+            templateList.empty();
+            
+            if (Object.keys(templates).length === 0) {
+                $('#noTemplatesMessage').show();
+                return;
+            }
+            
+            $('#noTemplatesMessage').hide();
+            
+            Object.entries(templates).forEach(([key, template]) => {
+                const date = new Date(template.date).toLocaleString('de-DE');
+                const item = $(`
+                    <div class="item">
+                        <div class="right floated content">
+                            <button class="ui tiny primary button" onclick="loadTemplateByName('${key}')">
+                                <i class="folder open icon"></i> Laden
+                            </button>
+                            <button class="ui tiny button" onclick="exportTemplate('${key}')">
+                                <i class="download icon"></i> Export
+                            </button>
+                            <button class="ui tiny red button" onclick="deleteTemplate('${key}')">
+                                <i class="trash icon"></i>
+                            </button>
+                        </div>
+                        <i class="large bookmark middle aligned icon"></i>
+                        <div class="content">
+                            <div class="header">${template.name}</div>
+                            <div class="description">
+                                ${template.description || 'Keine Beschreibung'}<br>
+                                <small>Erstellt: ${date} | Kategorie: ${template.category || 'Allgemein'}</small>
+                            </div>
+                        </div>
+                    </div>
+                `);
+                templateList.append(item);
+            });
+        };
+        
+        window.loadTemplateByName = function(name) {
+            const templates = JSON.parse(localStorage.getItem('easyform_templates') || '{}');
+            if (templates[name]) {
+                formElements = JSON.parse(JSON.stringify(templates[name].elements));
+                
+                if (templates[name].config) {
+                    formConfig = JSON.parse(JSON.stringify(templates[name].config));
+                }
+                
+                renderFormBuilder();
+                generateCode();
+                $('#templateManagerModal').modal('hide');
+                alert('Template "' + name + '" wurde geladen!');
+            }
+        };
+        
+        window.deleteTemplate = function(name) {
+            if (confirm('Template "' + name + '" wirklich löschen?')) {
+                const templates = JSON.parse(localStorage.getItem('easyform_templates') || '{}');
+                delete templates[name];
+                localStorage.setItem('easyform_templates', JSON.stringify(templates));
+                loadTemplateList();
+            }
+        };
+        
+        window.exportTemplate = function(name) {
+            const templates = JSON.parse(localStorage.getItem('easyform_templates') || '{}');
+            if (templates[name]) {
+                const dataStr = JSON.stringify(templates[name], null, 2);
+                const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                
+                const exportFileDefaultName = name + '.json';
+                
+                const linkElement = document.createElement('a');
+                linkElement.setAttribute('href', dataUri);
+                linkElement.setAttribute('download', exportFileDefaultName);
+                linkElement.click();
+            }
+        };
+        
+        window.importTemplateFile = function(input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const template = JSON.parse(e.target.result);
+                        $('#importPreviewContent').html(`
+                            <strong>Name:</strong> ${template.name}<br>
+                            <strong>Beschreibung:</strong> ${template.description || 'Keine'}<br>
+                            <strong>Kategorie:</strong> ${template.category || 'Allgemein'}<br>
+                            <strong>Erstellt:</strong> ${new Date(template.date).toLocaleString('de-DE')}<br>
+                            <strong>Anzahl Felder:</strong> ${template.elements ? template.elements.length : 0}
+                        `);
+                        $('#importPreview').show();
+                        
+                        // Store temporarily for import
+                        window.tempImportTemplate = template;
+                        
+                    } catch (e) {
+                        alert('Fehler beim Lesen der Datei: ' + e.message);
+                    }
+                };
+                reader.readAsText(file);
+            }
+        };
+        
+        window.executeTemplateAction = function() {
+            const activeTab = $('#templateManagerModal .tab.active').attr('data-tab');
+            
+            if (activeTab === 'new') {
+                saveTemplateFromModal();
+            } else if (activeTab === 'import' && window.tempImportTemplate) {
+                // Import the template
+                const template = window.tempImportTemplate;
+                let templates = JSON.parse(localStorage.getItem('easyform_templates') || '{}');
+                
+                let name = template.name;
+                let counter = 1;
+                while (templates[name]) {
+                    name = template.name + '_' + counter;
+                    counter++;
+                }
+                
+                templates[name] = template;
+                localStorage.setItem('easyform_templates', JSON.stringify(templates));
+                
+                alert('Template "' + name + '" wurde importiert!');
+                $('#templateManagerModal').modal('hide');
+                
+                // Clear import preview
+                $('#importPreview').hide();
+                $('#templateFileInput').val('');
+                window.tempImportTemplate = null;
+            }
+        };
+        
+        window.saveTemplateFromModal = function() {
+            const name = $('#newTemplateName').val();
+            const description = $('#newTemplateDescription').val();
+            const category = $('#newTemplateCategory').val();
+            const includeConfig = $('#includeConfig').is(':checked');
+            
+            if (!name) {
+                alert('Bitte geben Sie einen Template-Namen ein.');
+                return;
+            }
+            
+            if (formElements.length === 0) {
+                alert('Das Formular ist leer. Fügen Sie erst Elemente hinzu.');
+                return;
+            }
+            
+            try {
+                let templates = JSON.parse(localStorage.getItem('easyform_templates') || '{}');
+                
+                const templateData = {
+                    name: name,
+                    description: description,
+                    category: category,
+                    date: new Date().toISOString(),
+                    elements: JSON.parse(JSON.stringify(formElements))
+                };
+                
+                if (includeConfig) {
+                    templateData.config = JSON.parse(JSON.stringify(formConfig));
+                }
+                
+                templates[name] = templateData;
+                localStorage.setItem('easyform_templates', JSON.stringify(templates));
+                
+                alert('Template "' + name + '" wurde gespeichert!');
+                $('#templateManagerModal').modal('hide');
+                
+                // Clear form
+                $('#newTemplateName').val('');
+                $('#newTemplateDescription').val('');
+                $('#newTemplateCategory').val('general');
+                $('#includeConfig').prop('checked', false);
+                
+            } catch (e) {
+                console.error('Fehler beim Speichern:', e);
+                alert('Fehler beim Speichern: ' + e.message);
             }
         }
         
@@ -3569,6 +4417,102 @@ $form->display();
     <script src="semantic/dist/semantic.min.js"><\/script>
 </body>
 </html></script>
+
+    <!-- Template Manager Modal -->
+    <div id="templateManagerModal" class="ui modal large">
+        <i class="close icon"></i>
+        <div class="header">
+            <i class="bookmark icon"></i>
+            Template Manager
+        </div>
+        <div class="content">
+            <div class="ui top attached tabular menu">
+                <a class="item active" data-tab="saved">
+                    <i class="save icon"></i>
+                    Gespeicherte Templates
+                </a>
+                <a class="item" data-tab="new">
+                    <i class="plus icon"></i>
+                    Neues Template
+                </a>
+                <a class="item" data-tab="import">
+                    <i class="upload icon"></i>
+                    Importieren
+                </a>
+            </div>
+            
+            <!-- Saved Templates Tab -->
+            <div class="ui bottom attached tab segment active" data-tab="saved">
+                <div class="ui relaxed divided list" id="templateList">
+                    <!-- Templates werden hier dynamisch geladen -->
+                </div>
+                <div class="ui info message" id="noTemplatesMessage" style="display: none;">
+                    <i class="info circle icon"></i>
+                    Keine gespeicherten Templates vorhanden.
+                </div>
+            </div>
+            
+            <!-- New Template Tab -->
+            <div class="ui bottom attached tab segment" data-tab="new">
+                <form class="ui form">
+                    <div class="field">
+                        <label>Template Name</label>
+                        <input type="text" id="newTemplateName" placeholder="z.B. Kontaktformular">
+                    </div>
+                    <div class="field">
+                        <label>Beschreibung</label>
+                        <textarea id="newTemplateDescription" rows="3" placeholder="Kurze Beschreibung des Templates..."></textarea>
+                    </div>
+                    <div class="field">
+                        <label>Kategorie</label>
+                        <select id="newTemplateCategory" class="ui dropdown">
+                            <option value="general">Allgemein</option>
+                            <option value="contact">Kontakt</option>
+                            <option value="registration">Registrierung</option>
+                            <option value="survey">Umfrage</option>
+                            <option value="custom">Benutzerdefiniert</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" id="includeConfig">
+                            <label>Formular-Konfiguration einschließen</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Import Tab -->
+            <div class="ui bottom attached tab segment" data-tab="import">
+                <div class="ui placeholder segment">
+                    <div class="ui icon header">
+                        <i class="file import icon"></i>
+                        Template-Datei importieren
+                    </div>
+                    <div class="ui primary button" onclick="document.getElementById('templateFileInput').click()">
+                        <i class="folder open icon"></i>
+                        Datei auswählen
+                    </div>
+                    <input type="file" id="templateFileInput" accept=".json" style="display: none;" onchange="importTemplateFile(this)">
+                </div>
+                <div id="importPreview" style="display: none; margin-top: 20px;">
+                    <h4 class="ui header">Vorschau:</h4>
+                    <div class="ui segment">
+                        <div id="importPreviewContent"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <button class="ui button" onclick="$('#templateManagerModal').modal('hide')">
+                Abbrechen
+            </button>
+            <button class="ui primary button" id="templateActionButton" onclick="executeTemplateAction()">
+                <i class="save icon"></i>
+                Speichern
+            </button>
+        </div>
+    </div>
 
     <!-- Form Configuration Modal -->
     <div id="formConfigModal" class="ui modal">

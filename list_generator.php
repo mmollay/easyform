@@ -11,7 +11,11 @@ session_start();
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EasyList Generator - Visual List Builder</title>
+    
+    <!-- Semantic UI CSS -->
     <link rel="stylesheet" href="semantic/dist/semantic.min.css">
+    
+    <!-- Code highlighting -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <style>
         * {
@@ -91,6 +95,54 @@ session_start();
         
         #actions-single .action-element:hover {
             transform: translateX(3px);
+        }
+        
+        /* Theme-specific styles */
+        .bootstrap-theme {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        
+        .bootstrap-theme .table {
+            width: 100%;
+            margin-bottom: 1rem;
+            color: #212529;
+        }
+        
+        .bootstrap-theme .table th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #dee2e6;
+            background-color: #f8f9fa;
+        }
+        
+        .bootstrap-theme .table td {
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .material-theme {
+            font-family: Roboto, sans-serif;
+        }
+        
+        .material-theme table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .material-theme table.highlight > tbody > tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .material-theme table.striped > tbody > tr:nth-child(odd) {
+            background-color: rgba(242, 242, 242, 0.5);
+        }
+        
+        .material-theme table.bordered {
+            border: 1px solid #d0d0d0;
+        }
+        
+        .material-theme table.bordered > thead > tr,
+        .material-theme table.bordered > tbody > tr {
+            border-bottom: 1px solid #d0d0d0;
         }
         
         .main-header {
@@ -710,7 +762,7 @@ session_start();
                 <button class="ui button" onclick="resetBuilder()">
                     <i class="redo icon"></i> Zurücksetzen
                 </button>
-                <a href="../landing.php" class="ui button">
+                <a href="index.php" class="ui button">
                     <i class="arrow left icon"></i> Zurück
                 </a>
             </div>
@@ -721,49 +773,107 @@ session_start();
     <div class="main-container">
         <!-- Sidebar -->
         <div class="sidebar-panel">
-            <!-- Theme Selection -->
+            <!-- Styling -->
             <div class="panel-section">
                 <div class="panel-title">
-                    <i class="paint brush icon"></i> Theme
+                    <i class="paint brush icon"></i> Tabellen-Styling
                 </div>
                 <div class="ui form">
+                    <!-- Grunddesign -->
                     <div class="field">
-                        <select id="theme-select" class="ui dropdown" onchange="updateTheme(this.value)">
-                            <option value="semantic">Semantic UI</option>
-                            <option value="bootstrap">Bootstrap</option>
-                            <option value="material">Material Design</option>
-                            <option value="minimal">Minimal</option>
-                            <option value="dark">Dark Mode</option>
+                        <label>Design-Optionen</label>
+                        <div class="ui segment">
+                            <div class="option-checkbox">
+                                <input type="checkbox" id="style-striped" onchange="updateTableStyles()">
+                                <label for="style-striped">Gestreift</label>
+                            </div>
+                            <div class="option-checkbox">
+                                <input type="checkbox" id="style-celled" onchange="updateTableStyles()">
+                                <label for="style-celled">Mit Rahmen (Celled)</label>
+                            </div>
+                            <div class="option-checkbox">
+                                <input type="checkbox" id="style-compact" onchange="updateTableStyles()">
+                                <label for="style-compact">Kompakt</label>
+                            </div>
+                            <div class="option-checkbox">
+                                <input type="checkbox" id="style-hover" onchange="updateTableStyles()" checked>
+                                <label for="style-hover">Hover-Effekt</label>
+                            </div>
+                            <div class="option-checkbox">
+                                <input type="checkbox" id="style-basic" onchange="updateTableStyles()">
+                                <label for="style-basic">Basic</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Layout -->
+                    <div class="field">
+                        <label>Layout</label>
+                        <div class="ui segment">
+                            <div class="option-checkbox">
+                                <input type="checkbox" id="layout-fixed" onchange="updateTableStyles()">
+                                <label for="layout-fixed">Fixiert</label>
+                            </div>
+                            <div class="option-checkbox">
+                                <input type="checkbox" id="layout-single-line" onchange="updateTableStyles()">
+                                <label for="layout-single-line">Einzeilig</label>
+                            </div>
+                            <div class="option-checkbox">
+                                <input type="checkbox" id="layout-collapsing" onchange="updateTableStyles()">
+                                <label for="layout-collapsing">Kollabierend</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Responsive -->
+                    <div class="field">
+                        <label>Responsive</label>
+                        <select id="responsive-mode" class="ui dropdown" onchange="updateTableStyles()">
+                            <option value="">Standard</option>
+                            <option value="stackable">Stackable (Mobile)</option>
+                            <option value="unstackable">Unstackable</option>
+                            <option value="tablet stackable">Tablet Stackable</option>
                         </select>
                     </div>
+                    
+                    <!-- Farbe -->
                     <div class="field">
-                        <label>Tabellen-Stil</label>
-                        <select id="table-style" class="ui dropdown" onchange="updateTableStyle(this.value)">
-                            <option value="basic">Basic</option>
-                            <option value="striped">Striped</option>
-                            <option value="celled">Celled</option>
-                            <option value="padded">Padded</option>
-                            <option value="compact">Compact</option>
-                            <option value="very compact">Very Compact</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Farb-Schema</label>
-                        <select id="color-scheme" class="ui dropdown" onchange="updateColorScheme(this.value)">
+                        <label>Farbe</label>
+                        <select id="color-scheme" class="ui dropdown" onchange="updateTableStyles()">
                             <option value="">Standard</option>
                             <option value="red">Rot</option>
                             <option value="orange">Orange</option>
                             <option value="yellow">Gelb</option>
-                            <option value="olive">Olive</option>
                             <option value="green">Grün</option>
-                            <option value="teal">Teal</option>
                             <option value="blue">Blau</option>
                             <option value="violet">Violett</option>
                             <option value="purple">Lila</option>
                             <option value="pink">Pink</option>
-                            <option value="brown">Braun</option>
+                            <option value="teal">Teal</option>
                             <option value="grey">Grau</option>
                             <option value="black">Schwarz</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Größe -->
+                    <div class="field">
+                        <label>Größe</label>
+                        <select id="size-select" class="ui dropdown" onchange="updateTableStyles()">
+                            <option value="">Standard</option>
+                            <option value="small">Klein</option>
+                            <option value="large">Groß</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Abstände & Linien -->
+                    <div class="field">
+                        <label>Zellenabstand</label>
+                        <select id="padding-select" class="ui dropdown" onchange="updateTableStyles()">
+                            <option value="">Standard</option>
+                            <option value="padded">Padded</option>
+                            <option value="very padded">Very Padded</option>
+                            <option value="compact">Compact</option>
+                            <option value="very compact">Very Compact</option>
                         </select>
                     </div>
                 </div>
@@ -775,13 +885,13 @@ session_start();
                     <i class="database icon"></i> Datenquelle
                 </div>
                 <div class="data-source-tabs">
-                    <div class="data-source-tab active" onclick="switchDataSource('sample')">
+                    <div class="data-source-tab active" onclick="switchDataSource('sample', event)">
                         Sample
                     </div>
-                    <div class="data-source-tab" onclick="switchDataSource('api')">
+                    <div class="data-source-tab" onclick="switchDataSource('api', event)">
                         API
                     </div>
-                    <div class="data-source-tab" onclick="switchDataSource('database')">
+                    <div class="data-source-tab" onclick="switchDataSource('database', event)">
                         Database
                     </div>
                 </div>
@@ -922,138 +1032,6 @@ session_start();
                 </button>
             </div>
             
-            <!-- Styling -->
-            <div class="panel-section">
-                <div class="panel-title">
-                    <i class="paint brush icon"></i> Styling
-                </div>
-                
-                <!-- Basic Design -->
-                <div class="option-group" style="margin-bottom: 12px;">
-                    <label style="font-weight: 600; color: #2d3748; margin-bottom: 6px; display: block; font-size: 0.85rem;">Grunddesign:</label>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; font-size: 0.85rem;">
-                        <div class="option-checkbox">
-                            <input type="checkbox" id="style-striped" checked>
-                            <label for="style-striped" title="Abwechselnde Zeilenfarben">Gestreift</label>
-                        </div>
-                        <div class="option-checkbox">
-                            <input type="checkbox" id="style-celled" checked onchange="refreshPreview(); generateCode();">
-                            <label for="style-celled" title="Zeigt Zellenrahmen">Mit Rahmen (Celled)</label>
-                        </div>
-                        <div class="option-checkbox">
-                            <input type="checkbox" id="style-compact">
-                            <label for="style-compact" title="Reduzierter Zellenabstand">Kompakt</label>
-                        </div>
-                        <div class="option-checkbox">
-                            <input type="checkbox" id="style-selectable" checked>
-                            <label for="style-selectable" title="Hover-Effekt bei Zeilen">Hover-Effekt</label>
-                        </div>
-                        <div class="option-checkbox">
-                            <input type="checkbox" id="style-basic">
-                            <label for="style-basic" title="Nur horizontale Linien">Basic</label>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Special Styles -->
-                <div class="option-group" style="margin-bottom: 12px;">
-                    <label style="font-weight: 600; color: #2d3748; margin-bottom: 6px; display: block; font-size: 0.85rem;">Spezial-Stile:</label>
-                    <div class="style-dropdown-group" style="margin-bottom: 8px;">
-                        <label>Tabellen-Typ</label>
-                        <select id="style-type" class="ui fluid dropdown compact">
-                            <option value="">Standard</option>
-                            <option value="definition">Definition</option>
-                            <option value="structured">Strukturiert</option>
-                            <option value="inverted">Invertiert</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <!-- Layout Options -->
-                <div class="option-group" style="margin-bottom: 12px;">
-                    <label style="font-weight: 600; color: #2d3748; margin-bottom: 6px; display: block; font-size: 0.85rem;">Layout:</label>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; font-size: 0.85rem;">
-                        <div class="option-checkbox">
-                            <input type="checkbox" id="style-fixed">
-                            <label for="style-fixed" title="Feste Spaltenbreiten">Fixiert</label>
-                        </div>
-                        <div class="option-checkbox">
-                            <input type="checkbox" id="style-single-line">
-                            <label for="style-single-line" title="Kein Zeilenumbruch">Einzeilig</label>
-                        </div>
-                        <div class="option-checkbox">
-                            <input type="checkbox" id="style-collapsing">
-                            <label for="style-collapsing" title="Spalten nur so breit wie nötig">Kollabierend</label>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Responsive Options -->
-                <div class="option-group" style="margin-bottom: 12px;">
-                    <label style="font-weight: 600; color: #2d3748; margin-bottom: 6px; display: block; font-size: 0.85rem;">Responsive:</label>
-                    <div class="style-dropdown-group" style="margin-bottom: 8px;">
-                        <label>Mobile Verhalten</label>
-                        <select id="style-responsive" class="ui fluid dropdown compact">
-                            <option value="">Standard</option>
-                            <option value="stackable" selected>Stapelbar (Mobile optimiert)</option>
-                            <option value="unstackable">Nicht stapelbar</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Colors & Size -->
-                <div class="option-group" style="margin-bottom: 12px;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                        <div class="style-dropdown-group" style="margin: 0;">
-                            <label>Farbe</label>
-                            <select id="style-color" class="ui fluid dropdown compact">
-                                <option value="">Standard</option>
-                                <option value="red">Rot</option>
-                                <option value="orange">Orange</option>
-                                <option value="yellow">Gelb</option>
-                                <option value="olive">Olive</option>
-                                <option value="green">Grün</option>
-                                <option value="teal">Teal</option>
-                                <option value="blue">Blau</option>
-                                <option value="violet">Violett</option>
-                                <option value="purple">Lila</option>
-                                <option value="pink">Pink</option>
-                                <option value="brown">Braun</option>
-                                <option value="grey">Grau</option>
-                                <option value="black">Schwarz</option>
-                            </select>
-                        </div>
-                        <div class="style-dropdown-group" style="margin: 0;">
-                            <label>Größe</label>
-                            <select id="style-size" class="ui fluid dropdown compact">
-                                <option value="">Standard</option>
-                                <option value="mini">Mini</option>
-                                <option value="tiny">Tiny</option>
-                                <option value="small">Klein</option>
-                                <option value="large">Groß</option>
-                                <option value="huge">Riesig</option>
-                                <option value="massive">Massiv</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Spacing & Lines -->
-                <div class="option-group">
-                    <label style="font-weight: 600; color: #2d3748; margin-bottom: 6px; display: block; font-size: 0.85rem;">Abstände & Linien:</label>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                        <div class="style-dropdown-group">
-                            <label>Zellenabstand</label>
-                            <select id="style-padding" class="ui fluid dropdown compact">
-                                <option value="">Standard</option>
-                                <option value="padded">Padded</option>
-                                <option value="relaxed">Entspannt</option>
-                                <option value="very relaxed">Sehr entspannt</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         
         <!-- Preview Panel -->
@@ -1320,10 +1298,8 @@ session_start();
         let sortableRight = null;
         let sortableSingle = null;
         
-        // Theme configuration
-        let currentTheme = 'semantic';
-        let currentTableStyle = 'basic';
-        let currentColorScheme = '';
+        // Using Semantic UI only
+        const currentTheme = 'semantic';
         
         // ========================================
         // SAMPLE DATA SETS
@@ -1548,7 +1524,10 @@ session_start();
             document.getElementById('column-modal').classList.remove('active');
         }
         
-        function switchDataSource(source) {
+        function switchDataSource(source, evt) {
+            // Get the event from parameter or window.event
+            const e = evt || window.event;
+            
             document.querySelectorAll('.data-source-tab').forEach(tab => {
                 tab.classList.remove('active');
             });
@@ -1556,7 +1535,9 @@ session_start();
                 content.classList.remove('active');
             });
             
-            event.target.classList.add('active');
+            if (e && e.target) {
+                e.target.classList.add('active');
+            }
             document.getElementById('source-' + source).classList.add('active');
         }
         
@@ -1577,21 +1558,17 @@ session_start();
                 actions: document.getElementById('feature-actions')?.checked || false
             };
             
-            // Get dropdown values - use jQuery to get the actual value from Semantic UI dropdown
-            const paddingStyle = $('#style-padding').val() || '';
-            const tableType = $('#style-type').val() || '';
-            const responsiveStyle = $('#style-responsive').val() || '';
+            // Get dropdown values from new reorganized controls
+            const paddingStyle = $('#padding-select').val() || '';
+            const responsiveStyle = $('#responsive-mode').val() || '';
             
             const styles = {
                 striped: document.getElementById('style-striped')?.checked || false,
                 compact: document.getElementById('style-compact')?.checked || false,
                 celled: document.getElementById('style-celled')?.checked || false,
-                definition: tableType === 'definition',
-                structured: tableType === 'structured',
-                inverted: tableType === 'inverted',
-                collapsing: document.getElementById('style-collapsing')?.checked || false,
-                fixed: document.getElementById('style-fixed')?.checked || false,
-                singleLine: document.getElementById('style-single-line')?.checked || false,
+                collapsing: document.getElementById('layout-collapsing')?.checked || false,
+                fixed: document.getElementById('layout-fixed')?.checked || false,
+                singleLine: document.getElementById('layout-single-line')?.checked || false,
                 stackable: responsiveStyle === 'stackable',
                 unstackable: responsiveStyle === 'unstackable',
                 basic: document.getElementById('style-basic')?.checked || false,
@@ -1604,8 +1581,8 @@ session_start();
                 padded: paddingStyle === 'padded',
                 relaxed: paddingStyle === 'relaxed',
                 veryRelaxed: paddingStyle === 'very relaxed',
-                color: $('#style-color').val() || '',
-                size: $('#style-size').val() || ''
+                color: $('#color-scheme').val() || '',
+                size: $('#size-select').val() || ''
             };
             
             // Toolbar with search and export
@@ -1715,15 +1692,12 @@ session_start();
             
             // Other design options from checkboxes
             if (styles.striped) additionalClasses.push('striped');
-            if (styles.definition) additionalClasses.push('definition');
-            if (styles.structured) additionalClasses.push('structured');
-            if (styles.inverted) additionalClasses.push('inverted');
             if (styles.collapsing) additionalClasses.push('collapsing');
             if (styles.fixed) additionalClasses.push('fixed');
             if (styles.singleLine) additionalClasses.push('single line');
-            if (styles.compact && !currentTableStyle.includes('compact')) additionalClasses.push('compact');
+            if (styles.compact) additionalClasses.push('compact');
             if (styles.selectable) additionalClasses.push('selectable');
-            if (styles.celled && currentTableStyle !== 'celled') additionalClasses.push('celled');
+            if (styles.celled) additionalClasses.push('celled');
             
             // Lines style
             if (styles.basic) {
@@ -1751,12 +1725,12 @@ session_start();
                 additionalClasses.push('very relaxed');
             } else if (styles.relaxed) {
                 additionalClasses.push('relaxed');
-            } else if (styles.padded && currentTableStyle !== 'padded') {
+            } else if (styles.padded) {
                 additionalClasses.push('padded');
             }
             
-            // Color scheme (only if not already set by theme)
-            if (styles.color && !currentColorScheme) additionalClasses.push(styles.color);
+            // Color scheme
+            if (styles.color) additionalClasses.push(styles.color);
             
             // Size (only if not already set by style)
             if (styles.size) additionalClasses.push(styles.size);
@@ -1764,7 +1738,26 @@ session_start();
             // Combine classes
             const finalClasses = tableClasses + (additionalClasses.length > 0 ? ' ' + additionalClasses.join(' ') : '');
             
-            html += `<table class="${finalClasses}" style="margin: 0; border-radius: 0;">`;
+            // Build table HTML based on theme
+            const theme = document.getElementById('theme-select')?.value || 'semantic';
+            
+            if (theme === 'bootstrap') {
+                // Bootstrap needs container for proper styling
+                html += '<div class="bootstrap-container" style="padding: 15px;">';
+                const responsive = document.getElementById('responsive-mode')?.value;
+                if (responsive && responsive.includes('stackable')) {
+                    html += '<div class="table-responsive">';
+                }
+                html += `<table class="${finalClasses}">`;
+            } else if (theme === 'material') {
+                // Material Design responsive table
+                html += '<div class="material-container" style="padding: 15px;">';
+                html += '<div class="responsive-table">';
+                html += `<table class="${finalClasses}">`;
+            } else {
+                // Semantic UI
+                html += `<table class="${finalClasses}" style="margin: 0; border-radius: 0;">`;
+            }
             
             // Header
             html += '<thead><tr>';
@@ -1835,30 +1828,100 @@ session_start();
                     // Helper function to render action buttons
                     const renderActionButtons = (buttonActions, rowData) => {
                         let actionsHtml = '<td class="center aligned">';
-                        actionsHtml += '<div class="ui small icon buttons">'; // Removed 'basic' to allow colors
-                        buttonActions.forEach(action => {
-                            if (action && shouldShowAction(action, rowData)) {
-                                const iconClass = action.icon || 'ellipsis horizontal';
-                                
-                                // Add data-tooltip and data-position for Semantic UI popup
-                                const tooltipAttr = action.tooltip ? 
-                                    `data-tooltip="${action.tooltip}" data-position="${action.tooltipPosition || 'top'} center" data-inverted=""` : 
-                                    `title="${action.label}"`;
-                                
-                                // Apply correct Semantic UI button classes with colors
-                                let buttonClass = 'ui button';
-                                if (action.color) {
-                                    buttonClass = `ui ${action.color} button`;
-                                } else {
-                                    buttonClass = 'ui basic button';
+                        
+                        if (theme === 'bootstrap') {
+                            // Bootstrap button group
+                            actionsHtml += '<div class="btn-group btn-group-sm" role="group">';
+                            buttonActions.forEach(action => {
+                                if (action && shouldShowAction(action, rowData)) {
+                                    const tooltipAttr = `title="${action.label}" data-bs-toggle="tooltip"`;
+                                    
+                                    // Bootstrap button classes
+                                    let buttonClass = 'btn btn-sm';
+                                    if (action.color) {
+                                        const bsColors = {
+                                            'red': 'btn-danger',
+                                            'green': 'btn-success', 
+                                            'blue': 'btn-primary',
+                                            'yellow': 'btn-warning',
+                                            'orange': 'btn-warning',
+                                            'purple': 'btn-secondary',
+                                            'grey': 'btn-secondary',
+                                            'black': 'btn-dark'
+                                        };
+                                        buttonClass += ' ' + (bsColors[action.color] || 'btn-outline-secondary');
+                                    } else {
+                                        buttonClass += ' btn-outline-secondary';
+                                    }
+                                    
+                                    const iconMap = {
+                                        'edit': '✏️',
+                                        'trash': '🗑️',
+                                        'eye': '👁️',
+                                        'download': '⬇️',
+                                        'plus': '➕',
+                                        'copy': '📋',
+                                        'share': '🔗'
+                                    };
+                                    
+                                    actionsHtml += `<button class="${buttonClass}" ${tooltipAttr}>`;
+                                    actionsHtml += iconMap[action.icon] || action.label.charAt(0);
+                                    actionsHtml += '</button>';
                                 }
-                                
-                                actionsHtml += `<button class="${buttonClass}" ${tooltipAttr}>`;
-                                actionsHtml += `<i class="${iconClass} icon"></i>`;
-                                actionsHtml += '</button>';
-                            }
-                        });
-                        actionsHtml += '</div>';
+                            });
+                            actionsHtml += '</div>';
+                        } else if (theme === 'material') {
+                            // Material Design buttons
+                            actionsHtml += '<div style="display: flex; gap: 4px;">';
+                            buttonActions.forEach(action => {
+                                if (action && shouldShowAction(action, rowData)) {
+                                    const tooltipAttr = `title="${action.label}"`;
+                                    
+                                    let buttonClass = 'btn-floating btn-small waves-effect waves-light';
+                                    if (action.color) {
+                                        buttonClass += ' ' + action.color;
+                                    }
+                                    
+                                    const iconMap = {
+                                        'edit': 'edit',
+                                        'trash': 'delete',
+                                        'eye': 'visibility',
+                                        'download': 'download',
+                                        'plus': 'add'
+                                    };
+                                    
+                                    actionsHtml += `<a class="${buttonClass}" ${tooltipAttr}>`;
+                                    actionsHtml += `<i class="material-icons tiny">${iconMap[action.icon] || 'more_horiz'}</i>`;
+                                    actionsHtml += '</a>';
+                                }
+                            });
+                            actionsHtml += '</div>';
+                        } else {
+                            // Semantic UI (default)
+                            actionsHtml += '<div class="ui small icon buttons">';
+                            buttonActions.forEach(action => {
+                                if (action && shouldShowAction(action, rowData)) {
+                                    const iconClass = action.icon || 'ellipsis horizontal';
+                                    
+                                    const tooltipAttr = action.tooltip ? 
+                                        `data-tooltip="${action.tooltip}" data-position="${action.tooltipPosition || 'top'} center" data-inverted=""` : 
+                                        `title="${action.label}"`;
+                                    
+                                    let buttonClass = 'ui button';
+                                    if (action.color) {
+                                        buttonClass = `ui ${action.color} button`;
+                                    } else {
+                                        buttonClass = 'ui basic button';
+                                    }
+                                    
+                                    actionsHtml += `<button class="${buttonClass}" ${tooltipAttr}>`;
+                                    actionsHtml += `<i class="${iconClass} icon"></i>`;
+                                    actionsHtml += '</button>';
+                                }
+                            });
+                            actionsHtml += '</div>';
+                        }
+                        
                         actionsHtml += '</td>';
                         return actionsHtml;
                     };
@@ -1904,10 +1967,20 @@ session_start();
                         
                         // Format based on type
                         if (col.type === 'status') {
-                            const color = value === 'Aktiv' || value === 'Verfügbar' ? 'green' : 
-                                        value === 'Inaktiv' || value === 'Ausverkauft' ? 'red' : 'yellow';
-                            value = `<span class="ui ${color} label">${value}</span>`;
-                        } else if (col.type === 'number' && col.key.includes('price') || col.key.includes('salary')) {
+                            if (theme === 'bootstrap') {
+                                const bsColor = value === 'Aktiv' || value === 'Verfügbar' ? 'success' : 
+                                              value === 'Inaktiv' || value === 'Ausverkauft' ? 'danger' : 'warning';
+                                value = `<span class="badge bg-${bsColor}">${value}</span>`;
+                            } else if (theme === 'material') {
+                                const mdColor = value === 'Aktiv' || value === 'Verfügbar' ? 'green' : 
+                                              value === 'Inaktiv' || value === 'Ausverkauft' ? 'red' : 'orange';
+                                value = `<span class="chip ${mdColor}">${value}</span>`;
+                            } else {
+                                const color = value === 'Aktiv' || value === 'Verfügbar' ? 'green' : 
+                                            value === 'Inaktiv' || value === 'Ausverkauft' ? 'red' : 'yellow';
+                                value = `<span class="ui ${color} label">${value}</span>`;
+                            }
+                        } else if (col.type === 'number' && (col.key.includes('price') || col.key.includes('salary'))) {
                             value = '€ ' + parseFloat(value).toFixed(2);
                         }
                         
@@ -1932,11 +2005,44 @@ session_start();
             html += '</tbody>';
             
             html += '</table>';
-            html += '</div>'; // Close table-responsive
             
-            // Pagination - matching actual EasyList style
+            // Close theme-specific wrappers
+            if (theme === 'bootstrap') {
+                if (document.getElementById('responsive-mode')?.value?.includes('stackable')) {
+                    html += '</div>'; // Close table-responsive
+                }
+                html += '</div>'; // Close bootstrap-container
+            } else if (theme === 'material') {
+                html += '</div>'; // Close responsive-table wrapper
+                html += '</div>'; // Close material-container
+            } else {
+                html += '</div>'; // Close table-responsive for Semantic
+            }
+            
+            // Pagination - theme-specific
             if (features.pagination) {
-                html += `
+                if (theme === 'bootstrap') {
+                    html += `
+                    <nav aria-label="Page navigation" style="margin-top: 20px;">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                    </nav>`;
+                } else if (theme === 'material') {
+                    html += `
+                    <div class="pagination" style="margin-top: 20px; text-align: center;">
+                        <a href="#" class="waves-effect">←</a>
+                        <a href="#" class="active">1</a>
+                        <a href="#" class="waves-effect">2</a>
+                        <a href="#" class="waves-effect">3</a>
+                        <a href="#" class="waves-effect">→</a>
+                    </div>`;
+                } else {
+                    html += `
                     <div class="ui pagination menu" style="justify-content: center; margin-top: 20px;">
                         <a class="icon item"><i class="left chevron icon"></i></a>
                         <a class="item active">1</a>
@@ -1945,6 +2051,7 @@ session_start();
                         <a class="icon item"><i class="right chevron icon"></i></a>
                     </div>
                 `;
+                }
             }
             
             html += '</div>';
@@ -1965,20 +2072,9 @@ session_start();
         // ========================================
         // THEME FUNCTIONS
         // ========================================
-        function updateTheme(theme) {
-            currentTheme = theme;
-            updatePreview();
-            generateCode();
-        }
+        // Theme function removed - using only Semantic UI
         
-        function updateTableStyle(style) {
-            currentTableStyle = style;
-            updatePreview();
-            generateCode();
-        }
-        
-        function updateColorScheme(scheme) {
-            currentColorScheme = scheme;
+        function updateTableStyles() {
             updatePreview();
             generateCode();
         }
@@ -1989,37 +2085,83 @@ session_start();
         }
         
         function getTableClasses() {
-            let classes = ['ui', 'table'];
+            let classes = [];
             
-            // Add table style
-            if (currentTableStyle && currentTableStyle !== 'basic') {
-                if (currentTableStyle === 'very compact') {
-                    classes.push('very', 'compact');
-                } else {
-                    classes.push(currentTableStyle);
+            // Get current theme
+            const theme = document.getElementById('theme-select')?.value || 'semantic';
+            
+            if (theme === 'semantic') {
+                classes.push('ui', 'table');
+                
+                // Grunddesign
+                if (document.getElementById('style-striped')?.checked) classes.push('striped');
+                if (document.getElementById('style-celled')?.checked) classes.push('celled');
+                if (document.getElementById('style-basic')?.checked) classes.push('basic');
+                
+                // Layout
+                if (document.getElementById('layout-fixed')?.checked) classes.push('fixed');
+                if (document.getElementById('layout-single-line')?.checked) classes.push('single', 'line');
+                if (document.getElementById('layout-collapsing')?.checked) classes.push('collapsing');
+                
+                // Responsive
+                const responsive = document.getElementById('responsive-mode')?.value;
+                if (responsive) classes.push(...responsive.split(' '));
+                
+                // Color
+                const color = document.getElementById('color-scheme')?.value;
+                if (color) classes.push(color);
+                
+                // Size
+                const size = document.getElementById('size-select')?.value;
+                if (size) classes.push(size);
+                
+                // Padding
+                const padding = document.getElementById('padding-select')?.value;
+                if (padding) {
+                    if (padding.includes('very')) {
+                        classes.push('very', padding.split(' ')[1]);
+                    } else {
+                        classes.push(padding);
+                    }
                 }
+                
+                // Always add selectable for better UX
+                classes.push('selectable');
+                
+            } else if (theme === 'bootstrap') {
+                classes.push('table');
+                if (document.getElementById('style-striped')?.checked) classes.push('table-striped');
+                if (document.getElementById('style-celled')?.checked) classes.push('table-bordered');
+                if (document.getElementById('style-hover')?.checked) classes.push('table-hover');
+                if (document.getElementById('style-compact')?.checked) classes.push('table-sm');
+                
+                const color = document.getElementById('color-scheme')?.value;
+                if (color) {
+                    const bsColors = {
+                        'red': 'table-danger',
+                        'green': 'table-success',
+                        'blue': 'table-primary',
+                        'yellow': 'table-warning',
+                        'grey': 'table-secondary',
+                        'black': 'table-dark'
+                    };
+                    if (bsColors[color]) classes.push(bsColors[color]);
+                }
+                
+                const responsive = document.getElementById('responsive-mode')?.value;
+                if (responsive && responsive.includes('stackable')) {
+                    classes.push('table-responsive');
+                }
+                
+            } else if (theme === 'material') {
+                classes.push('highlight', 'responsive-table');
+                if (document.getElementById('style-striped')?.checked) classes.push('striped');
+                if (document.getElementById('style-hover')?.checked) classes.push('hoverable');
+                if (document.getElementById('style-celled')?.checked) classes.push('bordered');
+                if (document.getElementById('style-compact')?.checked) classes.push('compact');
             }
             
-            // Add color scheme
-            if (currentColorScheme) {
-                classes.push(currentColorScheme);
-            }
-            
-            // Add theme-specific classes
-            if (currentTheme === 'bootstrap') {
-                classes = ['table', 'table-hover'];
-                if (currentTableStyle === 'striped') {
-                    classes.push('table-striped');
-                }
-                if (currentColorScheme === 'dark') {
-                    classes.push('table-dark');
-                }
-            } else if (currentTheme === 'material') {
-                classes = ['mdl-data-table', 'mdl-js-data-table'];
-                if (currentTableStyle === 'compact') {
-                    classes.push('mdl-data-table--compact');
-                }
-            }
+            // These old theme checks are no longer needed - handled by getTableClasses()
             
             return classes.join(' ');
         }
@@ -2035,21 +2177,17 @@ session_start();
                 actions: document.getElementById('feature-actions')?.checked || false
             };
             
-            // Get dropdown values - use jQuery to get the actual value from Semantic UI dropdown
-            const paddingStyle = $('#style-padding').val() || '';
-            const tableType = $('#style-type').val() || '';
-            const responsiveStyle = $('#style-responsive').val() || '';
+            // Get dropdown values from new reorganized controls
+            const paddingStyle = $('#padding-select').val() || '';
+            const responsiveStyle = $('#responsive-mode').val() || '';
             
             const styles = {
                 striped: document.getElementById('style-striped')?.checked || false,
                 compact: document.getElementById('style-compact')?.checked || false,
                 celled: document.getElementById('style-celled')?.checked || false,
-                definition: tableType === 'definition',
-                structured: tableType === 'structured',
-                inverted: tableType === 'inverted',
-                collapsing: document.getElementById('style-collapsing')?.checked || false,
-                fixed: document.getElementById('style-fixed')?.checked || false,
-                singleLine: document.getElementById('style-single-line')?.checked || false,
+                collapsing: document.getElementById('layout-collapsing')?.checked || false,
+                fixed: document.getElementById('layout-fixed')?.checked || false,
+                singleLine: document.getElementById('layout-single-line')?.checked || false,
                 stackable: responsiveStyle === 'stackable',
                 unstackable: responsiveStyle === 'unstackable',
                 basic: document.getElementById('style-basic')?.checked || false,
@@ -2062,8 +2200,8 @@ session_start();
                 padded: paddingStyle === 'padded',
                 relaxed: paddingStyle === 'relaxed',
                 veryRelaxed: paddingStyle === 'very relaxed',
-                color: $('#style-color').val() || '',
-                size: $('#style-size').val() || ''
+                color: $('#color-scheme').val() || '',
+                size: $('#size-select').val() || ''
             };
             
             generatePHPCode(features, styles);
@@ -2077,16 +2215,12 @@ session_start();
             codeLines.push("require_once 'easy_form/autoload.php';");
             codeLines.push('use EasyForm\\\\EasyList;');
             codeLines.push('');
-            codeLines.push('// Erstelle eine neue Liste mit Theme-Konfiguration');
+            codeLines.push('// Erstelle eine neue Liste');
             let listOptions = [];
-            if (currentTheme !== 'semantic') {
-                listOptions.push("'theme' => '" + currentTheme + "'");
-            }
-            if (currentTableStyle !== 'basic') {
-                listOptions.push("'style' => '" + currentTableStyle + "'");
-            }
-            if (currentColorScheme) {
-                listOptions.push("'color' => '" + currentColorScheme + "'");
+            // Table style is now built from multiple options
+            const tableClasses = getTableClasses();
+            if (tableClasses.length > 2) { // More than just 'ui table'
+                listOptions.push("'classes' => '" + tableClasses + "'");
             }
             
             if (listOptions.length > 0) {
@@ -2199,9 +2333,6 @@ session_start();
                 if (styles.celled) tableClass += ' celled';
                 tableClass += ' table';
                 if (styles.striped) tableClass += ' striped';
-                if (styles.definition) tableClass += ' definition';
-                if (styles.structured) tableClass += ' structured';
-                if (styles.inverted) tableClass += ' inverted';
                 if (styles.collapsing) tableClass += ' collapsing';
                 if (styles.fixed) tableClass += ' fixed';
                 if (styles.singleLine) tableClass += ' single line';
@@ -2334,8 +2465,8 @@ session_start();
 'document.addEventListener(\'DOMContentLoaded\', function() {\n' +
 '    // Event Handler für Bulk Actions\n' +
 '    document.addEventListener(\'easylist:bulkaction\', function(e) {\n' +
-'        // Bulk action: ' + e.detail.action + '\n' +
-'        // Selected IDs: ' + e.detail.ids + '\n' +
+'        // Bulk action: e.detail.action\n' +
+'        // Selected IDs: e.detail.ids\n' +
 '        \n' +
 '        // Ihre custom Logic hier\n' +
 '        switch(e.detail.action) {\n' +
@@ -2992,12 +3123,14 @@ session_start();
                     compact: document.getElementById('style-compact')?.checked || false,
                     celled: document.getElementById('style-celled')?.checked || false,
                     basic: document.getElementById('style-basic')?.checked || false,
-                    selectable: document.getElementById('style-selectable')?.checked || false,
-                    color: $('#style-color').val() || '',
-                    size: $('#style-size').val() || '',
-                    padding: $('#style-padding').val() || '',
-                    tableType: $('#style-type').val() || '',
-                    responsive: $('#style-responsive').val() || ''
+                    hover: document.getElementById('style-hover')?.checked || false,
+                    fixed: document.getElementById('layout-fixed')?.checked || false,
+                    singleLine: document.getElementById('layout-single-line')?.checked || false,
+                    collapsing: document.getElementById('layout-collapsing')?.checked || false,
+                    color: $('#color-scheme').val() || '',
+                    size: $('#size-select').val() || '',
+                    padding: $('#padding-select').val() || '',
+                    responsive: $('#responsive-mode').val() || ''
                 },
                 actions: actions,
                 actionsPosition: document.getElementById('actions-position')?.value || 'right'
@@ -3074,15 +3207,18 @@ session_start();
             if (template.styles) {
                 document.getElementById('style-striped').checked = template.styles.striped || false;
                 document.getElementById('style-compact').checked = template.styles.compact || false;
-                document.getElementById('style-celled').checked = template.styles.celled !== undefined ? template.styles.celled : true; // Default to true
+                document.getElementById('style-celled').checked = template.styles.celled !== undefined ? template.styles.celled : true;
                 document.getElementById('style-basic').checked = template.styles.basic || false;
-                document.getElementById('style-selectable').checked = template.styles.selectable || false;
+                document.getElementById('style-hover').checked = template.styles.hover !== undefined ? template.styles.hover : true;
                 
-                $('#style-color').val(template.styles.color || '').trigger('change');
-                $('#style-size').val(template.styles.size || '').trigger('change');
-                $('#style-padding').val(template.styles.padding || '').trigger('change');
-                $('#style-type').val(template.styles.tableType || '').trigger('change');
-                $('#style-responsive').val(template.styles.responsive || '').trigger('change');
+                document.getElementById('layout-fixed').checked = template.styles.fixed || false;
+                document.getElementById('layout-single-line').checked = template.styles.singleLine || false;
+                document.getElementById('layout-collapsing').checked = template.styles.collapsing || false;
+                
+                $('#color-scheme').val(template.styles.color || '').trigger('change');
+                $('#size-select').val(template.styles.size || '').trigger('change');
+                $('#padding-select').val(template.styles.padding || '').trigger('change');
+                $('#responsive-mode').val(template.styles.responsive || '').trigger('change');
             }
             
             // Apply actions
@@ -3116,6 +3252,18 @@ session_start();
         window.loadTemplate = loadTemplate;
         window.applyTemplate = applyTemplate;
         window.deleteTemplate = deleteTemplate;
+        
+        // Initialize on page load
+        $(document).ready(function() {
+            // Initialize Semantic UI dropdowns
+            $('.ui.dropdown').dropdown();
+            
+            // Initialize with default data
+            loadSampleData('users');
+            
+            // Initial preview refresh
+            refreshPreview();
+        });
     </script>
     
     <!-- Template Modals -->
