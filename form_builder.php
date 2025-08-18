@@ -3,10 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EasyForm Builder - Drag & Drop Form Generator</title>
+    <title>FormWerk - Visual Form Builder</title>
     <link rel="stylesheet" href="semantic/dist/semantic.min.css">
     <link rel="stylesheet" href="js/sortable.min.css">
     <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/inline/ckeditor.js"></script>
+    <script src="assets/js/i18n.js"></script>
     <style>
         * {
             margin: 0;
@@ -19,6 +20,7 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             overflow-x: hidden;
+            padding-top: 70px;
         }
 
         /* Custom Scrollbar */
@@ -41,6 +43,64 @@
             background: #667eea;
         }
         
+        /* Navigation */
+        .main-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 15px 30px;
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+        }
+        
+        .nav-menu a {
+            color: #4a5568;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 6px;
+        }
+        
+        .nav-menu a:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.08);
+        }
+        
+        .nav-menu a.active {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.12);
+        }
+        
         /* Main Header */
         .main-header {
             background: rgba(255, 255, 255, 0.98);
@@ -49,7 +109,7 @@
             padding: 15px 30px;
             margin-bottom: 20px;
             position: sticky;
-            top: 0;
+            top: 70px;
             z-index: 100;
         }
         
@@ -90,61 +150,79 @@
             align-items: center;
         }
         
-        /* Moderne Button-Stile */
+        /* Moderne Button-Stile - Einheitlich für beide Generatoren */
         .header-actions .ui.button {
-            border-radius: 8px;
-            font-weight: 500;
+            border-radius: 10px;
+            font-weight: 600;
             padding: 10px 20px;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: white !important;
+            color: #4a5568 !important;
+            border-color: #e2e8f0 !important;
         }
         
         .header-actions .ui.button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-        
-        /* Template-Buttons Gruppe */
-        .template-buttons {
-            display: inline-flex;
-            background: rgba(102, 126, 234, 0.08);
-            border-radius: 10px;
-            padding: 3px;
-            gap: 4px;
-        }
-        
-        .template-buttons .ui.button {
-            background: white !important;
-            border: 1px solid #e0e0e0 !important;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+            border-color: #667eea !important;
             color: #667eea !important;
-            margin: 0 !important;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
         }
         
-        .template-buttons .ui.button:hover {
+        /* Template Button - Primär Style */
+        .template-button {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
             color: white !important;
-            border-color: transparent !important;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+            border: none !important;
+        }
+        
+        .template-button:hover {
+            background: linear-gradient(135deg, #5a67d8 0%, #6b3d8f 100%) !important;
+            color: white !important;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.35) !important;
         }
         
         /* Config Button */
         .config-button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-            color: white !important;
-            border: none !important;
+            background: white !important;
+            color: #667eea !important;
+            border-color: #667eea !important;
         }
         
         .config-button:hover {
-            background: linear-gradient(135deg, #5a67d8 0%, #6b3d8f 100%) !important;
+            background: rgba(102, 126, 234, 0.1) !important;
+            color: #5a67d8 !important;
         }
         
         /* Preview Button */
         .preview-button {
-            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%) !important;
-            color: white !important;
-            border: none !important;
+            background: white !important;
+            color: #48bb78 !important;
+            border-color: #48bb78 !important;
+        }
+        
+        .preview-button:hover {
+            background: rgba(72, 187, 120, 0.1) !important;
+            color: #38a169 !important;
+            border-color: #38a169 !important;
+        }
+        
+        /* Clear/Reset Button */
+        .clear-button {
+            background: white !important;
+            color: #e53e3e !important;
+            border-color: #feb2b2 !important;
+        }
+        
+        .clear-button:hover {
+            background: rgba(229, 62, 62, 0.1) !important;
+            color: #c53030 !important;
+            border-color: #e53e3e !important;
         }
         
         .preview-button:hover {
@@ -1465,31 +1543,41 @@
     </style>
 </head>
 <body>
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="/easy_form/" class="nav-logo">FormWerk</a>
+            <ul class="nav-menu">
+                <li><a href="/easy_form/" data-i18n="nav.home">Startseite</a></li>
+                <li><a href="form_builder.php" data-i18n="nav.formbuilder" class="active">Form Builder</a></li>
+                <li><a href="list_generator.php" data-i18n="nav.listgenerator">List Generator</a></li>
+                <li><a href="docs/" data-i18n="nav.docs">Dokumentation</a></li>
+                <li><a href="examples/" data-i18n="nav.examples">Beispiele</a></li>
+                <li><a href="health-check.php" data-i18n="nav.health">Status</a></li>
+            </ul>
+        </div>
+    </nav>
+    
     <!-- Header -->
     <div class="main-header">
         <div class="header-content">
             <div class="header-title">
-                <h1><i class="wpforms icon"></i> EasyForm Builder</h1>
+                <h1><i class="wpforms icon"></i> <span data-i18n="builder.title">FormWerk Builder</span></h1>
                 <span class="header-badge">BETA</span>
             </div>
             <div class="header-actions">
-                <div class="template-buttons">
-                    <button class="ui button" onclick="showTemplateManager()">
-                        <i class="save icon"></i> Templates
-                    </button>
-                </div>
+                <button class="ui button template-button" onclick="showTemplateManager()">
+                    <i class="save icon"></i> <span data-i18n="builder.templates">Templates</span>
+                </button>
                 <button class="ui button config-button" onclick="showFormConfig()">
-                    <i class="cog icon"></i> Konfiguration
+                    <i class="cog icon"></i> <span data-i18n="builder.config_form">Konfiguration</span>
                 </button>
                 <button class="ui button preview-button" onclick="previewForm()">
-                    <i class="eye icon"></i> Vorschau
+                    <i class="eye icon"></i> <span data-i18n="builder.preview">Vorschau</span>
                 </button>
                 <button class="ui button clear-button" onclick="clearForm()">
-                    <i class="trash icon"></i> Leeren
+                    <i class="trash icon"></i> <span data-i18n="builder.clear_form">Leeren</span>
                 </button>
-                <a href="index.php" class="ui button back-button">
-                    <i class="arrow left icon"></i> Zurück
-                </a>
             </div>
         </div>
     </div>
@@ -1500,93 +1588,93 @@
         <div class="sidebar-panel">
             <div class="panel-section">
                 <div class="panel-title">
-                    <i class="puzzle piece icon"></i> Komponenten
+                    <i class="puzzle piece icon"></i> <span data-i18n="builder.components">Komponenten</span>
                 </div>
                 <div class="component-group">
-                <h3>Eingabefelder</h3>
+                <h3 data-i18n="components.input_fields">Eingabefelder</h3>
                 <div class="component-item" draggable="true" data-type="text">
                     <i class="font icon"></i>
-                    <span>Textfeld</span>
+                    <span data-i18n="components.textfield">Textfeld</span>
                 </div>
                 <div class="component-item" draggable="true" data-type="email">
                     <i class="mail icon"></i>
-                    <span>E-Mail</span>
+                    <span data-i18n="components.email">E-Mail</span>
                 </div>
                 <div class="component-item" draggable="true" data-type="password">
                     <i class="lock icon"></i>
-                    <span>Passwort</span>
+                    <span data-i18n="components.password">Passwort</span>
                 </div>
                 <div class="component-item" draggable="true" data-type="tel">
                     <i class="phone icon"></i>
-                    <span>Telefon</span>
+                    <span data-i18n="components.phone">Telefon</span>
                 </div>
                 <div class="component-item" draggable="true" data-type="number">
                     <i class="hashtag icon"></i>
-                    <span>Zahl</span>
+                    <span data-i18n="components.number">Zahl</span>
                 </div>
                 <div class="component-item" draggable="true" data-type="url">
                     <i class="linkify icon"></i>
-                    <span>URL</span>
+                    <span data-i18n="components.url">URL</span>
                 </div>
                 <div class="component-item" draggable="true" data-type="date">
                     <i class="calendar icon"></i>
-                    <span>Datum</span>
+                    <span data-i18n="components.date">Datum</span>
                 </div>
                 <div class="component-item" draggable="true" data-type="textarea">
                     <i class="align left icon"></i>
-                    <span>Textarea</span>
+                    <span data-i18n="components.textarea">Textarea</span>
                 </div>
             </div>
 
             <div class="component-group">
-                <h3>Auswahl</h3>
+                <h3 data-i18n="components.selection">Auswahl</h3>
                 <div class="component-item" draggable="true" data-type="select">
                     <i class="dropdown icon"></i>
-                    <span>Dropdown</span>
+                    <span data-i18n="components.dropdown">Dropdown</span>
                 </div>
                 <div class="component-item" draggable="true" data-type="checkbox">
                     <i class="check square icon"></i>
-                    <span>Checkbox</span>
+                    <span data-i18n="components.checkbox">Checkbox</span>
                 </div>
                 <div class="component-item" draggable="true" data-type="radio">
                     <i class="dot circle icon"></i>
-                    <span>Radio Button</span>
+                    <span data-i18n="components.radio">Radio Button</span>
                 </div>
                 <div class="component-item" draggable="true" data-type="range">
                     <i class="sliders horizontal icon"></i>
-                    <span>Range Slider</span>
+                    <span data-i18n="components.range">Range Slider</span>
                 </div>
             </div>
 
             <div class="component-group">
-                <h3>Layout</h3>
+                <h3 data-i18n="components.layout">Layout</h3>
                 <div class="component-item" draggable="true" data-type="heading">
                     <i class="heading icon"></i>
-                    <span>Überschrift</span>
+                    <span data-i18n="components.heading">Überschrift</span>
                 </div>
                 <div class="component-item" draggable="true" data-type="divider">
                     <i class="minus icon"></i>
-                    <span>Trennlinie</span>
+                    <span data-i18n="components.divider">Trennlinie</span>
                 </div>
                 <div class="component-item" draggable="true" data-type="html">
                     <i class="code icon"></i>
-                    <span>HTML Content</span>
+                    <span data-i18n="components.html">HTML Content</span>
                 </div>
                 <div class="component-item" draggable="true" data-type="row">
                     <i class="columns icon"></i>
-                    <span>Grid Row</span>
+                    <span data-i18n="components.gridrow">Grid Row</span>
                 </div>
             </div>
 
             <div class="component-group">
-                <h3>Aktionen</h3>
+                <h3 data-i18n="components.actions">Aktionen</h3>
                 <div class="component-item" draggable="true" data-type="submit">
                     <i class="paper plane icon"></i>
-                    <span>Submit Button</span>
+                    <span data-i18n="components.submit">Submit Button</span>
                 </div>
                 <div class="component-item" draggable="true" data-type="reset">
                     <i class="undo icon"></i>
-                    <span>Reset Button</span>
+                    <span data-i18n="components.reset">Reset Button</span>
                 </div>
             </div>
             </div> <!-- End panel-section -->
@@ -1595,13 +1683,13 @@
         <!-- Form Builder Panel -->
         <div class="builder-panel">
             <div class="panel-title" style="margin-bottom: 20px;">
-                <i class="wpforms icon"></i> Formular Builder
+                <i class="wpforms icon"></i> <span data-i18n="builder.formbuilder">Formular Builder</span>
             </div>
             <div class="drop-zone" id="dropZone">
                 <div class="drop-zone-placeholder">
                     <i class="plus icon"></i>
-                    <h3>Komponenten hier hineinziehen</h3>
-                    <p>Ziehen Sie Felder aus der linken Sidebar in diesen Bereich</p>
+                    <h3 data-i18n="builder.drag_components">Komponenten hier hineinziehen</h3>
+                    <p data-i18n="builder.drag_info">Ziehen Sie Felder aus der linken Sidebar in diesen Bereich</p>
                 </div>
             </div>
         </div> <!-- End builder-panel -->
@@ -1660,6 +1748,82 @@ $form->display();'); ?></pre>
     <script src="js/sortable.min.js"></script>
     
     <script>
+        // Toast Notification Function
+        function showSuccessToast(message) {
+            showToast(message, 'success', 'check circle');
+        }
+        
+        function showErrorToast(message) {
+            showToast(message, 'error', 'exclamation circle');
+        }
+        
+        function showInfoToast(message) {
+            showToast(message, 'info', 'info circle');
+        }
+        
+        function showToast(message, type = 'success', icon = 'check circle') {
+            // Remove any existing toasts
+            $('.toast-notification').remove();
+            
+            // Create toast element with inline styles
+            const toast = $(`
+                <div class="toast-notification ${type}" style="
+                    position: fixed;
+                    top: 80px;
+                    right: 20px;
+                    z-index: 10000;
+                    min-width: 300px;
+                    max-width: 500px;
+                    padding: 16px 20px;
+                    background: white;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    animation: slideInRight 0.3s ease-out;
+                    border-left: 4px solid ${type === 'success' ? '#21ba45' : type === 'error' ? '#db2828' : '#2185d0'};
+                ">
+                    <i class="${icon} icon" style="font-size: 20px; color: ${type === 'success' ? '#21ba45' : type === 'error' ? '#db2828' : '#2185d0'};"></i>
+                    <span style="flex: 1; font-size: 14px; font-weight: 500; color: #2c3e50;">${message}</span>
+                    <span class="close" style="cursor: pointer; color: #999; font-size: 18px; line-height: 1;">&times;</span>
+                </div>
+            `);
+            
+            // Add animation styles if not exists
+            if (!$('#toast-animations').length) {
+                $('head').append(`
+                    <style id="toast-animations">
+                        @keyframes slideInRight {
+                            from { transform: translateX(100%); opacity: 0; }
+                            to { transform: translateX(0); opacity: 1; }
+                        }
+                        @keyframes slideOutRight {
+                            from { transform: translateX(0); opacity: 1; }
+                            to { transform: translateX(100%); opacity: 0; }
+                        }
+                    </style>
+                `);
+            }
+            
+            // Add to body
+            $('body').append(toast);
+            
+            // Add close handler
+            toast.find('.close').on('click', function() {
+                toast.css('animation', 'slideOutRight 0.3s ease-out');
+                setTimeout(() => toast.remove(), 300);
+            });
+            
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                if (toast.length) {
+                    toast.css('animation', 'slideOutRight 0.3s ease-out');
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, 3000);
+        }
+        
         // Global variables
         let formElements = [];
         let currentEditingElement = null;
@@ -3349,7 +3513,12 @@ $form->display();'); ?></pre>
             
             formElements.forEach(function(element, index) {
                 if (index > 0) elementsCode += '\n';
-                elementsCode += generateElementPHPCode(element);
+                let elementCode = generateElementPHPCode(element);
+                // Add semicolon at the end of each element
+                if (!elementCode.endsWith(';')) {
+                    elementCode += ';';
+                }
+                elementsCode += elementCode;
             });
             
             // Build method and action code
@@ -3372,12 +3541,24 @@ $form->display();'); ?></pre>
         }'
     ])` : '';
 
+            // Add submit and reset buttons if configured
+            let buttonsCode = '';
+            if (formConfig.submitButton) {
+                buttonsCode += "\n$form->submit('" + (formConfig.language === 'en' ? 'Submit' : 'Absenden') + "');";
+            }
+            if (formConfig.resetButton) {
+                buttonsCode += "\n$form->reset('" + (formConfig.language === 'en' ? 'Reset' : 'Zurücksetzen') + "');";
+            }
+            
             // Build complete PHP code
             var finalCode = '<' + '?php\n' +
                 'use EasyForm\\EasyForm;\n\n' +
                 '$form = new EasyForm(\'' + formConfig.id + '\', ' + configString + ');\n' +
-                methodActionCode + (ajaxCode ? '\n     ' + ajaxCode : '') + ';\n\n' +
-                elementsCode + '\n\n' +
+                (methodActionCode ? methodActionCode + ';\n' : '') +
+                (ajaxCode ? '\n$form' + ajaxCode + ';\n' : '') +
+                '\n' +
+                elementsCode +
+                buttonsCode + '\n\n' +
                 '$form->display();\n' +
                 '?' + '>';
             
@@ -4098,6 +4279,21 @@ $form->display();'); ?></pre>
                                 // Initialize Semantic UI components
                                 $('.ui.dropdown').dropdown();
                                 $('.ui.checkbox').checkbox();
+                                
+                                // Apply live validation if enabled
+                                ${formConfig.liveValidation ? `
+                                $('.ui.form').form({
+                                    inline: true,
+                                    on: 'blur',
+                                    fields: {}
+                                });` : ''}
+                                
+                                // Prevent form submission in preview
+                                $('form').on('submit', function(e) {
+                                    e.preventDefault();
+                                    alert('${formConfig.language === 'en' ? 'This is a preview. Form submission is disabled.' : 'Dies ist eine Vorschau. Die Formularübermittlung ist deaktiviert.'}');
+                                    return false;
+                                });
                             });
                         <\/script>
                     </body>
@@ -4125,13 +4321,70 @@ $form->display();'); ?></pre>
         }
 
         function generatePreviewHTML() {
-            let html = '<form class="ui form">';
+            // Apply form configuration
+            let formClasses = 'ui form';
+            if (formConfig.size && formConfig.size !== 'medium') {
+                formClasses += ` ${formConfig.size}`;
+            }
+            if (formConfig.class) {
+                formClasses += ` ${formConfig.class}`;
+            }
             
+            let formAttrs = '';
+            if (!formConfig.autocomplete) {
+                formAttrs += ' autocomplete="off"';
+            }
+            if (formConfig.action) {
+                formAttrs += ` action="${formConfig.action}"`;
+            }
+            if (formConfig.method) {
+                formAttrs += ` method="${formConfig.method}"`;
+            }
+            
+            let html = `<form class="${formClasses}"${formAttrs}>`;
+            
+            // Add form elements
             formElements.forEach(element => {
                 html += generateCleanPreview(element);
             });
             
+            // Add buttons based on configuration
+            if (formConfig.submitButton || formConfig.resetButton) {
+                html += '<div style="margin-top: 20px;">';
+                
+                if (formConfig.submitButton) {
+                    html += `
+                        <button class="ui primary button" type="submit">
+                            <i class="checkmark icon"></i>
+                            ${formConfig.language === 'en' ? 'Submit' : 'Absenden'}
+                        </button>
+                    `;
+                }
+                
+                if (formConfig.resetButton) {
+                    html += `
+                        <button class="ui button" type="reset" style="margin-left: 10px;">
+                            <i class="undo icon"></i>
+                            ${formConfig.language === 'en' ? 'Reset' : 'Zurücksetzen'}
+                        </button>
+                    `;
+                }
+                
+                html += '</div>';
+            }
+            
             html += '</form>';
+            
+            // Add validation message area if showErrors is enabled
+            if (formConfig.showErrors) {
+                html += `
+                    <div class="ui error message" style="display: none; margin-top: 20px;">
+                        <div class="header">${formConfig.language === 'en' ? 'Form Errors' : 'Formularfehler'}</div>
+                        <p>${formConfig.language === 'en' ? 'Please correct the errors and try again.' : 'Bitte korrigieren Sie die Fehler und versuchen Sie es erneut.'}</p>
+                    </div>
+                `;
+            }
+            
             return html;
         }
 
@@ -4519,18 +4772,18 @@ $form->display();
         <i class="close icon"></i>
         <div class="header">
             <i class="cog icon"></i>
-            Formular Konfiguration
+            <span data-i18n="config.title">Formular Konfiguration</span>
         </div>
         <div class="content">
             <form class="ui form">
-                <h4 class="ui dividing header">Basis-Einstellungen</h4>
+                <h4 class="ui dividing header" data-i18n="config.basic_settings">Basis-Einstellungen</h4>
                 <div class="two fields">
                     <div class="field">
-                        <label>Formular ID</label>
+                        <label data-i18n="config.form_id">Formular ID</label>
                         <input type="text" id="config_id" placeholder="my_form">
                     </div>
                     <div class="field">
-                        <label>Theme</label>
+                        <label data-i18n="config.theme">Theme</label>
                         <select id="config_theme" class="ui dropdown">
                             <option value="semantic">Semantic UI</option>
                             <option value="bootstrap">Bootstrap</option>
@@ -4541,40 +4794,40 @@ $form->display();
                 
                 <div class="two fields">
                     <div class="field">
-                        <label>Breite (px)</label>
+                        <label data-i18n="config.width">Breite (px)</label>
                         <input type="number" id="config_width" placeholder="600">
                     </div>
                     <div class="field">
-                        <label>Größe</label>
+                        <label data-i18n="config.size">Größe</label>
                         <select id="config_size" class="ui dropdown">
-                            <option value="mini">Mini</option>
-                            <option value="tiny">Klein</option>
-                            <option value="small">Klein-Mittel</option>
-                            <option value="medium">Mittel</option>
-                            <option value="large">Groß</option>
-                            <option value="huge">Sehr groß</option>
+                            <option value="mini" data-i18n="config.size.mini">Mini</option>
+                            <option value="tiny" data-i18n="config.size.tiny">Klein</option>
+                            <option value="small" data-i18n="config.size.small">Klein-Mittel</option>
+                            <option value="medium" data-i18n="config.size.medium">Mittel</option>
+                            <option value="large" data-i18n="config.size.large">Groß</option>
+                            <option value="huge" data-i18n="config.size.huge">Sehr groß</option>
                         </select>
                     </div>
                 </div>
                 
-                <h4 class="ui dividing header">Verhalten</h4>
+                <h4 class="ui dividing header" data-i18n="config.behavior">Verhalten</h4>
                 <div class="inline fields">
                     <div class="field">
                         <div class="ui checkbox">
                             <input type="checkbox" id="config_autocomplete" checked>
-                            <label>Autovervollständigung</label>
+                            <label data-i18n="config.autocomplete">Autovervollständigung</label>
                         </div>
                     </div>
                     <div class="field">
                         <div class="ui checkbox">
                             <input type="checkbox" id="config_showErrors" checked>
-                            <label>Fehler anzeigen</label>
+                            <label data-i18n="config.show_errors">Fehler anzeigen</label>
                         </div>
                     </div>
                     <div class="field">
                         <div class="ui checkbox">
                             <input type="checkbox" id="config_liveValidation" checked>
-                            <label>Live-Validierung</label>
+                            <label data-i18n="config.live_validation">Live-Validierung</label>
                         </div>
                     </div>
                 </div>
@@ -4583,25 +4836,25 @@ $form->display();
                     <div class="field">
                         <div class="ui checkbox">
                             <input type="checkbox" id="config_submitButton" checked>
-                            <label>Submit Button</label>
+                            <label data-i18n="config.submit_button">Submit Button</label>
                         </div>
                     </div>
                     <div class="field">
                         <div class="ui checkbox">
                             <input type="checkbox" id="config_resetButton">
-                            <label>Reset Button</label>
+                            <label data-i18n="config.reset_button">Reset Button</label>
                         </div>
                     </div>
                 </div>
                 
-                <h4 class="ui dividing header">Formular Aktion</h4>
+                <h4 class="ui dividing header" data-i18n="config.form_action">Formular Aktion</h4>
                 <div class="two fields">
                     <div class="field">
-                        <label>Action URL</label>
+                        <label data-i18n="config.action_url">Action URL</label>
                         <input type="text" id="config_action" placeholder="process.php">
                     </div>
                     <div class="field">
-                        <label>Method</label>
+                        <label data-i18n="config.method">Method</label>
                         <select id="config_method" class="ui dropdown">
                             <option value="POST">POST</option>
                             <option value="GET">GET</option>
@@ -4610,7 +4863,7 @@ $form->display();
                 </div>
                 
                 <div class="field">
-                    <label>Sprache</label>
+                    <label data-i18n="config.language">Sprache</label>
                     <select id="config_language" class="ui dropdown">
                         <option value="de">Deutsch</option>
                         <option value="en">English</option>
@@ -4620,17 +4873,17 @@ $form->display();
                 </div>
                 
                 <div class="field">
-                    <label>Zusätzliche CSS-Klassen</label>
+                    <label data-i18n="config.additional_css">Zusätzliche CSS-Klassen</label>
                     <input type="text" id="config_class" placeholder="ui segment padded">
                 </div>
             </form>
         </div>
         <div class="actions">
-            <div class="ui black deny button">
+            <div class="ui black deny button" data-i18n="global.cancel">
                 Abbrechen
             </div>
             <div class="ui positive right labeled icon button" onclick="saveFormConfig()">
-                Speichern
+                <span data-i18n="global.save">Speichern</span>
                 <i class="checkmark icon"></i>
             </div>
         </div>

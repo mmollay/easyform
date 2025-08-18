@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EasyForm Documentation - Modern PHP Form Builder</title>
-    <meta name="description" content="Complete EasyForm documentation with API reference, examples, and best practices. Build beautiful forms with fluent PHP API.">
+    <title>EasyForm Dokumentation - Moderner PHP Form Builder</title>
+    <meta name="description" content="Vollständige EasyForm Dokumentation mit API-Referenz, Beispielen und Best Practices. Erstellen Sie schöne Formulare mit fluent PHP API.">
     
     <!-- Stylesheets -->
     <link rel="stylesheet" href="assets/css/main.css">
@@ -21,10 +21,10 @@
                     <a href="../index.html">EasyForm/EasyList</a>
                 </div>
                 <nav class="nav">
-                    <a href="#overview" class="nav-link">Overview</a>
-                    <a href="#quickstart" class="nav-link">Quick Start</a>
-                    <a href="#field-types" class="nav-link">Field Types</a>
-                    <a href="#validation" class="nav-link">Validation</a>
+                    <a href="#overview" class="nav-link">Übersicht</a>
+                    <a href="#quickstart" class="nav-link">Schnellstart</a>
+                    <a href="#field-types" class="nav-link">Feldtypen</a>
+                    <a href="#validation" class="nav-link">Validierung</a>
                     <a href="#ajax" class="nav-link">AJAX</a>
                     <a href="easylist.html" class="nav-link">EasyList</a>
                     <a href="demos/" class="nav-link">Demos</a>
@@ -40,21 +40,21 @@
             <!-- Sidebar Navigation -->
             <div class="col-3">
                 <div class="doc-nav">
-                    <h3 style="margin-bottom: 1rem;">EasyForm Guide</h3>
+                    <h3 style="margin-bottom: 1rem;">EasyForm Anleitung</h3>
                     <ul>
-                        <li><a href="#overview" class="active">Overview</a></li>
-                        <li><a href="#quickstart">Quick Start</a></li>
-                        <li><a href="#constructor">Constructor</a></li>
-                        <li><a href="#field-types">Field Types</a></li>
-                        <li><a href="#text-fields">Text Fields</a></li>
-                        <li><a href="#selection-fields">Selection Fields</a></li>
-                        <li><a href="#special-fields">Special Fields</a></li>
-                        <li><a href="#layout">Layout Elements</a></li>
-                        <li><a href="#validation">Validation</a></li>
-                        <li><a href="#groups">Groups & Tabs</a></li>
-                        <li><a href="#ajax">AJAX Support</a></li>
-                        <li><a href="#theming">Theming</a></li>
-                        <li><a href="#advanced">Advanced Features</a></li>
+                        <li><a href="#overview" class="active">Übersicht</a></li>
+                        <li><a href="#quickstart">Schnellstart</a></li>
+                        <li><a href="#constructor">Konstruktor</a></li>
+                        <li><a href="#field-types">Feldtypen</a></li>
+                        <li><a href="#text-fields">Textfelder</a></li>
+                        <li><a href="#selection-fields">Auswahlfelder</a></li>
+                        <li><a href="#special-fields">Spezialfelder</a></li>
+                        <li><a href="#layout">Layout-Elemente</a></li>
+                        <li><a href="#validation">Validierung</a></li>
+                        <li><a href="#groups">Gruppen & Tabs</a></li>
+                        <li><a href="#ajax">AJAX-Unterstützung</a></li>
+                        <li><a href="#theming">Themes</a></li>
+                        <li><a href="#advanced">Erweiterte Funktionen</a></li>
                         <li><a href="#best-practices">Best Practices</a></li>
                     </ul>
                 </div>
@@ -63,87 +63,87 @@
             <!-- Main Documentation Content -->
             <div class="col-9">
                 <div class="doc-content">
-                    <h1 id="overview">EasyForm Documentation</h1>
-                    <p class="section-subtitle">Master the modern PHP form builder with fluent API, advanced validation, and beautiful responsive designs.</p>
+                    <h1 id="overview">EasyForm Dokumentation</h1>
+                    <p class="section-subtitle">Meistern Sie den modernen PHP Form Builder mit fluent API, erweiterter Validierung und schönen responsiven Designs.</p>
 
                     <!-- Overview Section -->
                     <section id="overview">
-                        <h2>What is EasyForm?</h2>
-                        <p>EasyForm is a revolutionary PHP form builder that transforms how you create HTML forms. With its fluent interface and powerful features, you can build complex forms in minutes instead of hours.</p>
+                        <h2>Was ist EasyForm?</h2>
+                        <p>EasyForm ist ein revolutionärer PHP Form Builder, der die Art und Weise transformiert, wie Sie HTML-Formulare erstellen. Mit seiner fluent Schnittstelle und leistungsstarken Funktionen können Sie komplexe Formulare in Minuten statt Stunden erstellen.</p>
                         
-                        <h3>Key Features</h3>
+                        <h3>Hauptfunktionen</h3>
                         <div class="row">
                             <div class="col-6">
                                 <ul>
-                                    <li><strong>Fluent API:</strong> Chainable methods for intuitive coding</li>
-                                    <li><strong>50+ Field Types:</strong> Everything from basic inputs to rich components</li>
-                                    <li><strong>Responsive Design:</strong> Mobile-first approach</li>
-                                    <li><strong>Built-in Validation:</strong> Client and server-side validation</li>
-                                    <li><strong>AJAX Ready:</strong> Seamless asynchronous form handling</li>
+                                    <li><strong>Fluent API:</strong> Verkettbare Methoden für intuitives Programmieren</li>
+                                    <li><strong>50+ Feldtypen:</strong> Alles von einfachen Eingaben bis zu komplexen Komponenten</li>
+                                    <li><strong>Responsive Design:</strong> Mobile-first Ansatz</li>
+                                    <li><strong>Eingebaute Validierung:</strong> Client- und serverseitige Validierung</li>
+                                    <li><strong>AJAX-bereit:</strong> Nahtlose asynchrone Formularverarbeitung</li>
                                 </ul>
                             </div>
                             <div class="col-6">
                                 <ul>
-                                    <li><strong>CSRF Protection:</strong> Automatic security measures</li>
-                                    <li><strong>Multiple Themes:</strong> Semantic UI, Bootstrap, Material Design</li>
-                                    <li><strong>Layout System:</strong> Tabs, accordions, columns, groups</li>
-                                    <li><strong>Internationalization:</strong> Multi-language support</li>
-                                    <li><strong>Type Safety:</strong> Full PHP 8 type hints</li>
+                                    <li><strong>CSRF-Schutz:</strong> Automatische Sicherheitsmaßnahmen</li>
+                                    <li><strong>Mehrere Themes:</strong> Semantic UI, Bootstrap, Material Design</li>
+                                    <li><strong>Layout-System:</strong> Tabs, Akkordeons, Spalten, Gruppen</li>
+                                    <li><strong>Internationalisierung:</strong> Mehrsprachige Unterstützung</li>
+                                    <li><strong>Typsicherheit:</strong> Vollständige PHP 8 Type Hints</li>
                                 </ul>
                             </div>
                         </div>
 
                         <div class="alert alert-info">
-                            <strong>Migration from Smart-Form:</strong> EasyForm provides a modern alternative to array-based form configurations with 90% less code and full IDE support.
+                            <strong>Migration von Smart-Form:</strong> EasyForm bietet eine moderne Alternative zu array-basierten Formularkonfigurationen mit 90% weniger Code und voller IDE-Unterstützung.
                         </div>
                     </section>
 
                     <!-- Quick Start -->
                     <section id="quickstart">
-                        <h2>Quick Start</h2>
-                        <p>Get up and running with EasyForm in under 5 minutes.</p>
+                        <h2>Schnellstart</h2>
+                        <p>Starten Sie mit EasyForm in weniger als 5 Minuten.</p>
 
-                        <h3>Basic Contact Form</h3>
+                        <h3>Einfaches Kontaktformular</h3>
                         <div class="code-block" data-language="php">
 <code><?php
 require_once 'easy_form/autoload.php';
 use EasyForm\EasyForm;
 
-// Create a new form
+// Neues Formular erstellen
 $form = new EasyForm('contact_form');
 
-// Add fields using fluent interface
-$form->text('name', 'Your Name', ['required' => true])
-    ->email('email', 'Email Address', ['required' => true])
-    ->textarea('message', 'Your Message', ['rows' => 5])
-    ->submit('Send Message');
+// Felder mit fluent Interface hinzufügen
+$form->text('name', 'Ihr Name', ['required' => true])
+    ->email('email', 'E-Mail-Adresse', ['required' => true])
+    ->textarea('message', 'Ihre Nachricht', ['rows' => 5])
+    ->submit('Nachricht senden');
 
-// Display the form
+// Formular anzeigen
 $form->display();
 ?></code>
                         </div>
 
-                        <h3>Processing Form Data</h3>
+                        <h3>Formulardaten verarbeiten</h3>
                         <div class="code-block" data-language="php">
 <code><?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // CSRF protection (automatic)
+    // CSRF-Schutz (automatisch)
     if (!$form->validateCSRF()) {
-        die('Security error: Invalid CSRF token');
+        die('Sicherheitsfehler: Ungültiger CSRF-Token');
     }
     
-    // Get and validate data
+    // Daten abrufen und validieren
     $name = $_POST['name'] ?? '';
     $email = $_POST['email'] ?? '';
     $message = $_POST['message'] ?? '';
     
-    // Server-side validation
+    // Serverseitige Validierung
     if ($form->validate($_POST)) {
-        // Process the form data
+        // Formulardaten verarbeiten
         sendEmail($name, $email, $message);
-        echo "Thank you! Your message has been sent.";
+        echo "Vielen Dank! Ihre Nachricht wurde gesendet.";
     } else {
-        // Display validation errors
+        // Validierungsfehler anzeigen
         $form->displayErrors();
     }
 }
@@ -153,41 +153,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <!-- Constructor -->
                     <section id="constructor">
-                        <h2>Constructor & Configuration</h2>
-                        <p>Create forms with custom configuration options.</p>
+                        <h2>Konstruktor & Konfiguration</h2>
+                        <p>Erstellen Sie Formulare mit benutzerdefinierten Konfigurationsoptionen.</p>
 
-                        <h3>Basic Constructor</h3>
+                        <h3>Basis-Konstruktor</h3>
                         <div class="code-block" data-language="php">
 <code><?php
-// Simple form with default settings
+// Einfaches Formular mit Standardeinstellungen
 $form = new EasyForm('my_form');
 
-// Form with custom configuration
+// Formular mit benutzerdefinierter Konfiguration
 $form = new EasyForm('advanced_form', [
     'theme' => 'bootstrap',     // Theme: semantic, bootstrap, material
-    'size' => 'large',          // Size: mini, tiny, small, medium, large, huge
-    'width' => 800,             // Maximum width in pixels
-    'method' => 'POST',         // HTTP method
-    'action' => '/submit',      // Form action URL
-    'class' => 'custom-form',   // Additional CSS classes
-    'language' => 'en',         // Language for messages
-    'autocomplete' => true,     // Browser autocomplete
-    'liveValidation' => true,   // Real-time validation
-    'showErrors' => true,       // Display validation errors
-    'submitButton' => true,     // Auto-add submit button
-    'resetButton' => false      // Auto-add reset button
+    'size' => 'large',          // Größe: mini, tiny, small, medium, large, huge
+    'width' => 800,             // Maximale Breite in Pixeln
+    'method' => 'POST',         // HTTP-Methode
+    'action' => '/submit',      // Formular-Action-URL
+    'class' => 'custom-form',   // Zusätzliche CSS-Klassen
+    'language' => 'de',         // Sprache für Meldungen
+    'autocomplete' => true,     // Browser-Autovervollständigung
+    'liveValidation' => true,   // Echtzeit-Validierung
+    'showErrors' => true,       // Validierungsfehler anzeigen
+    'submitButton' => true,     // Submit-Button automatisch hinzufügen
+    'resetButton' => false      // Reset-Button automatisch hinzufügen
 ]);
 ?></code>
                         </div>
 
-                        <h3>Configuration Options</h3>
+                        <h3>Konfigurationsoptionen</h3>
                         <table>
                             <thead>
                                 <tr>
                                     <th>Option</th>
-                                    <th>Type</th>
-                                    <th>Default</th>
-                                    <th>Description</th>
+                                    <th>Typ</th>
+                                    <th>Standard</th>
+                                    <th>Beschreibung</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -195,7 +195,7 @@ $form = new EasyForm('advanced_form', [
                                     <td><code>theme</code></td>
                                     <td>string</td>
                                     <td>'semantic'</td>
-                                    <td>CSS framework: semantic, bootstrap, material</td>
+                                    <td>CSS-Framework: semantic, bootstrap, material</td>
                                 </tr>
                                 <tr>
                                     <td><code>size</code></td>

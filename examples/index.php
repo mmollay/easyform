@@ -3,14 +3,64 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EasyForm - Beispiele & Demos</title>
+    <title>FormWerk - Beispiele & Demos</title>
     <link rel="stylesheet" href="../semantic/dist/semantic.min.css">
+    <script src="../assets/js/i18n.js"></script>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(120deg, #f6f8fb 0%, #e9ecf0 100%);
             min-height: 100vh;
-            padding: 40px 20px;
+            padding: 100px 20px 40px;
+        }
+        
+        /* Navigation */
+        .main-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 15px 30px;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-menu a {
+            color: #4a5568;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-menu a:hover {
+            color: #667eea;
         }
         
         .container {
@@ -139,31 +189,45 @@
     </style>
 </head>
 <body>
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="../" class="nav-logo">FormWerk</a>
+            <ul class="nav-menu">
+                <li><a href="../" data-i18n="nav.home">Startseite</a></li>
+                <li><a href="../form_builder.php" data-i18n="nav.formbuilder">Form Builder</a></li>
+                <li><a href="../list_generator.php" data-i18n="nav.listgenerator">List Generator</a></li>
+                <li><a href="../docs/" data-i18n="nav.docs">Dokumentation</a></li>
+                <li><a href="../health-check.php" data-i18n="nav.health">Status</a></li>
+            </ul>
+        </div>
+    </nav>
+    
     <div class="container">
         <!-- Header -->
         <div class="header-section">
-            <h1>EasyForm Beispiele</h1>
-            <p>Entdecken Sie die Vielfalt und Leistungsfähigkeit von EasyForm anhand unserer interaktiven Demos</p>
+            <h1 data-i18n="examples.title">FormWerk Beispiele</h1>
+            <p data-i18n="examples.subtitle">Entdecken Sie die Vielfalt und Leistungsfähigkeit von FormWerk anhand unserer interaktiven Demos</p>
             <a href="../" class="back-button">
-                <i class="arrow left icon"></i> Zurück zur Startseite
+                <i class="arrow left icon"></i> <span data-i18n="global.back">Zurück</span>
             </a>
         </div>
         
         <!-- Form Examples -->
-        <h2 class="section-title">📝 Formular Beispiele</h2>
+        <h2 class="section-title" data-i18n="examples.forms">📝 Formular Beispiele</h2>
         <div class="examples-grid">
             <a href="01_simple_form.php" class="example-card">
                 <div class="example-icon">
                     <i class="envelope icon"></i>
                 </div>
-                <h3 class="example-title">Einfaches Kontaktformular</h3>
-                <p class="example-description">
+                <h3 class="example-title" data-i18n="examples.contact.title">Einfaches Kontaktformular</h3>
+                <p class="example-description" data-i18n="examples.contact.desc">
                     Grundlegendes Kontaktformular mit den wichtigsten Feldtypen und AJAX-Submit
                 </p>
                 <div class="example-tags">
-                    <span class="tag primary">Anfänger</span>
-                    <span class="tag">AJAX</span>
-                    <span class="tag">Validierung</span>
+                    <span class="tag primary" data-i18n="examples.level.beginner">Anfänger</span>
+                    <span class="tag" data-i18n="examples.tag.ajax">AJAX</span>
+                    <span class="tag" data-i18n="examples.tag.validation">Validierung</span>
                 </div>
             </a>
             
@@ -171,14 +235,14 @@
                 <div class="example-icon">
                     <i class="clipboard icon"></i>
                 </div>
-                <h3 class="example-title">Bewerbungsformular mit Tabs</h3>
-                <p class="example-description">
+                <h3 class="example-title" data-i18n="examples.application.title">Bewerbungsformular mit Tabs</h3>
+                <p class="example-description" data-i18n="examples.application.desc">
                     Komplexes Formular mit Tabs, Gruppen, bedingten Feldern und Datei-Upload
                 </p>
                 <div class="example-tags">
-                    <span class="tag">Fortgeschritten</span>
-                    <span class="tag">Tabs</span>
-                    <span class="tag">File Upload</span>
+                    <span class="tag" data-i18n="examples.level.advanced">Fortgeschritten</span>
+                    <span class="tag" data-i18n="examples.tag.tabs">Tabs</span>
+                    <span class="tag" data-i18n="examples.tag.fileupload">File Upload</span>
                 </div>
             </a>
             
@@ -186,33 +250,33 @@
                 <div class="example-icon">
                     <i class="bolt icon"></i>
                 </div>
-                <h3 class="example-title">AJAX Registrierung</h3>
-                <p class="example-description">
+                <h3 class="example-title" data-i18n="examples.registration.title">AJAX Registrierung</h3>
+                <p class="example-description" data-i18n="examples.registration.desc">
                     Dynamisches Registrierungsformular mit Live-Validierung und AJAX-Processing
                 </p>
                 <div class="example-tags">
-                    <span class="tag">AJAX</span>
-                    <span class="tag">Live Validation</span>
-                    <span class="tag">Passwort</span>
+                    <span class="tag" data-i18n="examples.tag.ajax">AJAX</span>
+                    <span class="tag" data-i18n="examples.tag.livevalidation">Live Validation</span>
+                    <span class="tag" data-i18n="examples.tag.password">Passwort</span>
                 </div>
             </a>
         </div>
         
         <!-- List Examples -->
-        <h2 class="section-title">📊 Listen & Tabellen</h2>
+        <h2 class="section-title" data-i18n="examples.lists">📊 Listen & Tabellen</h2>
         <div class="examples-grid">
             <a href="04_list_demo.php" class="example-card">
                 <div class="example-icon">
                     <i class="table icon"></i>
                 </div>
-                <h3 class="example-title">Einfache Datenliste</h3>
-                <p class="example-description">
+                <h3 class="example-title" data-i18n="examples.datalist.title">Einfache Datenliste</h3>
+                <p class="example-description" data-i18n="examples.datalist.desc">
                     Grundlegende Datentabelle mit Sortierung, Suche und Pagination
                 </p>
                 <div class="example-tags">
-                    <span class="tag primary">Anfänger</span>
-                    <span class="tag">Sortierung</span>
-                    <span class="tag">Suche</span>
+                    <span class="tag primary" data-i18n="examples.level.beginner">Anfänger</span>
+                    <span class="tag" data-i18n="examples.tag.sorting">Sortierung</span>
+                    <span class="tag" data-i18n="examples.tag.search">Suche</span>
                 </div>
             </a>
             
@@ -220,33 +284,33 @@
                 <div class="example-icon">
                     <i class="chart bar icon"></i>
                 </div>
-                <h3 class="example-title">Erweiterte Datentabelle</h3>
-                <p class="example-description">
+                <h3 class="example-title" data-i18n="examples.advancedlist.title">Erweiterte Datentabelle</h3>
+                <p class="example-description" data-i18n="examples.advancedlist.desc">
                     Professionelle Tabelle mit Filtern, Export-Funktionen und Gruppierung
                 </p>
                 <div class="example-tags">
-                    <span class="tag">Fortgeschritten</span>
-                    <span class="tag">Export</span>
-                    <span class="tag">Filter</span>
+                    <span class="tag" data-i18n="examples.level.advanced">Fortgeschritten</span>
+                    <span class="tag" data-i18n="examples.tag.export">Export</span>
+                    <span class="tag" data-i18n="examples.tag.filter">Filter</span>
                 </div>
             </a>
         </div>
         
         <!-- Builder Tools -->
-        <h2 class="section-title">🛠️ Visual Builder</h2>
+        <h2 class="section-title" data-i18n="examples.builders">🛠️ Visual Builder</h2>
         <div class="examples-grid">
             <a href="../form_builder.php" class="example-card">
                 <div class="example-icon">
                     <i class="paint brush icon"></i>
                 </div>
-                <h3 class="example-title">Form Builder</h3>
-                <p class="example-description">
+                <h3 class="example-title" data-i18n="examples.formbuilder.title">Form Builder</h3>
+                <p class="example-description" data-i18n="examples.formbuilder.desc">
                     Visueller Drag & Drop Form Builder für die schnelle Formularerstellung ohne Code
                 </p>
                 <div class="example-tags">
-                    <span class="tag primary">Tool</span>
-                    <span class="tag">Drag & Drop</span>
-                    <span class="tag">Visual</span>
+                    <span class="tag primary" data-i18n="examples.tag.tool">Tool</span>
+                    <span class="tag" data-i18n="examples.tag.dragdrop">Drag & Drop</span>
+                    <span class="tag" data-i18n="examples.tag.visual">Visual</span>
                 </div>
             </a>
             
@@ -254,33 +318,33 @@
                 <div class="example-icon">
                     <i class="database icon"></i>
                 </div>
-                <h3 class="example-title">List Generator</h3>
-                <p class="example-description">
+                <h3 class="example-title" data-i18n="examples.listgen.title">List Generator</h3>
+                <p class="example-description" data-i18n="examples.listgen.desc">
                     Visueller Generator für dynamische Datentabellen mit allen Features
                 </p>
                 <div class="example-tags">
-                    <span class="tag primary">Tool</span>
-                    <span class="tag">Generator</span>
-                    <span class="tag">Visual</span>
+                    <span class="tag primary" data-i18n="examples.tag.tool">Tool</span>
+                    <span class="tag" data-i18n="examples.tag.generator">Generator</span>
+                    <span class="tag" data-i18n="examples.tag.visual">Visual</span>
                 </div>
             </a>
         </div>
         
         <!-- Resources -->
-        <h2 class="section-title">📚 Weitere Ressourcen</h2>
+        <h2 class="section-title" data-i18n="examples.resources">📚 Weitere Ressourcen</h2>
         <div class="examples-grid">
             <a href="../docs/" class="example-card">
                 <div class="example-icon">
                     <i class="book icon"></i>
                 </div>
-                <h3 class="example-title">Dokumentation</h3>
-                <p class="example-description">
+                <h3 class="example-title" data-i18n="examples.docs.title">Dokumentation</h3>
+                <p class="example-description" data-i18n="examples.docs.desc">
                     Ausführliche Dokumentation mit API-Referenz und Tutorials
                 </p>
                 <div class="example-tags">
-                    <span class="tag">API</span>
-                    <span class="tag">Tutorial</span>
-                    <span class="tag">Reference</span>
+                    <span class="tag" data-i18n="examples.tag.api">API</span>
+                    <span class="tag" data-i18n="examples.tag.tutorial">Tutorial</span>
+                    <span class="tag" data-i18n="examples.tag.reference">Reference</span>
                 </div>
             </a>
             
@@ -288,14 +352,14 @@
                 <div class="example-icon">
                     <i class="github icon"></i>
                 </div>
-                <h3 class="example-title">GitHub Repository</h3>
-                <p class="example-description">
+                <h3 class="example-title" data-i18n="examples.github.title">GitHub Repository</h3>
+                <p class="example-description" data-i18n="examples.github.desc">
                     Source Code, Issues und Contributions auf GitHub
                 </p>
                 <div class="example-tags">
-                    <span class="tag">Open Source</span>
-                    <span class="tag">GitHub</span>
-                    <span class="tag">MIT License</span>
+                    <span class="tag" data-i18n="examples.tag.opensource">Open Source</span>
+                    <span class="tag" data-i18n="examples.tag.github">GitHub</span>
+                    <span class="tag" data-i18n="examples.tag.license">MIT License</span>
                 </div>
             </a>
         </div>

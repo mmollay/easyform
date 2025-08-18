@@ -10,10 +10,11 @@ session_start();
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EasyList Generator - Visual List Builder</title>
+    <title>FormWerk - Data Table Generator</title>
     
     <!-- Semantic UI CSS -->
     <link rel="stylesheet" href="semantic/dist/semantic.min.css">
+    <script src="assets/js/i18n.js"></script>
     
     <!-- Code highlighting -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
@@ -29,6 +30,7 @@ session_start();
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             overflow-x: hidden;
+            padding-top: 70px;
         }
         
         /* Custom Scrollbar */
@@ -145,14 +147,72 @@ session_start();
             border-bottom: 1px solid #d0d0d0;
         }
         
+        /* Navigation */
+        .main-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 15px 30px;
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+        }
+        
+        .nav-menu a {
+            color: #4a5568;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 6px;
+        }
+        
+        .nav-menu a:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.08);
+        }
+        
+        .nav-menu a.active {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.12);
+        }
+        
         .main-header {
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
             padding: 20px 0;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             position: sticky;
-            top: 0;
-            z-index: 1000;
+            top: 70px;
+            z-index: 100;
         }
         
         .header-content {
@@ -190,6 +250,81 @@ session_start();
         .header-actions {
             display: flex;
             gap: 10px;
+        }
+        
+        /* Moderne Button-Stile - Einheitlich für beide Generatoren */
+        .header-actions .ui.button {
+            border-radius: 10px;
+            font-weight: 600;
+            padding: 10px 20px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: white !important;
+            color: #4a5568 !important;
+            border-color: #e2e8f0 !important;
+        }
+        
+        .header-actions .ui.button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+            border-color: #667eea !important;
+            color: #667eea !important;
+        }
+        
+        /* Template Button - Primär Style */
+        .template-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            color: white !important;
+            border: none !important;
+        }
+        
+        .template-button:hover {
+            background: linear-gradient(135deg, #5a67d8 0%, #6b3d8f 100%) !important;
+            color: white !important;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.35) !important;
+        }
+        
+        /* Config Button */
+        .config-button {
+            background: white !important;
+            color: #667eea !important;
+            border-color: #667eea !important;
+        }
+        
+        .config-button:hover {
+            background: rgba(102, 126, 234, 0.1) !important;
+            color: #5a67d8 !important;
+        }
+        
+        /* Preview Button */
+        .preview-button {
+            background: white !important;
+            color: #48bb78 !important;
+            border-color: #48bb78 !important;
+        }
+        
+        .preview-button:hover {
+            background: rgba(72, 187, 120, 0.1) !important;
+            color: #38a169 !important;
+            border-color: #38a169 !important;
+        }
+        
+        /* Clear/Reset Button */
+        .clear-button {
+            background: white !important;
+            color: #e53e3e !important;
+            border-color: #feb2b2 !important;
+        }
+        
+        .clear-button:hover {
+            background: rgba(229, 62, 62, 0.1) !important;
+            color: #c53030 !important;
+            border-color: #e53e3e !important;
         }
         
         .main-container {
@@ -743,28 +878,41 @@ session_start();
     </style>
 </head>
 <body>
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="/easy_form/" class="nav-logo">FormWerk</a>
+            <ul class="nav-menu">
+                <li><a href="/easy_form/" data-i18n="nav.home">Startseite</a></li>
+                <li><a href="form_builder.php" data-i18n="nav.formbuilder">Form Builder</a></li>
+                <li><a href="list_generator.php" data-i18n="nav.listgenerator" class="active">List Generator</a></li>
+                <li><a href="docs/" data-i18n="nav.docs">Dokumentation</a></li>
+                <li><a href="examples/" data-i18n="nav.examples">Beispiele</a></li>
+                <li><a href="health-check.php" data-i18n="nav.health">Status</a></li>
+            </ul>
+        </div>
+    </nav>
+    
     <!-- Header -->
     <div class="main-header">
         <div class="header-content">
             <div class="header-title">
-                <h1><i class="list icon"></i> EasyList Generator</h1>
+                <h1><i class="list icon"></i> <span data-i18n="list.title">List Generator</span></h1>
                 <span class="header-badge">BETA</span>
             </div>
             <div class="header-actions">
-                <div class="ui buttons">
-                    <button class="ui button" onclick="saveTemplate()">
-                        <i class="save icon"></i> Als Template speichern
-                    </button>
-                    <button class="ui button" onclick="loadTemplate()">
-                        <i class="folder open icon"></i> Template laden
-                    </button>
-                </div>
-                <button class="ui button" onclick="resetBuilder()">
-                    <i class="redo icon"></i> Zurücksetzen
+                <button class="ui button template-button" onclick="showTemplateManager()">
+                    <i class="save icon"></i> <span data-i18n="builder.templates">Templates</span>
                 </button>
-                <a href="index.php" class="ui button">
-                    <i class="arrow left icon"></i> Zurück
-                </a>
+                <button class="ui button config-button" onclick="showListConfig()">
+                    <i class="cog icon"></i> <span data-i18n="builder.config_form">Konfiguration</span>
+                </button>
+                <button class="ui button preview-button" onclick="generateCode()">
+                    <i class="eye icon"></i> <span data-i18n="builder.preview">Vorschau</span>
+                </button>
+                <button class="ui button clear-button" onclick="resetBuilder()">
+                    <i class="trash icon"></i> <span data-i18n="builder.clear_form">Leeren</span>
+                </button>
             </div>
         </div>
     </div>
@@ -3249,9 +3397,24 @@ session_start();
         
         window.saveTemplate = saveTemplate;
         window.confirmSaveTemplate = confirmSaveTemplate;
+        // Template Manager Function
+        function showTemplateManager() {
+            // Show unified template manager modal
+            $('#template-manager-modal').modal('show');
+        }
+        
+        // List Config Function
+        function showListConfig() {
+            // Show list configuration modal
+            $('#config-modal').modal('show');
+        }
+        
+        window.saveTemplate = saveTemplate;
         window.loadTemplate = loadTemplate;
         window.applyTemplate = applyTemplate;
         window.deleteTemplate = deleteTemplate;
+        window.showTemplateManager = showTemplateManager;
+        window.showListConfig = showListConfig;
         
         // Initialize on page load
         $(document).ready(function() {
@@ -3265,6 +3428,58 @@ session_start();
             refreshPreview();
         });
     </script>
+    
+    <!-- Template Manager Modal -->
+    <div id="template-manager-modal" class="ui modal">
+        <div class="header">
+            <i class="folder icon"></i> Template Manager
+        </div>
+        <div class="content">
+            <div class="ui two buttons">
+                <button class="ui button primary" onclick="saveTemplate()">
+                    <i class="save icon"></i> Neues Template speichern
+                </button>
+                <button class="ui button" onclick="loadTemplate()">
+                    <i class="folder open icon"></i> Template laden
+                </button>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui cancel button">Schließen</div>
+        </div>
+    </div>
+    
+    <!-- Config Modal -->
+    <div id="config-modal" class="ui modal">
+        <div class="header">
+            <i class="cog icon"></i> Listen-Konfiguration
+        </div>
+        <div class="content">
+            <div class="ui form">
+                <div class="field">
+                    <label>Tabellenname</label>
+                    <input type="text" id="table-name" placeholder="z.B. Benutzerliste">
+                </div>
+                <div class="field">
+                    <label>Beschreibung</label>
+                    <textarea id="table-description" rows="2" placeholder="Beschreibung der Tabelle..."></textarea>
+                </div>
+                <div class="field">
+                    <label>Einträge pro Seite</label>
+                    <select id="items-per-page" class="ui dropdown">
+                        <option value="10">10</option>
+                        <option value="25" selected>25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui cancel button">Abbrechen</div>
+            <div class="ui primary button">Speichern</div>
+        </div>
+    </div>
     
     <!-- Template Modals -->
     <div id="template-modal" class="ui modal">
