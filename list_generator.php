@@ -208,8 +208,8 @@ session_start();
         .main-header {
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
-            padding: 20px 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 8px 20px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
             position: sticky;
             top: 70px;
             z-index: 100;
@@ -218,7 +218,6 @@ session_start();
         .header-content {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 0 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -227,46 +226,54 @@ session_start();
         .header-title {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 8px;
         }
         
         .header-title h1 {
-            font-size: 1.8rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .header-title h1 i {
+            font-size: 1rem;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin: 0;
-        }
-        
-        .header-badge {
-            padding: 4px 12px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
         }
         
         .header-actions {
             display: flex;
-            gap: 10px;
+            gap: 6px;
         }
         
-        /* Moderne Button-Stile - Einheitlich für beide Generatoren */
+        /* Moderne Button-Stile - Kompakt */
         .header-actions .ui.button {
-            border-radius: 10px;
-            font-weight: 600;
-            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            padding: 6px 12px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 2px solid transparent;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            font-size: 14px;
+            border: 1px solid transparent;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            font-size: 12px;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 5px;
             background: white !important;
             color: #4a5568 !important;
             border-color: #e2e8f0 !important;
+        }
+        
+        .header-actions .ui.button i {
+            font-size: 11px !important;
+        }
+        
+        .header-actions .ui.button span {
+            font-size: 12px;
         }
         
         .header-actions .ui.button:hover {
@@ -592,65 +599,97 @@ session_start();
             transition: all 0.3s ease;
             border: none;
             background: none;
+            font-weight: 500;
+        }
+        
+        .code-tab:hover {
+            background: #4a5568;
+            color: white;
         }
         
         .code-tab.active {
-            background: #1a202c;
+            background: #1e1e1e;
             color: white;
             border-bottom: 2px solid #667eea;
         }
         
         .code-content {
-            background: #1a202c;
+            background: #1e1e1e;
             padding: 20px;
             height: 400px;
             overflow: auto;
+            position: relative;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 8px 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .copy-btn:hover {
+            background: #5a6fd8;
+        }
+        
+        .copy-btn.copied {
+            background: #48bb78;
         }
         
         .code-content pre {
             margin: 0;
-            color: #e2e8f0;
-            font-family: 'Fira Code', 'Courier New', monospace;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            white-space: pre;
-            word-wrap: normal;
-            overflow-x: auto;
+            color: #d4d4d4;
         }
         
         .code-content pre code {
+            font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #d4d4d4;
             display: block;
             padding: 0;
             background: transparent;
         }
         
-        /* Prism PHP Syntax Highlighting */
-        .code-content .token.comment {
-            color: #6A9955;
-        }
-        
+        /* Prism.js Dark Theme - Vereinheitlicht mit Form Builder */
         .code-content .token.keyword {
-            color: #C586C0;
-        }
-        
-        .code-content .token.variable {
-            color: #9CDCFE;
+            color: #569cd6;
         }
         
         .code-content .token.string {
-            color: #CE9178;
+            color: #ce9178;
+        }
+        
+        .code-content .token.variable {
+            color: #9cdcfe;
         }
         
         .code-content .token.function {
-            color: #DCDCAA;
+            color: #dcdcaa;
+        }
+        
+        .code-content .token.comment {
+            color: #6a9955;
         }
         
         .code-content .token.operator {
-            color: #D4D4D4;
+            color: #d4d4d4;
         }
         
         .code-content .token.punctuation {
-            color: #D4D4D4;
+            color: #808080;
+        }
+        
+        .code-content .token.class-name {
+            color: #4ec9b0;
         }
         
         /* Options Forms */
@@ -897,8 +936,7 @@ session_start();
     <div class="main-header">
         <div class="header-content">
             <div class="header-title">
-                <h1><i class="list icon"></i> <span data-i18n="list.title">List Generator</span></h1>
-                <span class="header-badge">BETA</span>
+                <h1><i class="list icon"></i> <span data-i18n="nav.listgenerator">List Generator</span></h1>
             </div>
             <div class="header-actions">
                 <button class="ui button template-button" onclick="showTemplateManager()">
@@ -924,28 +962,28 @@ session_start();
             <!-- Styling -->
             <div class="panel-section">
                 <div class="panel-title">
-                    <i class="paint brush icon"></i> Tabellen-Styling
+                    <i class="paint brush icon"></i> <span data-i18n="list.styling">Tabellen-Styling</span>
                 </div>
                 <div class="ui form">
                     <!-- Grunddesign -->
                     <div class="field">
-                        <label>Design-Optionen</label>
+                        <label data-i18n="list.designOptions">Design-Optionen</label>
                         <div class="ui segment">
                             <div class="option-checkbox">
                                 <input type="checkbox" id="style-striped" onchange="updateTableStyles()">
-                                <label for="style-striped">Gestreift</label>
+                                <label for="style-striped" data-i18n="list.striped">Gestreift</label>
                             </div>
                             <div class="option-checkbox">
                                 <input type="checkbox" id="style-celled" onchange="updateTableStyles()">
-                                <label for="style-celled">Mit Rahmen (Celled)</label>
+                                <label for="style-celled" data-i18n="list.celled">Mit Rahmen (Celled)</label>
                             </div>
                             <div class="option-checkbox">
                                 <input type="checkbox" id="style-compact" onchange="updateTableStyles()">
-                                <label for="style-compact">Kompakt</label>
+                                <label for="style-compact" data-i18n="list.compact">Kompakt</label>
                             </div>
                             <div class="option-checkbox">
                                 <input type="checkbox" id="style-hover" onchange="updateTableStyles()" checked>
-                                <label for="style-hover">Hover-Effekt</label>
+                                <label for="style-hover" data-i18n="list.hoverEffect">Hover-Effekt</label>
                             </div>
                             <div class="option-checkbox">
                                 <input type="checkbox" id="style-basic" onchange="updateTableStyles()">
@@ -956,26 +994,26 @@ session_start();
                     
                     <!-- Layout -->
                     <div class="field">
-                        <label>Layout</label>
+                        <label data-i18n="list.layout">Layout</label>
                         <div class="ui segment">
                             <div class="option-checkbox">
                                 <input type="checkbox" id="layout-fixed" onchange="updateTableStyles()">
-                                <label for="layout-fixed">Fixiert</label>
+                                <label for="layout-fixed" data-i18n="list.fixed">Fixiert</label>
                             </div>
                             <div class="option-checkbox">
                                 <input type="checkbox" id="layout-single-line" onchange="updateTableStyles()">
-                                <label for="layout-single-line">Einzeilig</label>
+                                <label for="layout-single-line" data-i18n="list.singleLine">Einzeilig</label>
                             </div>
                             <div class="option-checkbox">
                                 <input type="checkbox" id="layout-collapsing" onchange="updateTableStyles()">
-                                <label for="layout-collapsing">Kollabierend</label>
+                                <label for="layout-collapsing" data-i18n="list.collapsing">Kollabierend</label>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Responsive -->
                     <div class="field">
-                        <label>Responsive</label>
+                        <label data-i18n="list.responsive">Responsive</label>
                         <select id="responsive-mode" class="ui dropdown" onchange="updateTableStyles()">
                             <option value="">Standard</option>
                             <option value="stackable">Stackable (Mobile)</option>
@@ -986,36 +1024,36 @@ session_start();
                     
                     <!-- Farbe -->
                     <div class="field">
-                        <label>Farbe</label>
+                        <label data-i18n="list.color">Farbe</label>
                         <select id="color-scheme" class="ui dropdown" onchange="updateTableStyles()">
-                            <option value="">Standard</option>
-                            <option value="red">Rot</option>
-                            <option value="orange">Orange</option>
-                            <option value="yellow">Gelb</option>
-                            <option value="green">Grün</option>
-                            <option value="blue">Blau</option>
-                            <option value="violet">Violett</option>
-                            <option value="purple">Lila</option>
-                            <option value="pink">Pink</option>
-                            <option value="teal">Teal</option>
-                            <option value="grey">Grau</option>
-                            <option value="black">Schwarz</option>
+                            <option value="" data-i18n="list.standard">Standard</option>
+                            <option value="red" data-i18n="list.red">Rot</option>
+                            <option value="orange" data-i18n="list.orange">Orange</option>
+                            <option value="yellow" data-i18n="list.yellow">Gelb</option>
+                            <option value="green" data-i18n="list.green">Grün</option>
+                            <option value="blue" data-i18n="list.blue">Blau</option>
+                            <option value="violet" data-i18n="list.violet">Violett</option>
+                            <option value="purple" data-i18n="list.purple">Lila</option>
+                            <option value="pink" data-i18n="list.pink">Pink</option>
+                            <option value="teal" data-i18n="list.teal">Teal</option>
+                            <option value="grey" data-i18n="list.grey">Grau</option>
+                            <option value="black" data-i18n="list.black">Schwarz</option>
                         </select>
                     </div>
                     
                     <!-- Größe -->
                     <div class="field">
-                        <label>Größe</label>
+                        <label data-i18n="list.size">Größe</label>
                         <select id="size-select" class="ui dropdown" onchange="updateTableStyles()">
-                            <option value="">Standard</option>
-                            <option value="small">Klein</option>
-                            <option value="large">Groß</option>
+                            <option value="" data-i18n="list.standard">Standard</option>
+                            <option value="small" data-i18n="list.small">Klein</option>
+                            <option value="large" data-i18n="list.large">Groß</option>
                         </select>
                     </div>
                     
                     <!-- Abstände & Linien -->
                     <div class="field">
-                        <label>Zellenabstand</label>
+                        <label data-i18n="list.cellPadding">Zellenabstand</label>
                         <select id="padding-select" class="ui dropdown" onchange="updateTableStyles()">
                             <option value="">Standard</option>
                             <option value="padded">Padded</option>
@@ -1073,49 +1111,49 @@ session_start();
             <!-- Columns -->
             <div class="panel-section">
                 <div class="panel-title">
-                    <i class="columns icon"></i> Spalten
+                    <i class="columns icon"></i> <span data-i18n="list.columns">Spalten</span>
                 </div>
                 <div class="column-list" id="column-list">
                     <!-- Columns will be added here -->
                 </div>
                 <button class="add-column-btn" onclick="addColumn()">
-                    <i class="plus icon"></i> Spalte hinzufügen
+                    <i class="plus icon"></i> <span data-i18n="list.addColumn">Spalte hinzufügen</span>
                 </button>
             </div>
             
             <!-- Features -->
             <div class="panel-section">
                 <div class="panel-title">
-                    <i class="settings icon"></i> Features
+                    <i class="settings icon"></i> <span data-i18n="list.features">Features</span>
                 </div>
                 <div class="option-group">
                     <div class="option-checkbox">
                         <input type="checkbox" id="feature-search" checked>
-                        <label for="feature-search">Suchfeld</label>
+                        <label for="feature-search" data-i18n="list.searchField">Suchfeld</label>
                     </div>
                     <div class="option-checkbox">
                         <input type="checkbox" id="feature-sort" checked>
-                        <label for="feature-sort">Sortierung</label>
+                        <label for="feature-sort" data-i18n="list.sorting">Sortierung</label>
                     </div>
                     <div class="option-checkbox">
                         <input type="checkbox" id="feature-filter" checked>
-                        <label for="feature-filter">Filter</label>
+                        <label for="feature-filter" data-i18n="list.filter">Filter</label>
                     </div>
                     <div class="option-checkbox">
                         <input type="checkbox" id="feature-pagination" checked>
-                        <label for="feature-pagination">Pagination</label>
+                        <label for="feature-pagination" data-i18n="list.pagination">Pagination</label>
                     </div>
                     <div class="option-checkbox">
                         <input type="checkbox" id="feature-export" checked>
-                        <label for="feature-export">Export (CSV/Excel)</label>
+                        <label for="feature-export" data-i18n="list.export">Export (CSV/Excel)</label>
                     </div>
                     <div class="option-checkbox">
                         <input type="checkbox" id="feature-selection">
-                        <label for="feature-selection">Zeilen-Auswahl</label>
+                        <label for="feature-selection" data-i18n="list.rowSelection">Zeilen-Auswahl</label>
                     </div>
                     <div class="option-checkbox">
                         <input type="checkbox" id="feature-actions" checked>
-                        <label for="feature-actions">Action-Buttons</label>
+                        <label for="feature-actions" data-i18n="list.actionButtons">Action-Buttons</label>
                     </div>
                 </div>
             </div>
@@ -1123,10 +1161,10 @@ session_start();
             <!-- Actions Configuration -->
             <div class="panel-section" id="actions-section">
                 <div class="panel-title">
-                    <i class="bolt icon"></i> Aktionen
+                    <i class="bolt icon"></i> <span data-i18n="list.actions">Aktionen</span>
                 </div>
                 <div class="option-group" style="margin-bottom: 15px;">
-                    <label style="font-size: 0.9rem; color: #4a5568; margin-bottom: 5px;">Position der Aktionen:</label>
+                    <label style="font-size: 0.9rem; color: #4a5568; margin-bottom: 5px;" data-i18n="list.actionsPosition">Position der Aktionen:</label>
                     <select id="actions-position" class="ui dropdown" style="width: 100%;" onchange="toggleActionsSplit(); refreshPreview(); generateCode();">
                         <option value="right">Rechts (am Ende)</option>
                         <option value="left">Links (am Anfang)</option>
@@ -1207,6 +1245,9 @@ session_start();
                 <button class="code-tab" onclick="showCodeTab('html')">HTML</button>
             </div>
             <div class="code-content">
+                <button class="copy-btn" onclick="copyCode()">
+                    <i class="copy icon"></i> Kopieren
+                </button>
                 <pre><code id="code-output" class="language-php">// Code wird hier generiert...</code></pre>
             </div>
         </div>
@@ -1427,11 +1468,85 @@ session_start();
     <script src="semantic/dist/semantic.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup-templating.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
     <script src="js/easylist.js"></script>
     <script>
+        // Toast Notification Function
+        function showSuccessToast(message) {
+            showToast(message, 'success', 'check circle');
+        }
+        
+        function showErrorToast(message) {
+            showToast(message, 'error', 'exclamation circle');
+        }
+        
+        function showToast(message, type = 'success', icon = 'check circle') {
+            // Remove any existing toasts
+            $('.toast-notification').remove();
+            
+            // Create toast element with inline styles
+            const toast = $(`
+                <div class="toast-notification ${type}" style="
+                    position: fixed;
+                    top: 80px;
+                    right: 20px;
+                    z-index: 10000;
+                    min-width: 300px;
+                    max-width: 500px;
+                    padding: 16px 20px;
+                    background: white;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    animation: slideInRight 0.3s ease-out;
+                    border-left: 4px solid ${type === 'success' ? '#21ba45' : type === 'error' ? '#db2828' : '#2185d0'};
+                ">
+                    <i class="${icon} icon" style="font-size: 20px; color: ${type === 'success' ? '#21ba45' : type === 'error' ? '#db2828' : '#2185d0'};"></i>
+                    <span style="flex: 1; font-size: 14px; font-weight: 500; color: #2c3e50;">${message}</span>
+                    <span class="close" style="cursor: pointer; color: #999; font-size: 18px; line-height: 1;">&times;</span>
+                </div>
+            `);
+            
+            // Add animation styles if not exists
+            if (!$('#toast-animations').length) {
+                $('head').append(`
+                    <style id="toast-animations">
+                        @keyframes slideInRight {
+                            from { transform: translateX(100%); opacity: 0; }
+                            to { transform: translateX(0); opacity: 1; }
+                        }
+                        @keyframes slideOutRight {
+                            from { transform: translateX(0); opacity: 1; }
+                            to { transform: translateX(100%); opacity: 0; }
+                        }
+                    </style>
+                `);
+            }
+            
+            // Add to body
+            $('body').append(toast);
+            
+            // Add close handler
+            toast.find('.close').on('click', function() {
+                toast.css('animation', 'slideOutRight 0.3s ease-out');
+                setTimeout(() => toast.remove(), 300);
+            });
+            
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                if (toast.length) {
+                    toast.css('animation', 'slideOutRight 0.3s ease-out');
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, 3000);
+        }
+        
         // ========================================
         // GLOBAL STATE MANAGEMENT
         // ========================================
@@ -1445,6 +1560,17 @@ session_start();
         let sortableLeft = null;
         let sortableRight = null;
         let sortableSingle = null;
+        
+        // List configuration object
+        let listConfig = {
+            tableName: 'data_list',
+            description: '',
+            itemsPerPage: 25,
+            theme: 'semantic',
+            searchPlaceholder: 'Suchen...',
+            exportFormats: ['csv', 'excel'],
+            dateFormat: 'DD.MM.YYYY'
+        };
         
         // Using Semantic UI only
         const currentTheme = 'semantic';
@@ -2452,7 +2578,7 @@ session_start();
                     codeLines.push('$list->sortable(true);');
                 }
                 if (features.pagination) {
-                    codeLines.push('$list->paginate(true, 25);');
+                    codeLines.push('$list->paginate(true, ' + listConfig.itemsPerPage + ');');
                 }
                 if (features.export) {
                     codeLines.push("$list->exportable(true, ['csv', 'excel']);");
@@ -2588,6 +2714,22 @@ session_start();
             if (typeof Prism !== 'undefined') {
                 Prism.highlightElement(codeElement);
             }
+        }
+        
+        function copyCode() {
+            const code = document.getElementById('code-output').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="check icon"></i> Kopiert!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Fehler beim Kopieren:', err);
+            });
         }
         
         function showCodeTab(tab) {
@@ -3405,9 +3547,34 @@ session_start();
         
         // List Config Function
         function showListConfig() {
+            // Load current config into modal
+            $('#table-name').val(listConfig.tableName);
+            $('#table-description').val(listConfig.description);
+            $('#items-per-page').val(listConfig.itemsPerPage);
+            
             // Show list configuration modal
             $('#config-modal').modal('show');
         }
+        
+        // Save List Config Function
+        function saveListConfig() {
+            // Save configuration from modal
+            listConfig.tableName = $('#table-name').val() || 'data_list';
+            listConfig.description = $('#table-description').val();
+            listConfig.itemsPerPage = parseInt($('#items-per-page').val()) || 25;
+            
+            // Close modal
+            $('#config-modal').modal('hide');
+            
+            // Show success toast notification
+            showSuccessToast('Konfiguration gespeichert!');
+            
+            // Refresh preview and code with new config
+            refreshPreview();
+            generateCode();
+        }
+        
+        window.saveListConfig = saveListConfig;
         
         window.saveTemplate = saveTemplate;
         window.loadTemplate = loadTemplate;
@@ -3476,8 +3643,10 @@ session_start();
             </div>
         </div>
         <div class="actions">
-            <div class="ui cancel button">Abbrechen</div>
-            <div class="ui primary button">Speichern</div>
+            <div class="ui cancel button" data-i18n="global.cancel">Abbrechen</div>
+            <div class="ui primary button" onclick="saveListConfig()">
+                <span data-i18n="global.save">Speichern</span>
+            </div>
         </div>
     </div>
     

@@ -6,6 +6,8 @@
     <title>FormWerk - Visual Form Builder</title>
     <link rel="stylesheet" href="semantic/dist/semantic.min.css">
     <link rel="stylesheet" href="js/sortable.min.css">
+    <!-- Prism.js für Syntax Highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
     <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/inline/ckeditor.js"></script>
     <script src="assets/js/i18n.js"></script>
     <style>
@@ -105,9 +107,9 @@
         .main-header {
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            padding: 15px 30px;
-            margin-bottom: 20px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+            padding: 8px 20px;
+            margin-bottom: 15px;
             position: sticky;
             top: 70px;
             z-index: 100;
@@ -124,47 +126,55 @@
         .header-title {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 8px;
         }
         
         .header-title h1 {
-            font-size: 1.8rem;
+            font-size: 1.1rem;
             font-weight: 600;
             color: #2d3748;
             margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         
-        .header-badge {
+        .header-title h1 i {
+            font-size: 1rem;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         .header-actions {
             display: flex;
-            gap: 10px;
+            gap: 6px;
             align-items: center;
         }
         
-        /* Moderne Button-Stile - Einheitlich für beide Generatoren */
+        /* Moderne Button-Stile - Kompakt */
         .header-actions .ui.button {
-            border-radius: 10px;
-            font-weight: 600;
-            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            padding: 6px 12px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 2px solid transparent;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            font-size: 14px;
+            border: 1px solid transparent;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            font-size: 12px;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 5px;
             background: white !important;
             color: #4a5568 !important;
             border-color: #e2e8f0 !important;
+        }
+        
+        .header-actions .ui.button i {
+            font-size: 11px !important;
+        }
+        
+        .header-actions .ui.button span {
+            font-size: 12px;
         }
         
         .header-actions .ui.button:hover {
@@ -486,80 +496,56 @@
             opacity: 1;
         }
         
+        /* Vereinheitlichte Code-Tabs für beide Generatoren */
         .code-tabs {
             display: flex;
-            background: #2d2d2d;
+            background: #2d3748;
             padding: 0;
-            border-bottom: 1px solid #3e3e3e;
+            border-bottom: 1px solid #4a5568;
         }
         
         .code-tab {
-            padding: 12px 24px;
+            padding: 12px 20px;
             background: none;
             border: none;
-            color: #969696;
+            color: #cbd5e0;
             cursor: pointer;
             font-size: 0.9rem;
-            transition: all 0.2s;
+            font-weight: 500;
+            transition: all 0.3s ease;
             border-bottom: 2px solid transparent;
         }
         
         .code-tab:hover {
-            color: #fff;
-        }
-        
-        .code-tab.active {
-            color: #fff;
-            background: #1e1e1e;
-            border-bottom-color: #667eea;
-        }
-        
-        .code-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-            position: relative;
-        }
-        
-        /* Collapsible Code Block */
-        .code-collapse-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #969696;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: all 0.3s;
-            z-index: 10;
-        }
-        
-        .code-collapse-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: #4a5568;
             color: white;
         }
         
-        .code-collapsed #codeContent {
-            max-height: 100px;
-            overflow: hidden;
+        .code-tab.active {
+            background: #1e1e1e;
+            color: white;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .code-content {
+            background: #1e1e1e;
+            padding: 20px;
+            height: 400px;
+            overflow: auto;
+            flex: 1;
             position: relative;
         }
         
-        .code-collapsed #codeContent::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 50px;
-            background: linear-gradient(to bottom, transparent, #1e1e1e);
+        .code-content pre {
+            margin: 0;
+            color: #d4d4d4;
         }
         
-        .code-collapsed .code-collapse-btn i::before {
-            content: '\\f077';
+        .code-content pre code {
+            font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #d4d4d4;
         }
         
         .code-content pre {
@@ -841,53 +827,28 @@
             flex-direction: column;
         }
 
-        .code-tabs {
-            display: flex;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #f0f0f0;
-        }
-
-        .code-tab {
-            padding: 8px 15px;
-            background: none;
-            border: none;
-            color: #718096;
-            cursor: pointer;
-            font-weight: 500;
-            position: relative;
-            transition: color 0.3s ease;
-        }
-
-        .code-tab.active {
-            color: #667eea;
-        }
-
-        .code-tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: #667eea;
-        }
+        /* Removed duplicate code-tabs definition - using unified version above */
 
         .code-output {
             flex: 1;
-            background: #1a202c;
-            color: #e2e8f0;
-            padding: 20px;
+            background: #1e1e1e;
             border-radius: 8px;
-            font-family: 'SF Mono', Monaco, monospace;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            overflow-y: auto;
+            overflow: hidden;
             position: relative;
         }
 
         .code-output pre {
             margin: 0;
-            white-space: pre-wrap;
+            padding: 20px;
+            overflow: auto;
+            max-height: 500px;
+        }
+        
+        .code-output pre code {
+            font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #d4d4d4;
         }
 
         .copy-btn {
@@ -1010,11 +971,15 @@
         }
 
         /* Syntax highlighting for code output */
-        .code-output .keyword { color: #ed64a6; }
-        .code-output .string { color: #68d391; }
-        .code-output .variable { color: #63b3ed; }
-        .code-output .method { color: #fbb040; }
-        .code-output .comment { color: #718096; }
+        /* Prism.js Dark Theme */
+        .code-output .token.keyword { color: #569cd6; }
+        .code-output .token.string { color: #ce9178; }
+        .code-output .token.variable { color: #9cdcfe; }
+        .code-output .token.function { color: #dcdcaa; }
+        .code-output .token.comment { color: #6a9955; }
+        .code-output .token.operator { color: #d4d4d4; }
+        .code-output .token.punctuation { color: #808080; }
+        .code-output .token.class-name { color: #4ec9b0; }
 
         /* Responsive */
         @media (max-width: 1200px) {
@@ -1562,8 +1527,7 @@
     <div class="main-header">
         <div class="header-content">
             <div class="header-title">
-                <h1><i class="wpforms icon"></i> <span data-i18n="builder.title">FormWerk Builder</span></h1>
-                <span class="header-badge">BETA</span>
+                <h1><i class="wpforms icon"></i> <span data-i18n="nav.formbuilder">Form Builder</span></h1>
             </div>
             <div class="header-actions">
                 <button class="ui button template-button" onclick="showTemplateManager()">
@@ -1705,21 +1669,21 @@
                 <button class="code-tab" data-tab="json">JSON Config</button>
             </div>
             <div class="code-content" id="codeContentWrapper">
-                <button class="code-collapse-btn" onclick="toggleCodeCollapse()">
-                    <i class="chevron down icon"></i> Ein-/Ausklappen
+                <button class="copy-btn" onclick="copyCode()">
+                    <i class="copy icon"></i> Kopieren
                 </button>
-                <pre id="codeContent"><?php echo htmlspecialchars('// Ziehen Sie Komponenten in den Builder
+                <pre><code id="codeContent" class="language-php">// Ziehen Sie Komponenten in den Builder
 // Der generierte Code erscheint hier
 
-use EasyForm\\EasyForm;
+use EasyForm\EasyForm;
 
-$form = new EasyForm(\'my_form\', [
-    \'width\' => 600
+$form = new EasyForm('my_form', [
+    'width' => 600
 ]);
 
 // Ihre Felder werden hier erscheinen...
 
-$form->display();'); ?></pre>
+$form->display();</code></pre>
             </div>
         </div>
     </div>
@@ -3569,7 +3533,12 @@ $form->display();'); ?></pre>
                 .replace(/\s+$/gm, '')  // Remove trailing spaces from each line
                 .trim();
 
-            document.getElementById('codeContent').textContent = finalCode;
+            const codeElement = document.getElementById('codeContent');
+            codeElement.textContent = finalCode;
+            codeElement.className = 'language-php';
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightElement(codeElement);
+            }
         }
 
         function generateElementPHPCode(element) {
@@ -3774,7 +3743,12 @@ $form->display();'); ?></pre>
             // Decode HTML entities
             htmlTemplate = htmlTemplate.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
             
-            document.getElementById('codeContent').textContent = htmlTemplate;
+            const codeElement = document.getElementById('codeContent');
+            codeElement.textContent = htmlTemplate;
+            codeElement.className = 'language-html';
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightElement(codeElement);
+            }
         }
 
         function generateJSONCode() {
@@ -3788,18 +3762,15 @@ $form->display();'); ?></pre>
                 fields: formElements
             };
 
-            $('#codeContent').text(JSON.stringify(config, null, 2));
+            const codeElement = document.getElementById('codeContent');
+            codeElement.textContent = JSON.stringify(config, null, 2);
+            codeElement.className = 'language-json';
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightElement(codeElement);
+            }
         }
 
-        function syntaxHighlight(code) {
-            return code
-                .replace(/(&lt;\?php|&lt;\?)/g, '<span class="keyword">$1</span>')
-                .replace(/(\$\w+)/g, '<span class="variable">$1</span>')
-                .replace(/(new|use|function|return|if|else|foreach|while|for|class|public|private|protected)/g, '<span class="keyword">$1</span>')
-                .replace(/('([^'\\\\]|\\\\.)*')/g, '<span class="string">$1</span>')
-                .replace(/(-&gt;\w+)/g, '<span class="method">$1</span>')
-                .replace(/(\/\/.*$)/gm, '<span class="comment">$1</span>');
-        }
+        // Syntax highlighting is now handled by Prism.js
 
         // Tab switching
         $('.code-tab').on('click', function() {
@@ -3808,20 +3779,6 @@ $form->display();'); ?></pre>
             generateCode();
         });
         
-        // Toggle code collapse
-        window.toggleCodeCollapse = function() {
-            $('#codeContentWrapper').toggleClass('code-collapsed');
-            const btn = $('.code-collapse-btn');
-            const icon = btn.find('i');
-            
-            if ($('#codeContentWrapper').hasClass('code-collapsed')) {
-                icon.removeClass('chevron down').addClass('chevron up');
-                btn.html('<i class="chevron up icon"></i> Erweitern');
-            } else {
-                icon.removeClass('chevron up').addClass('chevron down');
-                btn.html('<i class="chevron down icon"></i> Ein-/Ausklappen');
-            }
-        };
         
         // Toggle entire code panel
         window.toggleCodePanel = function() {
@@ -3844,6 +3801,13 @@ $form->display();'); ?></pre>
         
         // Restore panel state on load
         $(document).ready(function() {
+            // Initialize Prism.js for initial code
+            setTimeout(function() {
+                if (typeof Prism !== 'undefined') {
+                    Prism.highlightAll();
+                }
+            }, 100);
+            
             if (localStorage.getItem('codePanelCollapsed') === 'true') {
                 toggleCodePanel();
             }
@@ -4888,6 +4852,14 @@ $form->display();
             </div>
         </div>
     </div>
+
+    <!-- Prism.js für Syntax Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup-templating.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
 
 </body>
 </html>

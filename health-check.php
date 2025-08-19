@@ -188,7 +188,7 @@ $score = round(($success / $total) * 100);
         body {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 40px 20px;
+            padding: 80px 20px 40px 20px;
         }
         
         .main-container {
@@ -378,14 +378,43 @@ $score = round(($success / $total) * 100);
                 gap: 20px;
             }
         }
+        
+        /* Language Switcher */
+        .language-switcher-container {
+            position: fixed;
+            top: 80px;
+            right: 30px;
+            z-index: 999;
+        }
     </style>
 </head>
 <body>
+    <?php include 'includes/navigation.php'; ?>
+    
+    <!-- Language Switcher -->
+    <div class="language-switcher-container">
+        <div class="ui compact selection dropdown" id="language-switcher">
+            <input type="hidden" name="language">
+            <i class="dropdown icon"></i>
+            <div class="default text">
+                <i class="de flag"></i> Deutsch
+            </div>
+            <div class="menu">
+                <div class="item" data-value="de">
+                    <i class="de flag"></i> Deutsch
+                </div>
+                <div class="item" data-value="en">
+                    <i class="us flag"></i> English
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <div class="main-container">
         <!-- Header -->
         <div class="header">
-            <h1>🏥 FormWerk Health Check</h1>
-            <p>Systemdiagnose und Überprüfung</p>
+            <h1 data-i18n="health.title">🏥 FormWerk Health Check</h1>
+            <p data-i18n="health.subtitle">Systemdiagnose und Überprüfung</p>
         </div>
         
         <!-- Score Section -->
@@ -416,22 +445,22 @@ $score = round(($success / $total) * 100);
             <div class="stats">
                 <div class="stat">
                     <div class="stat-value" style="color: #21ba45;"><?php echo $success; ?></div>
-                    <div class="stat-label">Erfolgreich</div>
+                    <div class="stat-label" data-i18n="health.successful">Erfolgreich</div>
                 </div>
                 <div class="stat">
                     <div class="stat-value" style="color: #fbbd08;"><?php echo $warnings; ?></div>
-                    <div class="stat-label">Warnungen</div>
+                    <div class="stat-label" data-i18n="health.warnings">Warnungen</div>
                 </div>
                 <div class="stat">
                     <div class="stat-value" style="color: #db2828;"><?php echo $errors; ?></div>
-                    <div class="stat-label">Fehler</div>
+                    <div class="stat-label" data-i18n="health.errors">Fehler</div>
                 </div>
             </div>
         </div>
         
         <!-- Results Section -->
         <div class="results-section">
-            <h2>Detaillierte Ergebnisse</h2>
+            <h2 data-i18n="health.detailedResults">Detaillierte Ergebnisse</h2>
             
             <?php foreach ($results as $result): ?>
             <div class="check-item <?php echo $result['status']; ?>">
@@ -452,7 +481,7 @@ $score = round(($success / $total) * 100);
         
         <!-- System Info -->
         <div class="system-info">
-            <h3>System Information</h3>
+            <h3 data-i18n="health.systemInfo">System Information</h3>
             <div class="info-grid">
                 <div class="info-item">
                     <div class="info-label">PHP Version</div>
@@ -483,7 +512,7 @@ $score = round(($success / $total) * 100);
         
         <!-- Actions -->
         <div class="actions">
-            <h3>Nächste Schritte</h3>
+            <h3 data-i18n="health.nextSteps">Nächste Schritte</h3>
             <?php if ($errors > 0): ?>
             <p>⚠️ Bitte beheben Sie die kritischen Fehler, bevor Sie fortfahren.</p>
             <?php elseif ($warnings > 0): ?>
@@ -514,9 +543,20 @@ $score = round(($success / $total) * 100);
     
     <script src="jquery/jquery.min.js"></script>
     <script src="semantic/dist/semantic.min.js"></script>
+    <script src="assets/js/i18n.js"></script>
     <script>
-        // Smooth scroll to errors
+        // Initialize components
         $(document).ready(function() {
+            // Initialize dropdown
+            $('.ui.dropdown').dropdown();
+            
+            // Initialize i18n
+            if (typeof FormWerkI18n !== 'undefined') {
+                window.i18n = new FormWerkI18n();
+                window.i18n.init();
+            }
+            
+            // Smooth scroll to errors
             if (<?php echo $errors; ?> > 0) {
                 setTimeout(function() {
                     $('html, body').animate({
