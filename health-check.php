@@ -1,6 +1,6 @@
 <?php
 /**
- * FormWerk Health Check Tool
+ * EasyForm Health Check Tool
  * Überprüft die komplette Installation auf Fehler und Probleme
  */
 
@@ -182,7 +182,7 @@ $score = round(($success / $total) * 100);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FormWerk Health Check</title>
+    <title>EasyForm Health Check</title>
     <link rel="stylesheet" href="semantic/dist/semantic.min.css">
     <style>
         body {
@@ -413,7 +413,7 @@ $score = round(($success / $total) * 100);
     <div class="main-container">
         <!-- Header -->
         <div class="header">
-            <h1 data-i18n="health.title">🏥 FormWerk Health Check</h1>
+            <h1 data-i18n="health.title">🏥 EasyForm Health Check</h1>
             <p data-i18n="health.subtitle">Systemdiagnose und Überprüfung</p>
         </div>
         
@@ -551,8 +551,8 @@ $score = round(($success / $total) * 100);
             $('.ui.dropdown').dropdown();
             
             // Initialize i18n
-            if (typeof FormWerkI18n !== 'undefined') {
-                window.i18n = new FormWerkI18n();
+            if (typeof EasyFormI18n !== 'undefined') {
+                window.i18n = new EasyFormI18n();
                 window.i18n.init();
             }
             

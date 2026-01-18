@@ -1,7 +1,7 @@
 <!-- Navigation -->
 <nav class="main-nav">
     <div class="nav-container">
-        <a href="<?php echo isset($baseUrl) ? $baseUrl : '/easy_form/'; ?>" class="nav-logo">FormWerk</a>
+        <a href="<?php echo isset($baseUrl) ? $baseUrl : '/easy_form/'; ?>" class="nav-logo">EasyForm</a>
         <ul class="nav-menu">
             <li><a href="<?php echo isset($baseUrl) ? $baseUrl : '/easy_form/'; ?>" data-i18n="nav.home" <?php echo (basename($_SERVER['PHP_SELF']) == 'index.php' && !strpos($_SERVER['REQUEST_URI'], 'examples')) ? 'class="active"' : ''; ?>>Startseite</a></li>
             <li><a href="<?php echo isset($baseUrl) ? $baseUrl . 'form_builder.php' : '/easy_form/form_builder.php'; ?>" data-i18n="nav.formbuilder" <?php echo basename($_SERVER['PHP_SELF']) == 'form_builder.php' ? 'class="active"' : ''; ?>>Form Builder</a></li>

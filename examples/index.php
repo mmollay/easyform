@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FormWerk - Beispiele & Demos</title>
+    <title>EasyForm - Beispiele & Demos</title>
     <link rel="stylesheet" href="../semantic/dist/semantic.min.css">
     <script src="../assets/js/i18n.js"></script>
     <style>
@@ -192,7 +192,7 @@
     <!-- Navigation -->
     <nav class="main-nav">
         <div class="nav-container">
-            <a href="../" class="nav-logo">FormWerk</a>
+            <a href="../" class="nav-logo">EasyForm</a>
             <ul class="nav-menu">
                 <li><a href="../" data-i18n="nav.home">Startseite</a></li>
                 <li><a href="../form_builder.php" data-i18n="nav.formbuilder">Form Builder</a></li>
@@ -206,8 +206,8 @@
     <div class="container">
         <!-- Header -->
         <div class="header-section">
-            <h1 data-i18n="examples.title">FormWerk Beispiele</h1>
-            <p data-i18n="examples.subtitle">Entdecken Sie die Vielfalt und Leistungsfähigkeit von FormWerk anhand unserer interaktiven Demos</p>
+            <h1 data-i18n="examples.title">EasyForm Beispiele</h1>
+            <p data-i18n="examples.subtitle">Entdecken Sie die Vielfalt und Leistungsfähigkeit von EasyForm anhand unserer interaktiven Demos</p>
             <a href="../" class="back-button">
                 <i class="arrow left icon"></i> <span data-i18n="global.back">Zurück</span>
             </a>

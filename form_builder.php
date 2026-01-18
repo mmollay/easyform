@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FormWerk - Visual Form Builder</title>
+    <title>EasyForm - Visual Form Builder</title>
     <link rel="stylesheet" href="semantic/dist/semantic.min.css">
     <link rel="stylesheet" href="js/sortable.min.css">
     <!-- Prism.js für Syntax Highlighting -->
@@ -1511,7 +1511,7 @@
     <!-- Navigation -->
     <nav class="main-nav">
         <div class="nav-container">
-            <a href="/easy_form/" class="nav-logo">FormWerk</a>
+            <a href="/easy_form/" class="nav-logo">EasyForm</a>
             <ul class="nav-menu">
                 <li><a href="/easy_form/" data-i18n="nav.home">Startseite</a></li>
                 <li><a href="form_builder.php" data-i18n="nav.formbuilder" class="active">Form Builder</a></li>
