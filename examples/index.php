@@ -294,6 +294,22 @@
                     <span class="tag" data-i18n="examples.tag.filter">Filter</span>
                 </div>
             </a>
+
+            <a href="06_smartform2_compat_demo.php" class="example-card">
+                <div class="example-icon">
+                    <i class="magic icon"></i>
+                </div>
+                <h3 class="example-title">Smartform2 Kompatibilität</h3>
+                <p class="example-description">
+                    Database-Integration, Button-System mit Conditions, Modals und vollständige Smartform2 API-Kompatibilität
+                </p>
+                <div class="example-tags">
+                    <span class="tag primary">NEU</span>
+                    <span class="tag">Buttons</span>
+                    <span class="tag">Modals</span>
+                    <span class="tag">Database</span>
+                </div>
+            </a>
         </div>
         
         <!-- Builder Tools -->

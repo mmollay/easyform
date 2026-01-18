@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FormWerk - Professional Form & List Generator</title>
+    <title>EasyForm - Professional Form & List Generator</title>
     <link rel="stylesheet" href="semantic/dist/semantic.min.css">
     <script src="assets/js/i18n.js"></script>
     <style>
@@ -47,6 +47,20 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .version-badge {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            font-weight: 600;
+            -webkit-background-clip: initial;
+            -webkit-text-fill-color: initial;
         }
         
         .nav-menu {
@@ -288,18 +302,52 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
         
+        /* Language Switcher */
+        .language-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            display: flex;
+            gap: 8px;
+            background: white;
+            padding: 6px;
+            border-radius: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .lang-btn {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .lang-btn:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .hero-title {
                 font-size: 2rem;
             }
-            
+
             .nav-menu {
                 display: none;
             }
-            
+
             .language-switcher {
-                top: 70px;
+                top: 80px;
             }
         }
     </style>
@@ -314,16 +362,20 @@
             🇬🇧 EN
         </button>
     </div>
-    
+
     <!-- Navigation -->
     <nav class="main-nav">
         <div class="nav-container">
-            <div class="nav-logo">FormWerk</div>
+            <div class="nav-logo">
+                EasyForm
+                <span class="version-badge">v2.0.0</span>
+            </div>
             <ul class="nav-menu">
                 <li><a href="#features" data-i18n="nav.features">Features</a></li>
                 <li><a href="#tools" data-i18n="nav.tools">Tools</a></li>
                 <li><a href="docs/" data-i18n="nav.docs">Dokumentation</a></li>
                 <li><a href="examples/" data-i18n="nav.examples">Beispiele</a></li>
+                <li><a href="CHANGELOG.md" data-i18n="nav.changelog">Changelog</a></li>
                 <li><a href="health-check.php" data-i18n="nav.health">Status</a></li>
             </ul>
         </div>
@@ -459,11 +511,12 @@
         <div class="footer-links">
             <a href="docs/" data-i18n="footer.docs">Dokumentation</a>
             <a href="examples/" data-i18n="footer.examples">Beispiele</a>
+            <a href="CHANGELOG.md" data-i18n="footer.changelog">Changelog</a>
             <a href="https://github.com/mmollay/easyform" data-i18n="footer.github">GitHub</a>
             <a href="LICENSE" data-i18n="footer.license">Lizenz</a>
         </div>
         <div class="footer-copyright">
-            <span data-i18n="footer.copyright">© 2024 FormWerk. Alle Rechte vorbehalten.</span>
+            <span data-i18n="footer.copyright">© 2026 EasyForm. Alle Rechte vorbehalten.</span>
         </div>
     </footer>
     
@@ -477,6 +530,7 @@
                 'nav.tools': 'Tools',
                 'nav.docs': 'Dokumentation',
                 'nav.examples': 'Beispiele',
+                'nav.changelog': 'Changelog',
                 'nav.health': 'Status',
                 
                 // Hero
@@ -512,9 +566,10 @@
                 // Footer
                 'footer.docs': 'Dokumentation',
                 'footer.examples': 'Beispiele',
+                'footer.changelog': 'Changelog',
                 'footer.github': 'GitHub',
                 'footer.license': 'Lizenz',
-                'footer.copyright': '© 2024 FormWerk. Alle Rechte vorbehalten.'
+                'footer.copyright': '© 2026 EasyForm. Alle Rechte vorbehalten.'
             },
             en: {
                 // Navigation
@@ -522,6 +577,7 @@
                 'nav.tools': 'Tools',
                 'nav.docs': 'Documentation',
                 'nav.examples': 'Examples',
+                'nav.changelog': 'Changelog',
                 'nav.health': 'Status',
                 
                 // Hero
@@ -557,17 +613,18 @@
                 // Footer
                 'footer.docs': 'Documentation',
                 'footer.examples': 'Examples',
+                'footer.changelog': 'Changelog',
                 'footer.github': 'GitHub',
                 'footer.license': 'License',
-                'footer.copyright': '© 2024 FormWerk. All rights reserved.'
+                'footer.copyright': '© 2026 EasyForm. All rights reserved.'
             }
         };
         
-        let currentLang = localStorage.getItem('formwerk_lang') || 'de';
+        let currentLang = localStorage.getItem('easyform_lang') || 'de';
         
         function switchLanguage(lang) {
             currentLang = lang;
-            localStorage.setItem('formwerk_lang', lang);
+            localStorage.setItem('easyform_lang', lang);
             
             // Update button states
             document.querySelectorAll('.lang-btn').forEach(btn => {

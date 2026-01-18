@@ -54,7 +54,7 @@ class EasyForm
      * Magische Methode für einfache Feldtypen
      * Ermöglicht: $form->text('name', 'Ihr Name')
      */
-    public function __call($method, $args)
+    public function __call(string $method, array $args): self
     {
         $fieldTypes = [
             'text', 'email', 'password', 'number', 'tel', 'url',
@@ -89,6 +89,10 @@ class EasyForm
             'readonly' => $options['readonly'] ?? false,
             'disabled' => $options['disabled'] ?? false,
             'icon' => $options['icon'] ?? '',
+            'iconLeft' => $options['iconLeft'] ?? '',
+            'iconRight' => $options['iconRight'] ?? '',
+            'clearable' => $options['clearable'] ?? false,
+            'labelPosition' => $options['labelPosition'] ?? 'above', // above, left, right
             'help' => $options['help'] ?? '',
             'class' => $options['class'] ?? '',
             'attributes' => $options['attributes'] ?? [],
@@ -354,7 +358,7 @@ class EasyForm
     /**
      * Grid-Column starten
      */
-    public function col(int $width = null, array $options = []): self
+    public function col(?int $width = null, array $options = []): self
     {
         $this->fields[] = [
             'type' => 'grid_col_start',
@@ -419,7 +423,7 @@ class EasyForm
     /**
      * Validierungsregel hinzufügen
      */
-    public function rule(string $field, $rules): self
+    public function rule(string $field, string|array $rules): self
     {
         if (is_string($rules)) {
             $rules = explode('|', $rules);
@@ -569,17 +573,45 @@ class EasyForm
         $required = $field['required'] ? 'required' : '';
         $readonly = $field['readonly'] ? 'readonly' : '';
         $disabled = $field['disabled'] ? 'disabled' : '';
-        
-        $html = "<div class='field {$required}'>\n";
-        
-        if ($field['label']) {
+
+        // Label Position Support
+        $labelPosition = $field['labelPosition'] ?? 'above';
+        $fieldClass = $labelPosition !== 'above' ? 'inline' : '';
+
+        $html = "<div class='field {$required} {$fieldClass}'>\n";
+
+        // Label left/right positioning
+        if ($field['label'] && $labelPosition === 'left') {
             $html .= "<label for='{$field['id']}'>{$field['label']}</label>\n";
         }
-        
-        if ($field['icon']) {
-            $html .= "<div class='ui icon input'>\n";
+
+        // Icon detection (backward compatibility + new iconLeft/iconRight)
+        $hasIconLeft = !empty($field['iconLeft']) || (!empty($field['icon']) && $labelPosition !== 'right');
+        $hasIconRight = !empty($field['iconRight']);
+        $iconClasses = [];
+
+        if ($hasIconLeft) {
+            $iconClasses[] = 'left icon';
         }
-        
+        if ($hasIconRight || $field['clearable']) {
+            $iconClasses[] = 'icon';
+        }
+
+        // Label above (default)
+        if ($field['label'] && $labelPosition === 'above') {
+            $html .= "<label for='{$field['id']}'>{$field['label']}</label>\n";
+        }
+
+        if ($hasIconLeft || $hasIconRight || $field['clearable']) {
+            $html .= "<div class='ui " . implode(' ', $iconClasses) . " input'>\n";
+        }
+
+        // Left Icon
+        if ($hasIconLeft) {
+            $icon = $field['iconLeft'] ?: $field['icon'];
+            $html .= "<i class='{$icon} icon'></i>\n";
+        }
+
         $html .= "<input ";
         $html .= "type=\"{$field['type']}\" ";
         $html .= "name=\"{$field['name']}\" ";
@@ -590,25 +622,36 @@ class EasyForm
             $html .= "required ";
         }
         $html .= "{$readonly} {$disabled} ";
-        
+
         // Zusätzliche Attribute
         foreach ($field['attributes'] ?? [] as $key => $value) {
             $html .= "{$key}='{$value}' ";
         }
-        
+
         $html .= ">\n";
-        
-        if ($field['icon']) {
-            $html .= "<i class='{$field['icon']} icon'></i>\n";
+
+        // Right Icon or Clearable
+        if ($field['clearable']) {
+            $html .= "<i class='times circle link icon' onclick=\"document.getElementById('{$field['id']}').value=''\"></i>\n";
+        } elseif ($hasIconRight) {
+            $html .= "<i class='{$field['iconRight']} icon'></i>\n";
+        }
+
+        if ($hasIconLeft || $hasIconRight || $field['clearable']) {
             $html .= "</div>\n";
         }
-        
+
         if ($field['help']) {
             $html .= "<small class='help-text'>{$field['help']}</small>\n";
         }
-        
+
+        // Label right
+        if ($field['label'] && $labelPosition === 'right') {
+            $html .= "<label for='{$field['id']}'>{$field['label']}</label>\n";
+        }
+
         $html .= "</div>\n";
-        
+
         return $html;
     }
     
