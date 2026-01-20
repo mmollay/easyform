@@ -139,7 +139,7 @@ ob_start();
 $testForm = null;
 try {
     require_once 'autoload.php';
-    $testForm = new EasyForm('test');
+    $testForm = new \EasyForm\EasyForm('test');
     $testForm->text('test', 'Test');
     check(true, "Form Builder Functionality", 'error');
 } catch (Exception $e) {

@@ -49,10 +49,25 @@ class EasyForm
             'language' => 'de'
         ], $config);
     }
-    
+
+    /**
+     * Konfiguration nachträglich ändern
+     *
+     * @param array $config Konfigurationsoptionen
+     * @return self
+     */
+    public function config(array $config): self
+    {
+        $this->config = array_merge($this->config, $config);
+        return $this;
+    }
+
     /**
      * Magische Methode für einfache Feldtypen
      * Ermöglicht: $form->text('name', 'Ihr Name')
+     *
+     * Für hidden Felder: ->hidden('name', 'value') oder ->hidden('name', 'value', ['options'])
+     * Für andere: ->text('name', 'Label', ['options'])
      */
     public function __call(string $method, array $args): self
     {
@@ -61,15 +76,24 @@ class EasyForm
             'date', 'time', 'datetime', 'month', 'week', 'color',
             'search', 'file', 'hidden'
         ];
-        
+
         if (in_array($method, $fieldTypes)) {
             $name = $args[0] ?? '';
+
+            // Special handling for hidden fields: second param is value, not label
+            if ($method === 'hidden') {
+                $value = $args[1] ?? '';
+                $options = $args[2] ?? [];
+                $options['value'] = $value;
+                return $this->input($name, '', array_merge(['type' => $method], $options));
+            }
+
             $label = $args[1] ?? '';
             $options = $args[2] ?? [];
-            
+
             return $this->input($name, $label, array_merge(['type' => $method], $options));
         }
-        
+
         throw new \BadMethodCallException("Method {$method} does not exist");
     }
     
@@ -134,11 +158,37 @@ class EasyForm
             'maxlength' => $options['maxlength'] ?? null,
             'group' => $this->currentGroup
         ];
-        
+
         $this->fields[] = $field;
         return $this;
     }
-    
+
+    /**
+     * HTML Editor (CKEditor 5)
+     */
+    public function editor(string $name, string $label = '', array $options = []): self
+    {
+        $field = [
+            'type' => 'editor',
+            'name' => $name,
+            'label' => $label,
+            'id' => $options['id'] ?? $name,
+            'placeholder' => $options['placeholder'] ?? '',
+            'value' => $options['value'] ?? '',
+            'height' => $options['height'] ?? 400,
+            'required' => $options['required'] ?? false,
+            'readonly' => $options['readonly'] ?? false,
+            'disabled' => $options['disabled'] ?? false,
+            'help' => $options['help'] ?? '',
+            'class' => $options['class'] ?? '',
+            'toolbar' => $options['toolbar'] ?? 'full', // full, basic, minimal
+            'group' => $this->currentGroup
+        ];
+
+        $this->fields[] = $field;
+        return $this;
+    }
+
     /**
      * Select/Dropdown
      */
@@ -472,8 +522,14 @@ class EasyForm
      */
     public function render(): string
     {
-        $html = $this->renderFormOpen();
-        
+        $html = '';
+
+        // CKEditor 5 must be loaded in the main page (not here) because this content
+        // may be loaded via AJAX and script tags won't execute in AJAX content.
+        // Add this to your main page: <script src="https://cdn.ckeditor.com/ckeditor5/43.3.1/classic/ckeditor.js"></script>
+
+        $html .= $this->renderFormOpen();
+
         // Gruppen rendern
         if (!empty($this->groups)) {
             $html .= $this->renderGroups();
@@ -485,16 +541,29 @@ class EasyForm
                 }
             }
         }
-        
+
         // Buttons
         if (!empty($this->buttons) || $this->config['submitButton']) {
             $html .= $this->renderButtons();
         }
-        
+
         $html .= $this->renderFormClose();
         $html .= $this->renderJavaScript(); // JavaScript wieder hier, aber mit jQuery check
-        
+
         return $html;
+    }
+
+    /**
+     * Prüft ob Editor-Felder vorhanden sind
+     */
+    private function hasEditorFields(): bool
+    {
+        foreach ($this->fields as $field) {
+            if ($field['type'] === 'editor') {
+                return true;
+            }
+        }
+        return false;
     }
     
     /**
@@ -570,6 +639,12 @@ class EasyForm
      */
     private function renderInputField(array $field): string
     {
+        // Hidden fields: just render the input without wrapper
+        if ($field['type'] === 'hidden') {
+            $value = htmlspecialchars($field['value'] ?? '', ENT_QUOTES);
+            return "<input type=\"hidden\" name=\"{$field['name']}\" id=\"{$field['id']}\" value=\"{$value}\">\n";
+        }
+
         $required = $field['required'] ? 'required' : '';
         $readonly = $field['readonly'] ? 'readonly' : '';
         $disabled = $field['disabled'] ? 'disabled' : '';
@@ -685,16 +760,57 @@ class EasyForm
         }
         
         $html .= ">{$field['value']}</textarea>\n";
-        
+
         if ($field['help']) {
             $html .= "<small class='help-text'>{$field['help']}</small>\n";
         }
-        
+
         $html .= "</div>\n";
-        
+
         return $html;
     }
-    
+
+    /**
+     * HTML Editor (CKEditor 5) rendern
+     */
+    private function renderEditorField(array $field): string
+    {
+        $required = $field['required'] ? 'required' : '';
+        $readonly = $field['readonly'] ? 'readonly' : '';
+        $disabled = $field['disabled'] ? 'disabled' : '';
+
+        $html = "<div class='field {$required}'>\n";
+
+        if ($field['label']) {
+            $html .= "<label for='{$field['id']}'>{$field['label']}</label>\n";
+        }
+
+        // Hidden textarea that will be replaced by CKEditor
+        $html .= "<textarea ";
+        $html .= "name=\"{$field['name']}\" ";
+        $html .= "id=\"{$field['id']}\" ";
+        $html .= "class=\"ckeditor-field {$field['class']}\" ";
+        $html .= "data-toolbar=\"{$field['toolbar']}\" ";
+        $html .= "data-height=\"{$field['height']}\" ";
+        if ($field['required']) {
+            $html .= "required ";
+        }
+        $html .= "{$readonly} {$disabled}";
+        $html .= " style=\"display:none;\""; // Hide until CKEditor initializes
+        $html .= ">" . htmlspecialchars($field['value']) . "</textarea>\n";
+
+        // Container for CKEditor
+        $html .= "<div id=\"{$field['id']}_editor\" class=\"ckeditor-container\" style=\"min-height: {$field['height']}px;\"></div>\n";
+
+        if ($field['help']) {
+            $html .= "<small class='help-text'>{$field['help']}</small>\n";
+        }
+
+        $html .= "</div>\n";
+
+        return $html;
+    }
+
     /**
      * Select/Dropdown rendern
      */
@@ -1307,34 +1423,156 @@ class EasyForm
         $html .= "      preview.append('<div class=\"ui label\">' + files[i].name + '</div>');\n";
         $html .= "    }\n";
         $html .= "  });\n";
-        
+
+        // CKEditor 5 Initialisierung
+        if ($this->hasEditorFields()) {
+            $html .= "  \n";
+            $html .= "  // Global registry for CKEditor instances (for proper cleanup)\n";
+            $html .= "  if (typeof window.ckEditorInstances === 'undefined') {\n";
+            $html .= "    window.ckEditorInstances = {};\n";
+            $html .= "  }\n";
+            $html .= "  \n";
+            $html .= "  // Initialize CKEditor 5 for all editor fields\n";
+            $html .= "  function initializeCKEditor5() {\n";
+            $html .= "    // Check if CKEditor is loaded (Classic Build from npm exposes ClassicEditor globally)\n";
+            $html .= "    if (typeof ClassicEditor === 'undefined') {\n";
+            $html .= "      console.error('CKEditor not loaded yet, waiting...');\n";
+            $html .= "      setTimeout(initializeCKEditor5, 100); // Retry after 100ms\n";
+            $html .= "      return;\n";
+            $html .= "    }\n";
+            $html .= "    \n";
+            $html .= "    console.log('CKEditor ClassicEditor found, initializing editor fields...');\n";
+            $html .= "    \n";
+            $html .= "    // Initialize each editor field\n";
+            $html .= "    $('.ckeditor-field').each(function() {\n";
+            $html .= "      var textareaId = $(this).attr('id');\n";
+            $html .= "      var containerId = textareaId + '_editor';\n";
+            $html .= "      var toolbar = $(this).data('toolbar') || 'full';\n";
+            $html .= "      var height = $(this).data('height') || 400;\n";
+            $html .= "      var textarea = this;\n";
+            $html .= "      var container = document.querySelector('#' + containerId);\n";
+            $html .= "      \n";
+            $html .= "      // CRITICAL: Check if editor already exists and destroy it first\n";
+            $html .= "      if (window.ckEditorInstances[containerId]) {\n";
+            $html .= "        try {\n";
+            $html .= "          console.log('Destroying existing CKEditor instance:', containerId);\n";
+            $html .= "          window.ckEditorInstances[containerId].destroy();\n";
+            $html .= "          delete window.ckEditorInstances[containerId];\n";
+            $html .= "        } catch (e) {\n";
+            $html .= "          console.warn('Error destroying existing CKEditor:', e);\n";
+            $html .= "        }\n";
+            $html .= "      }\n";
+            $html .= "      \n";
+            $html .= "      // Also check if container already has CKEditor elements and clean them up\n";
+            $html .= "      if (container) {\n";
+            $html .= "        var existingEditor = container.querySelector('.ck-editor');\n";
+            $html .= "        if (existingEditor) {\n";
+            $html .= "          console.log('Cleaning up orphaned CKEditor DOM for:', containerId);\n";
+            $html .= "          existingEditor.remove();\n";
+            $html .= "        }\n";
+            $html .= "      }\n";
+            $html .= "      \n";
+            $html .= "      console.log('Initializing CKEditor for:', textareaId);\n";
+            $html .= "      \n";
+            $html .= "      // Configure toolbar based on type (Superbuild compatible)\n";
+            $html .= "      var toolbarConfig = [];\n";
+            $html .= "      if (toolbar === 'full') {\n";
+            $html .= "        toolbarConfig = ['undo', 'redo', '|', 'heading', '|', 'bold', 'italic', 'underline', '|',\n";
+            $html .= "                         'link', 'insertTable', 'blockQuote', '|', 'bulletedList', 'numberedList', '|',\n";
+            $html .= "                         'outdent', 'indent'];\n";
+            $html .= "      } else if (toolbar === 'basic') {\n";
+            $html .= "        toolbarConfig = ['undo', 'redo', '|', 'bold', 'italic', '|', 'link', 'bulletedList', 'numberedList'];\n";
+            $html .= "      } else if (toolbar === 'minimal') {\n";
+            $html .= "        toolbarConfig = ['undo', 'redo', '|', 'bold', 'italic', 'link'];\n";
+            $html .= "      }\n";
+            $html .= "      \n";
+            $html .= "      // Build plugins array for UMD build (CKEDITOR contains all plugins)\n";
+            $html .= "      var plugins = [];\n";
+            $html .= "      if (typeof CKEDITOR !== 'undefined') {\n";
+            $html .= "        // UMD build - load plugins explicitly\n";
+            $html .= "        plugins = [\n";
+            $html .= "          CKEDITOR.Essentials,\n";
+            $html .= "          CKEDITOR.Paragraph,\n";
+            $html .= "          CKEDITOR.Bold,\n";
+            $html .= "          CKEDITOR.Italic,\n";
+            $html .= "          CKEDITOR.Underline,\n";
+            $html .= "          CKEDITOR.Heading,\n";
+            $html .= "          CKEDITOR.Link,\n";
+            $html .= "          CKEDITOR.List,\n";
+            $html .= "          CKEDITOR.BlockQuote,\n";
+            $html .= "          CKEDITOR.Table,\n";
+            $html .= "          CKEDITOR.TableToolbar,\n";
+            $html .= "          CKEDITOR.Indent,\n";
+            $html .= "          CKEDITOR.IndentBlock,\n";
+            $html .= "          CKEDITOR.Undo\n";
+            $html .= "        ].filter(Boolean);\n";
+            $html .= "      }\n";
+            $html .= "      \n";
+            $html .= "      // Initialize CKEditor 5\n";
+            $html .= "      var editorConfig = {\n";
+            $html .= "        licenseKey: 'GPL',\n";
+            $html .= "        toolbar: toolbarConfig,\n";
+            $html .= "        initialData: $(textarea).val()\n";
+            $html .= "      };\n";
+            $html .= "      \n";
+            $html .= "      // Add plugins for UMD build\n";
+            $html .= "      if (plugins.length > 0) {\n";
+            $html .= "        editorConfig.plugins = plugins;\n";
+            $html .= "      }\n";
+            $html .= "      \n";
+            $html .= "      ClassicEditor.create(container, editorConfig).then(function(editor) {\n";
+            $html .= "        console.log('✓ CKEditor 5 initialized successfully for ' + textareaId);\n";
+            $html .= "        \n";
+            $html .= "        // Set min height\n";
+            $html .= "        editor.editing.view.change(function(writer) {\n";
+            $html .= "          writer.setStyle('min-height', height + 'px', editor.editing.view.document.getRoot());\n";
+            $html .= "        });\n";
+            $html .= "        \n";
+            $html .= "        // Sync editor content back to textarea\n";
+            $html .= "        editor.model.document.on('change:data', function() {\n";
+            $html .= "          $(textarea).val(editor.getData());\n";
+            $html .= "        });\n";
+            $html .= "        \n";
+            $html .= "        // Store editor instance in multiple places for proper cleanup\n";
+            $html .= "        $(textarea).data('ckeditor', editor);\n";
+            $html .= "        textarea.ckeditorInstance = editor;\n";
+            $html .= "        window.ckEditorInstances[containerId] = editor;\n";
+            $html .= "        \n";
+            $html .= "        // Add data attribute for easier cleanup\n";
+            $html .= "        container.setAttribute('data-ckeditor-instance', containerId);\n";
+            $html .= "      }).catch(function(error) {\n";
+            $html .= "        console.error('✗ CKEditor 5 initialization error for ' + textareaId + ':', error);\n";
+            $html .= "      });\n";
+            $html .= "    });\n";
+            $html .= "  }\n";
+            $html .= "  \n";
+            $html .= "  // Start initialization\n";
+            $html .= "  initializeCKEditor5();\n";
+        }
+
         $html .= "}\n"; // End of initEasyForm function
         $html .= "\n";
-        $html .= "// Call initialization when jQuery is ready\n";
+        $html .= "// Call initialization - works for both normal page load and AJAX\n";
         $html .= "(function() {\n";
         $html .= "  var initFunction = function() {\n";
         $html .= "    console.log('Initializing form: {$this->id}');\n";
         $html .= "    initEasyForm_{$this->id}();\n";
         $html .= "  };\n";
         $html .= "  \n";
-        $html .= "  if (typeof jQuery !== 'undefined') {\n";
+        $html .= "  // Check if document is already ready (AJAX context)\n";
+        $html .= "  if (document.readyState === 'complete' || document.readyState === 'interactive') {\n";
+        $html .= "    // Document already loaded - likely AJAX context, init immediately\n";
+        $html .= "    if (typeof jQuery !== 'undefined') {\n";
+        $html .= "      setTimeout(initFunction, 0); // Use setTimeout to ensure DOM is updated\n";
+        $html .= "    } else {\n";
+        $html .= "      setTimeout(initFunction, 100); // Wait a bit for jQuery if not yet available\n";
+        $html .= "    }\n";
+        $html .= "  } else if (typeof jQuery !== 'undefined') {\n";
         $html .= "    jQuery(document).ready(initFunction);\n";
         $html .= "  } else if (typeof $ !== 'undefined') {\n";
         $html .= "    $(document).ready(initFunction);\n";
         $html .= "  } else {\n";
-        $html .= "    document.addEventListener('DOMContentLoaded', function() {\n";
-        $html .= "      var attempts = 0;\n";
-        $html .= "      var checkJQuery = setInterval(function() {\n";
-        $html .= "        attempts++;\n";
-        $html .= "        if (typeof jQuery !== 'undefined' || typeof $ !== 'undefined') {\n";
-        $html .= "          clearInterval(checkJQuery);\n";
-        $html .= "          initFunction();\n";
-        $html .= "        } else if (attempts > 50) {\n";
-        $html .= "          clearInterval(checkJQuery);\n";
-        $html .= "          console.error('jQuery not found after 5 seconds');\n";
-        $html .= "        }\n";
-        $html .= "      }, 100);\n";
-        $html .= "    });\n";
+        $html .= "    document.addEventListener('DOMContentLoaded', initFunction);\n";
         $html .= "  }\n";
         $html .= "})();\n";
         $html .= "</script>\n";

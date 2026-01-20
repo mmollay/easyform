@@ -2,6 +2,109 @@
 
 All notable changes to EasyForm will be documented in this file.
 
+## [2.0.15] - 2026-01-20
+
+### Added
+- **AJAX Request Timeout** - Modal content loading now has 30-second timeout to prevent infinite loading
+- **Improved Error Messages** - Timeout errors now show "Zeitüberschreitung - Server antwortet nicht" instead of generic error
+- **Console Logging** - Modal load errors are now logged to browser console for debugging
+
+### Fixed
+- **EasyForm Hidden Field Value** - Fixed `->hidden('name', 'value')` treating second parameter as label instead of value. Now correctly sets the value.
+
+## [2.0.14] - 2026-01-20
+
+### Fixed
+- **Modal Dimmer Cleanup** - Fixed dimmer not being removed after modal close. Added explicit dimmer cleanup in `onHidden` callback.
+
+## [2.0.13] - 2026-01-20
+
+### Added
+- **EasyForm `editor()` Method** - New dedicated method for CKEditor 5 HTML editor fields with toolbar options (full/basic/minimal)
+
+## [2.0.12] - 2026-01-20
+
+### Fixed
+- **EasyList Modal Initialization** - Fixed modals being re-initialized on each click, causing issues with CKEditor destruction
+
+## [2.0.11] - 2026-01-20
+
+### Fixed
+- **CKEditor Destroy on Modal Close** - CKEditor instances are now properly destroyed when modal closes, preventing memory leaks and initialization errors
+
+## [2.0.10] - 2026-01-20
+
+### Added
+- **EasyList Bulk Actions** - Support for `bulkActions()` with multi-select checkboxes
+- **Selectable Rows** - `selectable(true, 'checkbox', 'id_field')` for row selection
+
+## [2.0.9] - 2026-01-20
+
+### Fixed
+- **Semantic UI Dropdown Init** - Dropdowns in AJAX-loaded modal content now properly initialize
+
+## [2.0.8] - 2026-01-20
+
+### Fixed
+- **Form Submit in Modals** - Fixed AJAX form submission not working properly in modals
+
+## [2.0.7] - 2026-01-20
+
+### Added
+- **EasyListHandler.js** - Standalone JavaScript handler for EasyList functionality
+
+## [2.0.6] - 2026-01-20
+
+### Added
+- **EasyList `maxWidth()` Method** - Set maximum container width for lists (e.g., `$list->maxWidth('1200px')`). Useful for constraining wide tables to a specific width.
+- **EasyList `align()` Method** - Set container alignment: `'left'`, `'center'`, or `'right'`. Centers the list when combined with `maxWidth()`.
+- **EasyList `showInfoFooter()` Method** - Display footer with entry count and pagination info: "Gesamt: X Einträge | Seite Y von Z". Updates automatically when filtering or paginating.
+- **EasyList Column Icons** - Add icons to column headers with `'icon' => 'user'` option. Use `'iconOnly' => true` to show only the icon without label text.
+- **EasyList Modal `width` Option** - Modals now support custom width via `'width' => '1200px'` in `addModal()` options. Automatically includes `max-width: 95vw` for responsive behavior.
+
+### Fixed
+- **EasyList Modal Scrolling** - Fixed modal scrolling not working properly. Now adds `scrolling content` class to the content div in addition to the `scrolling` class on the modal wrapper, as required by Semantic UI specification.
+- **EasyList Pagination Spacing** - Improved footer layout with proper spacing between info text and pagination controls.
+
+### Example Usage
+```php
+$list = new EasyList('mylist');
+$list->setDatabase($db, $query)
+    ->maxWidth('1200px')
+    ->align('center')
+    ->showInfoFooter(true)
+    ->addColumn('name', 'Name', ['icon' => 'user'])
+    ->addColumn('email', 'E-Mail', ['icon' => 'envelope'])
+    ->addColumn('actions', '', ['icon' => 'cog', 'iconOnly' => true])
+    ->addModal('modal_edit', [
+        'title' => 'Edit',
+        'content' => 'form.php',
+        'width' => '1200px',
+        'scrolling' => true
+    ]);
+```
+
+## [2.0.4] - 2026-01-20
+
+### Added
+- **`config()` Method** - Added `config()` method to EasyForm class to allow modifying configuration after instantiation. Supports method chaining. Both constructor config and `$form->config(['option' => value])` now work.
+
+## [2.0.3] - 2026-01-20
+
+### Fixed
+- **CKEditor5 UMD Build Support** - Fixed CKEditor5 toolbar not appearing when using UMD build. The UMD build requires explicit plugin loading (Essentials, Paragraph, Bold, Italic, Underline, Heading, Link, List, BlockQuote, Table, Indent, Undo). EasyForm now detects UMD builds and loads plugins automatically.
+
+## [2.0.2] - 2026-01-20
+
+### Fixed
+- **EasyList AJAX Script Execution** - Scripts in AJAX-loaded modal content are now properly executed. jQuery's `.html()` method doesn't execute script tags, so EasyList now manually executes inline scripts after loading modal content. This fixes CKEditor5 and other JavaScript components not initializing in modals.
+
+## [2.0.1] - 2026-01-20
+
+### Fixed
+- **CKEditor5 License Key** - Added `licenseKey: 'GPL'` to CKEditor5 configuration to fix "license-key-missing" error
+- **Hidden Fields** - Hidden input fields now render as bare `<input type="hidden">` without wrapper div, fixing display issue in forms
+
 ## [2.0.0] - 2026-01-18
 
 ### 🎉 Major Release: Full Smartform2 API Compatibility

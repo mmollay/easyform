@@ -1,14 +1,11 @@
-<?php
-$baseUrl = rtrim(dirname($_SERVER['PHP_SELF']), '/') . '/';
-?>
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EasyForm - Professional Form & List Generator</title>
-    <link rel="stylesheet" href="<?php echo $baseUrl; ?>semantic/dist/semantic.min.css">
-    <script src="<?php echo $baseUrl; ?>assets/js/i18n.js"></script>
+    <link rel="stylesheet" href="semantic/dist/semantic.min.css">
+    <script src="assets/js/i18n.js"></script>
     <style>
         * {
             margin: 0;
@@ -376,10 +373,10 @@ $baseUrl = rtrim(dirname($_SERVER['PHP_SELF']), '/') . '/';
             <ul class="nav-menu">
                 <li><a href="#features" data-i18n="nav.features">Features</a></li>
                 <li><a href="#tools" data-i18n="nav.tools">Tools</a></li>
-                <li><a href="<?php echo $baseUrl; ?>docs/" data-i18n="nav.docs">Dokumentation</a></li>
-                <li><a href="<?php echo $baseUrl; ?>examples/" data-i18n="nav.examples">Beispiele</a></li>
-                <li><a href="<?php echo $baseUrl; ?>CHANGELOG.md" data-i18n="nav.changelog">Changelog</a></li>
-                <li><a href="<?php echo $baseUrl; ?>health-check.php" data-i18n="nav.health">Status</a></li>
+                <li><a href="docs/" data-i18n="nav.docs">Dokumentation</a></li>
+                <li><a href="examples/" data-i18n="nav.examples">Beispiele</a></li>
+                <li><a href="CHANGELOG.md" data-i18n="nav.changelog">Changelog</a></li>
+                <li><a href="health-check.php" data-i18n="nav.health">Status</a></li>
             </ul>
         </div>
     </nav>
@@ -393,11 +390,11 @@ $baseUrl = rtrim(dirname($_SERVER['PHP_SELF']), '/') . '/';
                 mit Drag & Drop, Live-Vorschau und automatischer Code-Generierung
             </p>
             <div class="hero-buttons">
-                <a href="<?php echo $baseUrl; ?>form_builder.php" class="btn btn-primary">
+                <a href="form_builder.php" class="btn btn-primary">
                     <i class="paint brush icon"></i>
                     <span data-i18n="hero.formBuilder">Form Builder</span>
                 </a>
-                <a href="<?php echo $baseUrl; ?>list_generator.php" class="btn btn-secondary">
+                <a href="list_generator.php" class="btn btn-secondary">
                     <i class="table icon"></i>
                     <span data-i18n="hero.listGenerator">List Generator</span>
                 </a>
@@ -477,7 +474,7 @@ $baseUrl = rtrim(dirname($_SERVER['PHP_SELF']), '/') . '/';
         <h2 class="section-title" data-i18n="tools.title">Unsere Tools</h2>
         
         <div class="tools-grid">
-            <a href="<?php echo $baseUrl; ?>form_builder.php" class="tool-card">
+            <a href="form_builder.php" class="tool-card">
                 <div class="tool-icon">
                     <i class="wpforms icon"></i>
                 </div>
@@ -487,7 +484,7 @@ $baseUrl = rtrim(dirname($_SERVER['PHP_SELF']), '/') . '/';
                 </p>
             </a>
 
-            <a href="<?php echo $baseUrl; ?>list_generator.php" class="tool-card">
+            <a href="list_generator.php" class="tool-card">
                 <div class="tool-icon">
                     <i class="table icon"></i>
                 </div>
@@ -497,7 +494,7 @@ $baseUrl = rtrim(dirname($_SERVER['PHP_SELF']), '/') . '/';
                 </p>
             </a>
 
-            <a href="<?php echo $baseUrl; ?>health-check.php" class="tool-card">
+            <a href="health-check.php" class="tool-card">
                 <div class="tool-icon">
                     <i class="heartbeat icon"></i>
                 </div>
@@ -512,18 +509,18 @@ $baseUrl = rtrim(dirname($_SERVER['PHP_SELF']), '/') . '/';
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-links">
-            <a href="<?php echo $baseUrl; ?>docs/" data-i18n="footer.docs">Dokumentation</a>
-            <a href="<?php echo $baseUrl; ?>examples/" data-i18n="footer.examples">Beispiele</a>
-            <a href="<?php echo $baseUrl; ?>CHANGELOG.md" data-i18n="footer.changelog">Changelog</a>
+            <a href="docs/" data-i18n="footer.docs">Dokumentation</a>
+            <a href="examples/" data-i18n="footer.examples">Beispiele</a>
+            <a href="CHANGELOG.md" data-i18n="footer.changelog">Changelog</a>
             <a href="https://github.com/mmollay/easyform" data-i18n="footer.github">GitHub</a>
-            <a href="<?php echo $baseUrl; ?>LICENSE" data-i18n="footer.license">Lizenz</a>
+            <a href="LICENSE" data-i18n="footer.license">Lizenz</a>
         </div>
         <div class="footer-copyright">
             <span data-i18n="footer.copyright">© 2026 EasyForm. Alle Rechte vorbehalten.</span>
         </div>
     </footer>
     
-    <script src="<?php echo $baseUrl; ?>jquery/jquery.min.js"></script>
+    <script src="jquery/jquery.min.js"></script>
     <script>
         // Translations
         const translations = {

@@ -11,7 +11,7 @@ session_start();
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EasyForm - Data Table Generator</title>
-    
+
     <!-- Semantic UI CSS -->
     <link rel="stylesheet" href="semantic/dist/semantic.min.css">
     <script src="assets/js/i18n.js"></script>

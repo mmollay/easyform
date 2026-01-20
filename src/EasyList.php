@@ -29,7 +29,7 @@ class EasyList {
     private $exportFormats = ['csv', 'json', 'excel'];
     private $ajax = false;
     private $ajaxUrl = '';
-    private $classes = 'ui celled table';
+    private $classes = 'ui celled striped table';
     private $striped = true;
     private $selectable = false;
     private $actions = [];
@@ -44,6 +44,10 @@ class EasyList {
     private $rowClass = null;
     private $summaryRow = false;
     private $groupBy = null;
+    private $hideToolbar = false;
+    private $searchFieldStyle = [];
+    private $tableBorderStyle = 'default';
+    private $buttonGrouping = false;
 
     // Smartform2 compatibility
     private $db = null;
@@ -58,7 +62,10 @@ class EasyList {
     private $searchableColumns = [];
     private $preparedStatementParams = [];
     private $preparedStatementTypes = '';
-    
+    private $maxWidth = null;  // Container max-width (e.g., '1200px')
+    private $containerAlign = null;  // Container alignment: 'left', 'center', 'right'
+    private $showInfoFooter = false;  // Show footer with entry count and page info
+
     /**
      * Constructor
      */
@@ -194,7 +201,9 @@ class EasyList {
             'class' => '',
             'headerClass' => '',
             'filter' => null,
-            'allowHtml' => false
+            'allowHtml' => false,
+            'icon' => null,         // Icon class (e.g., 'user', 'envelope', 'building')
+            'iconOnly' => false     // Show only icon without label text
         ], $options);
         return $this;
     }
@@ -375,7 +384,43 @@ class EasyList {
         $this->pageSize = $pageSize;
         return $this;
     }
-    
+
+    /**
+     * Set maximum container width
+     *
+     * @param string $width Max width (e.g., '1200px', '80%', '60em')
+     * @return $this
+     */
+    public function maxWidth($width) {
+        $this->maxWidth = $width;
+        return $this;
+    }
+
+    /**
+     * Set container alignment
+     *
+     * @param string $align Alignment: 'left', 'center', 'right'
+     * @return $this
+     */
+    public function align($align) {
+        $validAligns = ['left', 'center', 'right'];
+        if (in_array($align, $validAligns)) {
+            $this->containerAlign = $align;
+        }
+        return $this;
+    }
+
+    /**
+     * Show info footer with entry count and page info
+     *
+     * @param bool $show Enable/disable info footer
+     * @return $this
+     */
+    public function showInfoFooter($show = true) {
+        $this->showInfoFooter = $show;
+        return $this;
+    }
+
     /**
      * Configure export
      */
@@ -386,9 +431,14 @@ class EasyList {
     }
     
     /**
-     * Enable row selection
+     * Enable row selection with checkboxes or radio buttons
+     *
+     * @param bool $enabled Enable selection
+     * @param string $type 'checkbox' or 'radio'
+     * @param string $idField The data field to use as row ID (default: 'id')
+     * @return $this
      */
-    public function selectable($enabled = true, $type = 'checkbox') {
+    public function selectable($enabled = true, $type = 'checkbox', $idField = 'id') {
         $this->selectable = $enabled;
         if ($enabled) {
             // Check if select column already exists
@@ -399,7 +449,7 @@ class EasyList {
                     break;
                 }
             }
-            
+
             // Only add if not already present
             if (!$hasSelectColumn) {
                 array_unshift($this->columns, [
@@ -409,7 +459,7 @@ class EasyList {
                     'searchable' => false,
                     'width' => '50px',
                     'align' => 'center',
-                    'template' => '<input type="' . $type . '" class="row-select" value="{id}">'
+                    'template' => '<input type="' . $type . '" class="row-select" value="{' . $idField . '}">'
                 ]);
             }
         }
@@ -486,6 +536,40 @@ class EasyList {
         $this->summaryRow = $enabled;
         return $this;
     }
+
+    /**
+     * Hide toolbar completely
+     */
+    public function hideToolbar($hide = true) {
+        $this->hideToolbar = $hide;
+        return $this;
+    }
+
+    /**
+     * Set search field styling
+     * @param array $styles Array of CSS properties (e.g., ['border-radius' => '20px'])
+     */
+    public function searchFieldStyle($styles = []) {
+        $this->searchFieldStyle = $styles;
+        return $this;
+    }
+
+    /**
+     * Set table border style
+     * @param string $style 'default', 'thin', or 'none'
+     */
+    public function tableBorderStyle($style = 'default') {
+        $this->tableBorderStyle = $style;
+        return $this;
+    }
+
+    /**
+     * Enable button grouping (visually group left/right buttons)
+     */
+    public function buttonGrouping($enabled = true) {
+        $this->buttonGrouping = $enabled;
+        return $this;
+    }
     
     /**
      * Generate actions template
@@ -517,73 +601,50 @@ class EasyList {
             }
         }
         
-        // Add custom CSS for better styling
-        $html = '<style>
-            .easylist-container { margin: 20px 0; }
-            .easylist-container .ui.menu { 
-                margin-bottom: 20px; 
-                border-radius: 8px;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        $html = '';
+
+        // Inline CSS for consistent toolbar styling
+        $html .= '<style>
+            .easylist-toolbar .ui.dropdown {
+                min-height: 38px !important;
+                padding: 0 12px !important;
+                display: flex !important;
+                align-items: center !important;
             }
-            .easylist-container .ui.menu .item { 
-                padding: 10px 15px; 
+            .easylist-toolbar .ui.dropdown > .text {
+                line-height: 38px !important;
             }
-            .easylist-container .ui.form.easylist-filters { 
-                margin-bottom: 15px; 
-                background: #f8f9fa; 
-                border-radius: 6px;
-                border: 1px solid #e2e8f0;
+            .easylist-toolbar .ui.button {
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
             }
-            .easylist-container .ui.form.easylist-filters .inline.fields {
-                flex-wrap: wrap;
-                gap: 10px;
+            .easylist-toolbar .ui.icon.input > input {
+                box-sizing: border-box !important;
             }
-            .easylist-container .ui.form.easylist-filters .field {
-                margin: 0 !important;
-                display: flex;
-                align-items: center;
-            }
-            .easylist-container .easylist-filters .ui.dropdown.filter-input {
-                min-width: 140px !important;
-                width: 140px !important;
-            }
-            .easylist-container .ui.button.compact {
-                padding: 9px 15px;
-            }
-            .easylist-container .table-responsive { 
-                border: 1px solid #d4d4d5; 
-                border-radius: 8px; 
-                overflow: hidden; 
-                margin-bottom: 20px;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            }
-            .easylist-container .ui.table { 
-                margin: 0; 
-                border-radius: 0; 
-            }
-            .easylist-container .ui.table thead th { 
-                background: #f0f1f2; 
-                font-weight: 600;
-                border-bottom: 2px solid #d4d4d5;
-            }
-            .easylist-container .ui.table th.sortable { 
-                cursor: pointer; 
-                user-select: none;
-                transition: background 0.2s;
-            }
-            .easylist-container .ui.table th.sortable:hover { 
-                background: #e8e9ea; 
-            }
-            .easylist-container .ui.pagination.menu { 
-                justify-content: center; 
-                margin-top: 20px; 
+            .easylist-toolbar .ui.icon.input > i.icon {
+                pointer-events: none;
             }
         </style>';
-        
-        $html .= '<div class="easylist-container" id="' . $this->id . '_container">';
-        
-        // Toolbar
-        $html .= $this->renderToolbar();
+
+        // Container with optional max-width and alignment
+        $styles = [];
+        if ($this->maxWidth) {
+            $styles[] = 'max-width: ' . $this->maxWidth;
+        }
+        if ($this->containerAlign === 'center') {
+            $styles[] = 'margin-left: auto';
+            $styles[] = 'margin-right: auto';
+        } elseif ($this->containerAlign === 'right') {
+            $styles[] = 'margin-left: auto';
+        }
+        $containerStyle = !empty($styles) ? ' style="' . implode('; ', $styles) . ';"' : '';
+        $html .= '<div class="easylist-container" id="' . $this->id . '_container"' . $containerStyle . '>';
+
+        // Toolbar (only if not hidden)
+        if (!$this->hideToolbar) {
+            $html .= $this->renderToolbar();
+        }
         
         // Filters
         if (!empty($this->filters)) {
@@ -613,12 +674,33 @@ class EasyList {
         
         $html .= '</table>';
         $html .= '</div>';
-        
-        // Pagination
-        if ($this->paginate) {
-            $html .= $this->renderPagination();
+
+        // Footer area (pagination + info footer)
+        if ($this->paginate || $this->showInfoFooter) {
+            $html .= '<div class="easylist-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">';
+
+            // Info footer (left side)
+            if ($this->showInfoFooter) {
+                $totalEntries = count($this->data);
+                $html .= '<div class="easylist-info" id="' . $this->id . '_info" style="color: #666; font-size: 0.9em;">';
+                $html .= 'Gesamt: <strong>' . $totalEntries . '</strong> Einträge';
+                if ($this->paginate && $totalEntries > 0) {
+                    $totalPages = ceil($totalEntries / $this->pageSize);
+                    $html .= ' | Seite <span id="' . $this->id . '_current_page">1</span> von <span id="' . $this->id . '_total_pages">' . $totalPages . '</span>';
+                }
+                $html .= '</div>';
+            } else {
+                $html .= '<div></div>'; // Spacer for flex alignment
+            }
+
+            // Pagination (right side)
+            if ($this->paginate) {
+                $html .= $this->renderPagination();
+            }
+
+            $html .= '</div>';
         }
-        
+
         $html .= '</div>';
 
         // Modals
@@ -647,12 +729,16 @@ class EasyList {
 
         foreach ($this->modals as $modalId => $modal) {
             $size = $modal['size'] ?? 'small';
-            $scrolling = ($modal['scrolling'] ?? false) ? ' scrolling' : '';
+            $isScrolling = $modal['scrolling'] ?? false;
+            $scrollingModal = $isScrolling ? ' scrolling' : '';
+            $scrollingContent = $isScrolling ? 'scrolling content' : 'content';
+            $width = $modal['width'] ?? null;
+            $style = $width ? ' style="width: ' . $width . '; max-width: 95vw;"' : '';
 
-            $html .= '<div class="ui ' . $size . ' modal' . $scrolling . '" id="' . $modalId . '">';
+            $html .= '<div class="ui ' . $size . ' modal' . $scrollingModal . '" id="' . $modalId . '"' . $style . '>';
             $html .= '<i class="close icon"></i>';
             $html .= '<div class="header">' . $modal['title'] . '</div>';
-            $html .= '<div class="content" id="' . $modalId . '_content">';
+            $html .= '<div class="' . $scrollingContent . '" id="' . $modalId . '_content">';
             $html .= '<div class="ui active centered inline loader"></div>';
             $html .= '</div>';
 
@@ -661,10 +747,24 @@ class EasyList {
                 foreach ($modal['buttons'] as $buttonKey => $button) {
                     $class = $button['class'] ?? 'basic';
                     $icon = isset($button['icon']) ? '<i class="' . $button['icon'] . ' icon"></i> ' : '';
-                    $text = $button['text'] ?? ucfirst($buttonKey);
+                    $label = $button['label'] ?? $button['text'] ?? ucfirst($buttonKey);
+                    $action = $button['action'] ?? null;
 
-                    $html .= '<div class="ui ' . $class . ' button">';
-                    $html .= $icon . $text;
+                    // Determine onclick handler based on action
+                    $onclick = '';
+                    if ($action === 'submit') {
+                        // Submit the form inside the modal
+                        $onclick = ' onclick="var form = document.querySelector(\'#' . $modalId . '_content form\'); if(form) { form.requestSubmit ? form.requestSubmit() : form.submit(); }"';
+                    } elseif ($action === 'close') {
+                        // Close the modal
+                        $onclick = ' onclick="$(\'#' . $modalId . '\').modal(\'hide\')"';
+                    } elseif (!empty($button['onclick'])) {
+                        // Custom onclick
+                        $onclick = ' onclick="' . htmlspecialchars($button['onclick']) . '"';
+                    }
+
+                    $html .= '<div class="ui ' . $class . ' button"' . $onclick . '>';
+                    $html .= $icon . $label;
                     $html .= '</div>';
                 }
                 $html .= '</div>';
@@ -687,39 +787,42 @@ class EasyList {
      * Render toolbar
      */
     private function renderToolbar() {
-        $html = '<div class="ui secondary menu easylist-toolbar">';
+        // Consistent height for all toolbar elements
+        $toolbarHeight = '38px';
+
+        $html = '<div class="ui secondary menu easylist-toolbar" style="display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 1em;">';
 
         // Search
         if ($this->searchable) {
-            $html .= '<div class="item">';
-            $html .= '<div class="ui icon input">';
-            $html .= '<input type="text" id="' . $this->id . '_search" placeholder="' . $this->searchPlaceholder . '">';
-            $html .= '<i class="search icon"></i>';
+            $html .= '<div class="item" style="margin: 0;">';
+            $html .= '<div class="ui icon input" style="height: ' . $toolbarHeight . ';">';
+            $html .= '<input type="text" id="' . $this->id . '_search" placeholder="' . $this->searchPlaceholder . '" style="border-radius: 20px; height: ' . $toolbarHeight . '; padding: 0 35px 0 14px;">';
+            $html .= '<i class="search icon" style="height: ' . $toolbarHeight . '; display: flex; align-items: center;"></i>';
             $html .= '</div>';
             $html .= '</div>';
         }
 
         // Bulk actions
         if (!empty($this->bulkActions)) {
-            $html .= '<div class="item">';
-            $html .= '<div class="ui compact form">';
-            $html .= '<div class="inline fields" style="margin: 0;">';
-            $html .= '<select class="ui dropdown compact" id="' . $this->id . '_bulk_action" style="min-width: 150px;">';
+            $html .= '<div class="item" style="margin: 0; display: flex; align-items: center; gap: 8px;">';
+            $html .= '<select class="ui dropdown compact" id="' . $this->id . '_bulk_action" style="min-width: 150px; height: ' . $toolbarHeight . ';">';
             $html .= '<option value="">Bulk-Aktionen</option>';
             foreach ($this->bulkActions as $key => $action) {
                 $icon = isset($action['icon']) ? '<i class="' . $action['icon'] . ' icon"></i> ' : '';
                 $html .= '<option value="' . $key . '">' . $icon . $action['label'] . '</option>';
             }
             $html .= '</select>';
-            $html .= '<button class="ui primary button compact" id="' . $this->id . '_bulk_apply" style="margin-left: 10px;" disabled>';
+            $html .= '<button class="ui primary button compact" id="' . $this->id . '_bulk_apply" style="height: ' . $toolbarHeight . '; margin: 0;" disabled>';
             $html .= '<i class="check icon"></i> Anwenden';
             $html .= '</button>';
             $html .= '</div>';
-            $html .= '</div>';
-            $html .= '</div>';
         }
 
-        $html .= '<div class="right menu">';
+        // Spacer to push right menu to the end
+        $html .= '<div style="flex: 1;"></div>';
+
+        // Right side elements (external buttons + export)
+        $html .= '<div class="right-toolbar" style="display: flex; align-items: center; gap: 8px; margin: 0;">';
 
         // External buttons
         if (!empty($this->externalButtons)) {
@@ -731,16 +834,16 @@ class EasyList {
                 }
 
                 if ($button['modalId']) {
-                    $html .= '<a class="item" onclick="openModal(\'' . $button['modalId'] . '\')"' . $popupAttr . '>';
+                    $html .= '<button class="' . $button['class'] . '" onclick="openModal(\'' . $button['modalId'] . '\')"' . $popupAttr . ' style="height: ' . $toolbarHeight . '; margin: 0;">';
                 } elseif ($button['onclick']) {
-                    $html .= '<a class="item" onclick="' . $button['onclick'] . '"' . $popupAttr . '>';
+                    $html .= '<button class="' . $button['class'] . '" onclick="' . $button['onclick'] . '"' . $popupAttr . ' style="height: ' . $toolbarHeight . '; margin: 0;">';
                 } else {
-                    $html .= '<a class="item"' . $popupAttr . '>';
+                    $html .= '<button class="' . $button['class'] . '"' . $popupAttr . ' style="height: ' . $toolbarHeight . '; margin: 0;">';
                 }
 
                 $html .= '<i class="' . $button['icon'] . ' icon"></i> ';
                 $html .= $button['title'];
-                $html .= '</a>';
+                $html .= '</button>';
             }
         }
 
@@ -754,13 +857,13 @@ class EasyList {
                     'pdf' => 'file pdf'
                 ][$format] ?? 'download';
 
-                $html .= '<a class="item export-btn" data-format="' . $format . '">';
+                $html .= '<a class="ui button basic compact export-btn" data-format="' . $format . '" style="height: ' . $toolbarHeight . '; margin: 0; display: flex; align-items: center;">';
                 $html .= '<i class="' . $icon . ' icon"></i> ' . strtoupper($format);
                 $html .= '</a>';
             }
         }
 
-        $html .= '</div>'; // Close right menu
+        $html .= '</div>'; // Close right-toolbar
         $html .= '</div>';
         return $html;
     }
@@ -861,7 +964,20 @@ class EasyList {
             }
 
             $html .= '<th class="' . implode(' ', $classes) . '" data-column="' . $column['key'] . '">';
-            $html .= $column['label'];
+
+            // Build header content with optional icon
+            $headerContent = '';
+            if (!empty($column['icon'])) {
+                $headerContent .= '<i class="' . $column['icon'] . ' icon"></i>';
+                if (!($column['iconOnly'] ?? false)) {
+                    $headerContent .= ' ';  // Space between icon and label
+                }
+            }
+            if (!($column['iconOnly'] ?? false)) {
+                $headerContent .= $column['label'];
+            }
+            $html .= $headerContent;
+
             if ($column['sortable'] && $this->sortable) {
                 $html .= ' <i class="sort icon"></i>';
             }
@@ -903,7 +1019,10 @@ class EasyList {
         if ($this->hasButtonsInPosition('right')) $totalColumns++;
 
         if (empty($this->data)) {
-            $html .= '<tr><td colspan="' . $totalColumns . '" class="center aligned">' . $this->emptyMessage . '</td></tr>';
+            $html .= '<tr class="easylist-empty-row"><td colspan="' . $totalColumns . '" class="center aligned" style="color: #666; padding: 30px;">';
+            $html .= '<i class="inbox icon" style="margin-right: 6px; opacity: 0.6;"></i>';
+            $html .= htmlspecialchars($this->emptyMessage);
+            $html .= '</td></tr>';
             return $html;
         }
 
@@ -982,6 +1101,11 @@ class EasyList {
     private function renderButtonsForRow($row, $position) {
         $html = '';
 
+        // Start Semantic UI button group if enabled
+        if ($this->buttonGrouping) {
+            $html .= '<div class="ui mini basic buttons">';
+        }
+
         foreach ($this->buttons as $buttonId => $button) {
             if ($button['position'] !== $position) {
                 continue;
@@ -1042,7 +1166,8 @@ class EasyList {
                         $params[$paramKey] = $row[$rowKey] ?? '';
                     }
                 }
-                $paramsJson = json_encode($params);
+                // Escape JSON for HTML attribute (double quotes become &quot;)
+                $paramsJson = htmlspecialchars(json_encode($params), ENT_QUOTES);
 
                 $popupAttr = $popup ? ' data-tooltip="' . (is_array($popup) ? htmlspecialchars($popup['content'] ?? '') : htmlspecialchars($popup)) . '"' : '';
 
@@ -1052,6 +1177,11 @@ class EasyList {
                 $html .= '<i class="' . $icon . ' icon"></i>';
                 $html .= '</button>';
             }
+        }
+
+        // Close button group if enabled
+        if ($this->buttonGrouping) {
+            $html .= '</div>';
         }
 
         return $html;
@@ -1166,80 +1296,229 @@ class EasyList {
             'exportable' => $this->exportable,
             'exportFormats' => $this->exportFormats,
             'actions' => $this->actions,  // Include actions configuration
-            'data' => $cleanData  // Include all data for JavaScript
+            'bulkActions' => $this->bulkActions,  // Include bulk actions for multi-select
+            'data' => $cleanData,  // Include all data for JavaScript
+            'showInfoFooter' => $this->showInfoFooter  // Enable info footer updates
         ]);
         
         $html = "\n<script>\n";
 
         // openModal function for modal support
         if (!empty($this->modals)) {
-            $html .= "// Modal handling function\n";
+            $html .= "// Track pending AJAX requests and state per modal\n";
+            $html .= "var modalAjaxRequests = {};\n";
+            $html .= "var modalInitialized = {};\n";
+            $html .= "var easylistModalConfig = " . json_encode($this->modals) . ";\n\n";
+
+            $html .= "// Modal handling function - completely rewritten for reliability\n";
             $html .= "function openModal(modalId, params) {\n";
             $html .= "  var modal = $('#' + modalId);\n";
-            $html .= "  if (!modal.length) return;\n";
+            $html .= "  if (!modal.length) { console.error('Modal not found:', modalId); return; }\n";
             $html .= "  \n";
-            $html .= "  // Find modal config\n";
-            $html .= "  var modalConfig = " . json_encode($this->modals) . ";\n";
-            $html .= "  var config = modalConfig[modalId];\n";
-            $html .= "  if (!config) return;\n";
+            $html .= "  var config = easylistModalConfig[modalId];\n";
+            $html .= "  if (!config) { console.error('Modal config not found:', modalId); return; }\n";
             $html .= "  \n";
-            $html .= "  // Load content\n";
-            $html .= "  var contentUrl = config.content;\n";
-            $html .= "  if (params) {\n";
-            $html .= "    contentUrl += (contentUrl.indexOf('?') > -1 ? '&' : '?') + params;\n";
+            $html .= "  // Abort any pending AJAX request for this modal\n";
+            $html .= "  if (modalAjaxRequests[modalId]) {\n";
+            $html .= "    modalAjaxRequests[modalId].abort();\n";
+            $html .= "    modalAjaxRequests[modalId] = null;\n";
             $html .= "  }\n";
             $html .= "  \n";
-            $html .= "  modal.modal({\n";
-            $html .= "    onShow: function() {\n";
-            $html .= "      $('#' + modalId + '_content').html('<div class=\"ui active centered inline loader\"></div>');\n";
-            $html .= "      $.ajax({\n";
-            $html .= "        url: contentUrl,\n";
-            $html .= "        method: config.method || 'GET',\n";
-            $html .= "        success: function(response) {\n";
-            $html .= "          $('#' + modalId + '_content').html(response);\n";
-            $html .= "          // Initialize Semantic UI components in loaded content\n";
-            $html .= "          $('#' + modalId + '_content .ui.dropdown').dropdown();\n";
-            $html .= "          $('#' + modalId + '_content .ui.checkbox').checkbox();\n";
-            $html .= "        },\n";
-            $html .= "        error: function() {\n";
-            $html .= "          $('#' + modalId + '_content').html('<div class=\"ui negative message\">Fehler beim Laden des Inhalts</div>');\n";
+            $html .= "  // Build URL and data\n";
+            $html .= "  var contentUrl = config.content;\n";
+            $html .= "  var method = config.method || 'GET';\n";
+            $html .= "  var ajaxData = null;\n";
+            $html .= "  \n";
+            $html .= "  if (params) {\n";
+            $html .= "    params = String(params).replace(/^&/, '');\n";
+            $html .= "    if (method === 'POST') {\n";
+            $html .= "      ajaxData = {};\n";
+            $html .= "      params.split('&').forEach(function(pair) {\n";
+            $html .= "        var parts = pair.split('=');\n";
+            $html .= "        if (parts.length === 2) {\n";
+            $html .= "          ajaxData[decodeURIComponent(parts[0])] = decodeURIComponent(parts[1]);\n";
             $html .= "        }\n";
             $html .= "      });\n";
+            $html .= "    } else {\n";
+            $html .= "      contentUrl += (contentUrl.indexOf('?') > -1 ? '&' : '?') + params;\n";
             $html .= "    }\n";
-            $html .= "  }).modal('show');\n";
+            $html .= "  }\n";
+            $html .= "  \n";
+            $html .= "  // ALWAYS reset content to loader first - this is crucial!\n";
+            $html .= "  destroyCKEditorInModal(modalId);\n";
+            $html .= "  $('#' + modalId + '_content').html('<div class=\"ui active centered inline loader\" style=\"margin: 50px auto;\"></div>');\n";
+            $html .= "  \n";
+            $html .= "  // Function to load modal content via AJAX\n";
+            $html .= "  function loadContent() {\n";
+            $html .= "    modalAjaxRequests[modalId] = $.ajax({\n";
+            $html .= "      url: contentUrl,\n";
+            $html .= "      method: method,\n";
+            $html .= "      data: ajaxData,\n";
+            $html .= "      cache: false,\n";
+            $html .= "      timeout: 30000,\n";
+            $html .= "      success: function(response) {\n";
+            $html .= "        modalAjaxRequests[modalId] = null;\n";
+            $html .= "        $('#' + modalId + '_content').html(response);\n";
+            $html .= "        // Execute inline scripts\n";
+            $html .= "        $('#' + modalId + '_content script').each(function() {\n";
+            $html .= "          var scriptContent = $(this).text();\n";
+            $html .= "          if (scriptContent) {\n";
+            $html .= "            try {\n";
+            $html .= "              var script = document.createElement('script');\n";
+            $html .= "              script.text = scriptContent;\n";
+            $html .= "              document.head.appendChild(script).parentNode.removeChild(script);\n";
+            $html .= "            } catch(e) { console.error('Script execution error:', e); }\n";
+            $html .= "          }\n";
+            $html .= "        });\n";
+            $html .= "        $('#' + modalId + '_content .ui.dropdown').dropdown();\n";
+            $html .= "        $('#' + modalId + '_content .ui.checkbox').checkbox();\n";
+            $html .= "      },\n";
+            $html .= "      error: function(xhr, status, error) {\n";
+            $html .= "        modalAjaxRequests[modalId] = null;\n";
+            $html .= "        if (status !== 'abort') {\n";
+            $html .= "          var errorMsg = status === 'timeout' ? 'Zeitüberschreitung - Server antwortet nicht' : 'Fehler beim Laden des Inhalts';\n";
+            $html .= "          if (xhr.responseText && xhr.responseText.length < 500) errorMsg += ': ' + xhr.responseText;\n";
+            $html .= "          $('#' + modalId + '_content').html('<div class=\"ui negative message\"><i class=\"exclamation triangle icon\"></i> ' + errorMsg + '</div>');\n";
+            $html .= "          console.error('Modal load error:', status, error, xhr.responseText);\n";
+            $html .= "        }\n";
+            $html .= "      }\n";
+            $html .= "    });\n";
+            $html .= "  }\n";
+            $html .= "  \n";
+            $html .= "  // Initialize modal only once with proper settings\n";
+            $html .= "  if (!modalInitialized[modalId]) {\n";
+            $html .= "    modal.modal({\n";
+            $html .= "      detachable: false,\n";
+            $html .= "      observeChanges: true,\n";
+            $html .= "      autofocus: false,\n";
+            $html .= "      closable: true,\n";
+            $html .= "      onHidden: function() {\n";
+            $html .= "        destroyCKEditorInModal(modalId);\n";
+            $html .= "        // Abort any pending request when modal is closed\n";
+            $html .= "        if (modalAjaxRequests[modalId]) {\n";
+            $html .= "          modalAjaxRequests[modalId].abort();\n";
+            $html .= "          modalAjaxRequests[modalId] = null;\n";
+            $html .= "        }\n";
+            $html .= "        // Ensure dimmer is removed (fallback for edge cases)\n";
+            $html .= "        setTimeout(function() {\n";
+            $html .= "          $('.ui.dimmer.modals.visible').removeClass('visible active');\n";
+            $html .= "          $('body').removeClass('dimmed dimmable scrolling');\n";
+            $html .= "        }, 100);\n";
+            $html .= "      }\n";
+            $html .= "    });\n";
+            $html .= "    modalInitialized[modalId] = true;\n";
+            $html .= "  }\n";
+            $html .= "  \n";
+            $html .= "  // Show modal and load content\n";
+            $html .= "  modal.modal('show');\n";
+            $html .= "  loadContent();\n";
+            $html .= "}\n\n";
+
+            // Helper function to destroy CKEditor instances
+            $html .= "// Helper function to destroy CKEditor instances in a modal\n";
+            $html .= "function destroyCKEditorInModal(modalId) {\n";
+            $html .= "  var modalContent = document.getElementById(modalId + '_content');\n";
+            $html .= "  if (!modalContent) return;\n";
+            $html .= "  \n";
+            $html .= "  // CKEditor 5: Find all editor instances and destroy them\n";
+            $html .= "  if (typeof window.ckEditorInstances !== 'undefined') {\n";
+            $html .= "    var editors = modalContent.querySelectorAll('.ck-editor, .ckeditor-container, [data-ckeditor-instance]');\n";
+            $html .= "    editors.forEach(function(editorElement) {\n";
+            $html .= "      var editorId = editorElement.id || editorElement.dataset.ckeditorInstance;\n";
+            $html .= "      if (editorId && window.ckEditorInstances[editorId]) {\n";
+            $html .= "        try {\n";
+            $html .= "          window.ckEditorInstances[editorId].destroy();\n";
+            $html .= "          delete window.ckEditorInstances[editorId];\n";
+            $html .= "          console.log('Destroyed CKEditor instance:', editorId);\n";
+            $html .= "        } catch (e) {\n";
+            $html .= "          console.warn('Error destroying CKEditor:', e);\n";
+            $html .= "        }\n";
+            $html .= "      }\n";
+            $html .= "    });\n";
+            $html .= "  }\n";
+            $html .= "  \n";
+            $html .= "  // Fallback: Try to find CKEditor instances by checking for editorInstance property\n";
+            $html .= "  var textareas = modalContent.querySelectorAll('textarea.ckeditor-field');\n";
+            $html .= "  textareas.forEach(function(textarea) {\n";
+            $html .= "    if (textarea.ckeditorInstance) {\n";
+            $html .= "      try {\n";
+            $html .= "        textarea.ckeditorInstance.destroy();\n";
+            $html .= "        textarea.ckeditorInstance = null;\n";
+            $html .= "        console.log('Destroyed CKEditor from textarea:', textarea.id);\n";
+            $html .= "      } catch (e) {\n";
+            $html .= "        console.warn('Error destroying CKEditor from textarea:', e);\n";
+            $html .= "      }\n";
+            $html .= "    }\n";
+            $html .= "  });\n";
+            $html .= "  \n";
+            $html .= "  // Also clear the modal content to ensure clean state\n";
+            $html .= "  // This removes any orphaned CKEditor DOM elements\n";
+            $html .= "  var ckElements = modalContent.querySelectorAll('.ck, .ck-editor');\n";
+            $html .= "  ckElements.forEach(function(el) {\n";
+            $html .= "    el.remove();\n";
+            $html .= "  });\n";
             $html .= "}\n\n";
         }
 
-        $html .= "document.addEventListener('DOMContentLoaded', function() {\n";
-        $html .= "  // Initialize EasyListHandler first\n";
-        $html .= "  if (typeof EasyListHandler !== 'undefined') {\n";
-        $html .= "    window.easyList_" . $this->id . " = new EasyListHandler(" . $config . ");\n";
-        $html .= "  }\n";
-        $html .= "  \n";
-        $html .= "  // Initialize Semantic UI components\n";
-        $html .= "  if (typeof $ !== 'undefined') {\n";
-        $html .= "    // Initialize tooltips\n";
-        $html .= "    $('[data-tooltip]').popup();\n";
+        // Use IIFE that works both on initial load and AJAX load
+        $html .= "(function initEasyList_" . $this->id . "() {\n";
+        $html .= "  function doInit() {\n";
+        $html .= "    // Initialize EasyListHandler first\n";
+        $html .= "    if (typeof EasyListHandler !== 'undefined') {\n";
+        $html .= "      try {\n";
+        $html .= "        // Destroy existing instance if it exists (for AJAX reloads)\n";
+        $html .= "        if (window.easyList_" . $this->id . ") {\n";
+        $html .= "          console.log('Reinitializing EasyList: " . $this->id . "');\n";
+        $html .= "        }\n";
+        $html .= "        window.easyList_" . $this->id . " = new EasyListHandler(" . $config . ");\n";
+        $html .= "        console.log('EasyListHandler initialized: " . $this->id . "');\n";
+        $html .= "      } catch (e) {\n";
+        $html .= "        console.error('EasyListHandler initialization error:', e);\n";
+        $html .= "      }\n";
+        $html .= "    } else {\n";
+        $html .= "      console.warn('EasyListHandler class not found');\n";
+        $html .= "    }\n";
         $html .= "    \n";
-        $html .= "    // Initialize dropdowns with onChange\n";
-        $html .= "    if ($.fn.dropdown) {\n";
-        $html .= "      setTimeout(function() {\n";
-        $html .= "        $('#" . $this->id . "_container .ui.dropdown.filter-input').each(function() {\n";
-        $html .= "          var select = $(this).find('select')[0];\n";
-        $html .= "          if (select && select.dataset.column) {\n";
-        $html .= "            $(this).dropdown({\n";
-        $html .= "              onChange: function(value) {\n";
-        $html .= "                if (window.easyList_" . $this->id . ") {\n";
-        $html .= "                  window.easyList_" . $this->id . ".setFilter(select.dataset.column, value);\n";
+        $html .= "    // Initialize Semantic UI components\n";
+        $html .= "    if (typeof $ !== 'undefined') {\n";
+        $html .= "      // Initialize tooltips\n";
+        $html .= "      $('[data-tooltip]').popup();\n";
+        $html .= "      \n";
+        $html .= "      // Initialize dropdowns with onChange\n";
+        $html .= "      if ($.fn.dropdown) {\n";
+        $html .= "        setTimeout(function() {\n";
+        $html .= "          // Initialize filter dropdowns\n";
+        $html .= "          $('#" . $this->id . "_container .ui.dropdown.filter-input').each(function() {\n";
+        $html .= "            var select = $(this).find('select')[0];\n";
+        $html .= "            if (select && select.dataset.column) {\n";
+        $html .= "              $(this).dropdown({\n";
+        $html .= "                onChange: function(value) {\n";
+        $html .= "                  if (window.easyList_" . $this->id . ") {\n";
+        $html .= "                    window.easyList_" . $this->id . ".setFilter(select.dataset.column, value);\n";
+        $html .= "                  }\n";
         $html .= "                }\n";
-        $html .= "              }\n";
-        $html .= "            });\n";
+        $html .= "              });\n";
+        $html .= "            }\n";
+        $html .= "          });\n";
+        $html .= "          \n";
+        $html .= "          // Initialize bulk action dropdown\n";
+        $html .= "          var bulkDropdown = $('#" . $this->id . "_bulk_action');\n";
+        $html .= "          if (bulkDropdown.length) {\n";
+        $html .= "            bulkDropdown.dropdown();\n";
         $html .= "          }\n";
-        $html .= "        });\n";
-        $html .= "      }, 100);\n";
+        $html .= "        }, 100);\n";
+        $html .= "      }\n";
         $html .= "    }\n";
         $html .= "  }\n";
-        $html .= "});\n";
+        $html .= "  \n";
+        $html .= "  // Check if DOM is already ready (for AJAX loaded content)\n";
+        $html .= "  if (document.readyState === 'loading') {\n";
+        $html .= "    document.addEventListener('DOMContentLoaded', doInit);\n";
+        $html .= "  } else {\n";
+        $html .= "    // DOM already loaded - run immediately (AJAX load case)\n";
+        $html .= "    doInit();\n";
+        $html .= "  }\n";
+        $html .= "})();\n";
         $html .= "</script>\n";
 
         return $html;
