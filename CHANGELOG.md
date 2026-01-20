@@ -2,6 +2,11 @@
 
 All notable changes to EasyForm will be documented in this file.
 
+## [2.0.16] - 2026-01-20
+
+### Fixed
+- **EasyList Button Colors** - Fixed button colors not showing when using `buttonGrouping(true)`. Removed `basic` class from button group wrapper (`ui mini buttons` instead of `ui mini basic buttons`) which was overriding individual button color classes.
+
 ## [2.0.15] - 2026-01-20
 
 ### Added

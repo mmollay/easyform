@@ -1103,7 +1103,7 @@ class EasyList {
 
         // Start Semantic UI button group if enabled
         if ($this->buttonGrouping) {
-            $html .= '<div class="ui mini basic buttons">';
+            $html .= '<div class="ui mini buttons">';
         }
 
         foreach ($this->buttons as $buttonId => $button) {
