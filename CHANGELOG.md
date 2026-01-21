@@ -2,6 +2,30 @@
 
 All notable changes to EasyForm will be documented in this file.
 
+## [2.0.17] - 2026-01-21
+
+### Added
+- **Legacy Compatibility Assets** - Added files for Smart8 migration:
+  - `DataExporter.php` - Export functionality for lists
+  - `ListExportHandler.php` - Export handler class
+  - `ckeditor5/` - CKEditor 5 integration files
+  - `fomantic-ui/` - Fomantic UI CSS framework
+  - `js/formGenerator.js` - Legacy form JS
+  - `js/listGenerator.js` - Legacy list JS
+  - `js/fileUploader.js` - File upload functionality
+  - `js/jquery.min.js` - jQuery library
+
+### Changed
+- **EasyList Filters - AJAX Integration** - Complete rewrite of filter system for AJAX-based reload (no full page refresh):
+  - Native Fomantic UI `ui selection dropdown clearable` structure
+  - Proper `.menu` with `.item` elements instead of `<option>` tags
+  - Clearable X icon built into dropdown
+  - **Integration with js/listGenerator.js** for AJAX reloading
+  - Filter dropdown IDs now use `filter_{contentId}_{filterName}` format for compatibility
+  - Filter values read from both `filters[name]` array and direct GET params
+  - "Reset" button clears all filters, search, and reloads via AJAX
+  - Filter state persisted in localStorage via listGenerator.js
+
 ## [2.0.16] - 2026-01-20
 
 ### Fixed

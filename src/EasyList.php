@@ -25,7 +25,7 @@ class EasyList {
     private $sortable = true;
     private $paginate = true;
     private $pageSize = 25;
-    private $exportable = true;
+    private $exportable = false;
     private $exportFormats = ['csv', 'json', 'excel'];
     private $ajax = false;
     private $ajaxUrl = '';
@@ -307,6 +307,10 @@ class EasyList {
      * @return $this
      */
     public function addExternalButton($id, $config) {
+        // Support both 'callback' (smartform2 compat) and 'onclick'
+        if (isset($config['callback']) && !isset($config['onclick'])) {
+            $config['onclick'] = $config['callback'];
+        }
         $this->externalButtons[$id] = array_merge([
             'icon' => 'plus',
             'class' => 'ui button',
@@ -836,7 +840,12 @@ class EasyList {
                 if ($button['modalId']) {
                     $html .= '<button class="' . $button['class'] . '" onclick="openModal(\'' . $button['modalId'] . '\')"' . $popupAttr . ' style="height: ' . $toolbarHeight . '; margin: 0;">';
                 } elseif ($button['onclick']) {
-                    $html .= '<button class="' . $button['class'] . '" onclick="' . $button['onclick'] . '"' . $popupAttr . ' style="height: ' . $toolbarHeight . '; margin: 0;">';
+                    // Handle function callbacks - wrap with IIFE if it's a function definition
+                    $onclick = $button['onclick'];
+                    if (strpos($onclick, 'function') === 0) {
+                        $onclick = '(' . $onclick . ')()';
+                    }
+                    $html .= '<button class="' . $button['class'] . '" onclick="' . htmlspecialchars($onclick) . '"' . $popupAttr . ' style="height: ' . $toolbarHeight . '; margin: 0;">';
                 } else {
                     $html .= '<button class="' . $button['class'] . '"' . $popupAttr . ' style="height: ' . $toolbarHeight . '; margin: 0;">';
                 }
@@ -874,40 +883,69 @@ class EasyList {
     private function renderFilters() {
         $html = '<div class="ui form segment easylist-filters" style="padding: 10px 12px; margin-bottom: 15px; background: #f8f9fa; width: 100%;">';
         $html .= '<div class="inline fields" style="margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; width: 100%; justify-content: space-between;">';
-        
+
         // Create filter fields container
         $html .= '<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; flex: 1;">';
-        
+
         foreach ($this->filters as $key => $filter) {
-            // Find column label  
-            $columnLabel = $key;
-            foreach ($this->columns as $column) {
-                if ($column['key'] === $key) {
-                    $columnLabel = strip_tags($column['label']); // Remove HTML from label
-                    break;
-                }
-            }
-            
-            $html .= '<div class="field" style="margin: 0; display: flex; align-items: center; gap: 6px;">';
-            $html .= '<label style="font-size: 0.85em; color: #555; white-space: nowrap;">' . $columnLabel . ':</label>';
-            
-            if ($filter['type'] === 'select') {
-                $html .= '<select class="ui compact dropdown filter-input" data-column="' . $key . '" style="min-width: 140px; font-size: 0.9em;">';
-                // Check if options are associative array or simple array
-                if (isset($filter['options']) && is_array($filter['options'])) {
-                    // If first element is associative
-                    if (array_keys($filter['options']) !== range(0, count($filter['options']) - 1)) {
-                        foreach ($filter['options'] as $value => $label) {
-                            $html .= '<option value="' . htmlspecialchars($value) . '">' . htmlspecialchars($label) . '</option>';
-                        }
-                    } else {
-                        $html .= '<option value="">Alle</option>';
-                        foreach ($filter['options'] as $option) {
-                            $html .= '<option value="' . htmlspecialchars($option) . '">' . htmlspecialchars($option) . '</option>';
-                        }
+            // Use filter label if provided, otherwise find column label or use key
+            $columnLabel = $filter['label'] ?? null;
+            if (!$columnLabel) {
+                foreach ($this->columns as $column) {
+                    if ($column['key'] === $key) {
+                        $columnLabel = strip_tags($column['label']); // Remove HTML from label
+                        break;
                     }
                 }
-                $html .= '</select>';
+            }
+            if (!$columnLabel) {
+                $columnLabel = $key;
+            }
+
+            // Use contentId from GET (smartform2 listGenerator.js compatibility)
+            $contentId = $_GET['contentId'] ?? $this->id;
+            $filterId = 'filter_' . $contentId . '_' . $key;
+
+            // Read filter value from filters array (smartform2 format) or direct GET param
+            $currentValue = '';
+            if (isset($_GET['filters']) && is_array($_GET['filters']) && isset($_GET['filters'][$key])) {
+                $currentValue = $_GET['filters'][$key];
+            } elseif (isset($_GET[$key])) {
+                $currentValue = $_GET[$key];
+            }
+            $placeholder = $filter['placeholder'] ?? 'Bitte auswählen';
+
+            $html .= '<div class="field" style="margin: 0; display: flex; align-items: center; gap: 6px;">';
+            $html .= '<label style="font-size: 0.85em; color: #555; white-space: nowrap;">' . htmlspecialchars($columnLabel) . ':</label>';
+
+            if ($filter['type'] === 'select') {
+                // Fomantic UI Dropdown (clearable) - smartform2-compatible ID format
+                $html .= '<div class="ui selection dropdown clearable" id="' . $filterId . '" style="min-width: 160px;">';
+                $html .= '<input type="hidden" name="' . $key . '" value="' . htmlspecialchars($currentValue) . '">';
+                $html .= '<i class="dropdown icon"></i>';
+                $html .= '<i class="remove icon"></i>';
+
+                // Check if HTML is allowed in this filter (default: true for dropdowns)
+                $allowHtml = $filter['allowHtml'] ?? true;
+
+                // Default text or selected value
+                if ($currentValue !== '' && isset($filter['options'][$currentValue])) {
+                    $displayText = $allowHtml ? $filter['options'][$currentValue] : htmlspecialchars($filter['options'][$currentValue]);
+                    $html .= '<div class="text">' . $displayText . '</div>';
+                } else {
+                    $html .= '<div class="default text">' . htmlspecialchars($placeholder) . '</div>';
+                }
+
+                $html .= '<div class="menu">';
+                if (isset($filter['options']) && is_array($filter['options'])) {
+                    foreach ($filter['options'] as $value => $optLabel) {
+                        $selected = ($currentValue !== '' && $currentValue == $value) ? 'active selected' : '';
+                        $displayLabel = $allowHtml ? $optLabel : htmlspecialchars($optLabel);
+                        $html .= '<div class="item ' . $selected . '" data-value="' . htmlspecialchars($value) . '">' . $displayLabel . '</div>';
+                    }
+                }
+                $html .= '</div>'; // End menu
+                $html .= '</div>'; // End dropdown
             } elseif ($filter['type'] === 'date') {
                 $html .= '<input type="date" class="filter-input" data-column="' . $key . '" style="padding: 7px 10px; border: 1px solid #d4d4d5; border-radius: 4px; font-size: 0.9em; height: 38px;">';
             } elseif ($filter['type'] === 'range') {
@@ -919,21 +957,23 @@ class EasyList {
             } else {
                 $html .= '<input type="text" class="filter-input" data-column="' . $key . '" placeholder="' . ($filter['placeholder'] ?? 'Filter...') . '" style="padding: 7px 10px; border: 1px solid #d4d4d5; border-radius: 4px; width: 140px; font-size: 0.9em; height: 38px;">';
             }
-            
+
             $html .= '</div>';
         }
-        
+
         $html .= '</div>'; // Close filter fields container
-        
+
         if (!empty($this->filters)) {
+            // Use contentId from GET (smartform2 listGenerator.js compatibility)
+            $resetContentId = $_GET['contentId'] ?? $this->id;
             $html .= '<div class="field" style="margin: 0;">';
-            $html .= '<button class="ui small basic button" id="' . $this->id . '_clear_filters" style="padding: 8px 12px;" title="Filter zurücksetzen"><i class="eraser icon"></i> Reset</button>';
+            $html .= '<button class="ui small basic button" id="clear_filters_' . $resetContentId . '" style="padding: 8px 12px;" title="Filter zurücksetzen"><i class="eraser icon"></i> Reset</button>';
             $html .= '</div>';
         }
-        
+
         $html .= '</div>';
         $html .= '</div>';
-        
+
         return $html;
     }
     
@@ -1103,7 +1143,7 @@ class EasyList {
 
         // Start Semantic UI button group if enabled
         if ($this->buttonGrouping) {
-            $html .= '<div class="ui mini buttons">';
+            $html .= '<div class="ui mini icon buttons">';
         }
 
         foreach ($this->buttons as $buttonId => $button) {
@@ -1484,23 +1524,9 @@ class EasyList {
         $html .= "      // Initialize tooltips\n";
         $html .= "      $('[data-tooltip]').popup();\n";
         $html .= "      \n";
-        $html .= "      // Initialize dropdowns with onChange\n";
+        $html .= "      // Initialize dropdowns (filter dropdowns are handled by listGenerator.js)\n";
         $html .= "      if ($.fn.dropdown) {\n";
         $html .= "        setTimeout(function() {\n";
-        $html .= "          // Initialize filter dropdowns\n";
-        $html .= "          $('#" . $this->id . "_container .ui.dropdown.filter-input').each(function() {\n";
-        $html .= "            var select = $(this).find('select')[0];\n";
-        $html .= "            if (select && select.dataset.column) {\n";
-        $html .= "              $(this).dropdown({\n";
-        $html .= "                onChange: function(value) {\n";
-        $html .= "                  if (window.easyList_" . $this->id . ") {\n";
-        $html .= "                    window.easyList_" . $this->id . ".setFilter(select.dataset.column, value);\n";
-        $html .= "                  }\n";
-        $html .= "                }\n";
-        $html .= "              });\n";
-        $html .= "            }\n";
-        $html .= "          });\n";
-        $html .= "          \n";
         $html .= "          // Initialize bulk action dropdown\n";
         $html .= "          var bulkDropdown = $('#" . $this->id . "_bulk_action');\n";
         $html .= "          if (bulkDropdown.length) {\n";
