@@ -1,0 +1,977 @@
+/**
+ * EasyForm/EasyList Faktura Theme
+ * Version 1.0.0
+ * 
+ * Geschmackvolles, modernes Design basierend auf dem Faktura-Modul
+ * Autor: SSI Panel Team
+ */
+
+/* ============================================
+   CSS Variables
+   ============================================ */
+:root {
+  --faktura-primary: #059669;
+  --faktura-primary-hover: #047857;
+  --faktura-text: #1e293b;
+  --faktura-text-secondary: #64748b;
+  --faktura-text-muted: #94a3b8;
+  --faktura-surface: #ffffff;
+  --faktura-surface-secondary: #f8fafc;
+  --faktura-border: #e2e8f0;
+  --faktura-border-strong: #cbd5e1;
+  --faktura-hover: #ecfdf5;
+  --faktura-slate-100: #f1f5f9;
+  --faktura-sky-50: #ecfdf5;
+  
+  --faktura-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  
+  --faktura-radius-sm: 4px;
+  --faktura-radius-md: 6px;
+  --faktura-radius-lg: 8px;
+}
+
+/* ============================================
+   Base Container & Wrapper
+   ============================================ */
+.easylist-faktura,
+.easylist-wrapper.theme-faktura {
+  font-family: var(--faktura-font);
+  color: var(--faktura-text);
+  background: transparent;
+}
+
+.easylist-faktura *,
+.easylist-wrapper.theme-faktura * {
+  box-sizing: border-box;
+}
+
+/* ============================================
+   Stats Cards
+   ============================================ */
+.easylist-faktura .easylist-stats,
+.easylist-wrapper.theme-faktura .easylist-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.easylist-faktura .stat-card,
+.easylist-wrapper.theme-faktura .stat-card {
+  background: var(--faktura-surface);
+  border: 1px solid #e2e8f0;
+  border-radius: var(--faktura-radius-lg);
+  padding: 14px 16px;
+}
+
+.easylist-faktura .stat-card .stat-label,
+.easylist-wrapper.theme-faktura .stat-card .stat-label {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--faktura-text-secondary);
+  margin-bottom: 4px;
+}
+
+.easylist-faktura .stat-card .stat-value,
+.easylist-wrapper.theme-faktura .stat-card .stat-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--faktura-text);
+}
+
+.easylist-faktura .stat-card .stat-value.emerald,
+.easylist-wrapper.theme-faktura .stat-card .stat-value.emerald,
+.easylist-faktura .stat-card .stat-value.primary,
+.easylist-wrapper.theme-faktura .stat-card .stat-value.primary {
+  color: var(--faktura-primary);
+}
+
+/* ============================================
+   Filters & Toolbar
+   ============================================ */
+.easylist-faktura .easylist-toolbar,
+.easylist-wrapper.theme-faktura .easylist-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 14px;
+  background: var(--faktura-surface);
+  border: 1px solid #e2e8f0;
+  border-radius: var(--faktura-radius-lg);
+  padding: 10px 14px;
+}
+
+.easylist-faktura .easylist-toolbar select,
+.easylist-faktura .easylist-toolbar input[type="text"],
+.easylist-faktura .easylist-toolbar input[type="search"],
+.easylist-wrapper.theme-faktura .easylist-toolbar select,
+.easylist-wrapper.theme-faktura .easylist-toolbar input[type="text"],
+.easylist-wrapper.theme-faktura .easylist-toolbar input[type="search"] {
+  font-family: inherit;
+  font-size: 14px;
+  padding: 6px 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--faktura-radius-md);
+  background: #fff;
+  color: var(--faktura-text);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.easylist-faktura .easylist-toolbar select:focus,
+.easylist-faktura .easylist-toolbar input:focus,
+.easylist-wrapper.theme-faktura .easylist-toolbar select:focus,
+.easylist-wrapper.theme-faktura .easylist-toolbar input:focus {
+  border-color: var(--faktura-primary);
+}
+
+.easylist-faktura .easylist-toolbar input[type="text"],
+.easylist-faktura .easylist-toolbar input[type="search"],
+.easylist-wrapper.theme-faktura .easylist-toolbar input[type="text"],
+.easylist-wrapper.theme-faktura .easylist-toolbar input[type="search"] {
+  min-width: 200px;
+}
+
+.easylist-faktura .filter-spacer,
+.easylist-wrapper.theme-faktura .filter-spacer {
+  flex: 1;
+}
+
+/* ============================================
+   Buttons
+   ============================================ */
+.easylist-faktura .btn-primary,
+.easylist-faktura .btn-new,
+.easylist-wrapper.theme-faktura .btn-primary,
+.easylist-wrapper.theme-faktura .btn-new,
+.easylist-faktura button.primary,
+.easylist-wrapper.theme-faktura button.primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--faktura-primary);
+  border: none;
+  border-radius: var(--faktura-radius-md);
+  cursor: pointer;
+  transition: background 0.15s;
+  text-decoration: none;
+}
+
+.easylist-faktura .btn-primary:hover,
+.easylist-faktura .btn-new:hover,
+.easylist-wrapper.theme-faktura .btn-primary:hover,
+.easylist-wrapper.theme-faktura .btn-new:hover,
+.easylist-faktura button.primary:hover,
+.easylist-wrapper.theme-faktura button.primary:hover {
+  background: var(--faktura-primary-hover);
+  color: #fff !important;
+  text-decoration: none;
+}
+
+.easylist-faktura a.btn-primary:visited,
+.easylist-faktura a.btn-primary:active,
+.easylist-faktura a.btn-new:visited,
+.easylist-faktura a.btn-new:active,
+.easylist-wrapper.theme-faktura a.btn-primary:visited,
+.easylist-wrapper.theme-faktura a.btn-primary:active,
+.easylist-wrapper.theme-faktura a.btn-new:visited,
+.easylist-wrapper.theme-faktura a.btn-new:active {
+  color: #fff !important;
+  text-decoration: none;
+}
+
+/* ============================================
+   Table Wrapper
+   ============================================ */
+.easylist-faktura .table-wrap,
+.easylist-faktura .easylist-table-wrapper,
+.easylist-wrapper.theme-faktura .table-wrap,
+.easylist-wrapper.theme-faktura .easylist-table-wrapper {
+  background: var(--faktura-surface);
+  border: 1px solid #e2e8f0;
+  border-radius: var(--faktura-radius-lg);
+  overflow: hidden;
+}
+
+/* ============================================
+   Table Styles
+   ============================================ */
+.easylist-faktura table,
+.easylist-wrapper.theme-faktura table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+/* Table Header */
+.easylist-faktura table thead th,
+.easylist-wrapper.theme-faktura table thead th {
+  padding: 8px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: var(--faktura-text-secondary);
+  background: var(--faktura-surface-secondary);
+  border-bottom: 1px solid #e2e8f0;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.easylist-faktura table thead th.sortable,
+.easylist-wrapper.theme-faktura table thead th.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.easylist-faktura table thead th.sortable:hover,
+.easylist-wrapper.theme-faktura table thead th.sortable:hover {
+  color: var(--faktura-text);
+}
+
+.easylist-faktura table thead th .sort-icon,
+.easylist-wrapper.theme-faktura table thead th .sort-icon {
+  font-size: 10px;
+  margin-left: 3px;
+  opacity: 0.3;
+}
+
+.easylist-faktura table thead th.sorted .sort-icon,
+.easylist-wrapper.theme-faktura table thead th.sorted .sort-icon {
+  opacity: 1;
+  color: var(--faktura-primary);
+}
+
+/* Table Body */
+.easylist-faktura table tbody td,
+.easylist-wrapper.theme-faktura table tbody td {
+  padding: 7px 10px;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: middle;
+}
+
+.easylist-faktura table tbody tr:hover,
+.easylist-wrapper.theme-faktura table tbody tr:hover {
+  background: var(--faktura-hover);
+}
+
+.easylist-faktura table tbody tr:last-child td,
+.easylist-wrapper.theme-faktura table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Table Alignment */
+.easylist-faktura table .right.aligned,
+.easylist-wrapper.theme-faktura table .right.aligned {
+  text-align: right;
+}
+
+.easylist-faktura table .center.aligned,
+.easylist-wrapper.theme-faktura table .center.aligned {
+  text-align: center;
+}
+
+.easylist-faktura table .left.aligned,
+.easylist-wrapper.theme-faktura table .left.aligned {
+  text-align: left;
+}
+
+/* ============================================
+   Action Buttons (Beautiful Fomantic UI Icons!)
+   ============================================ */
+.easylist-faktura .actions,
+.easylist-faktura .action-buttons,
+.easylist-wrapper.theme-faktura .actions,
+.easylist-wrapper.theme-faktura .action-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.easylist-faktura .actions button,
+.easylist-faktura .action-buttons button,
+.easylist-wrapper.theme-faktura .actions button,
+.easylist-wrapper.theme-faktura .action-buttons button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: var(--faktura-radius-sm);
+  color: var(--faktura-text-secondary);
+  font-size: 14px;
+  transition: all 0.15s;
+}
+
+.easylist-faktura .actions button:hover,
+.easylist-faktura .action-buttons button:hover,
+.easylist-wrapper.theme-faktura .actions button:hover,
+.easylist-wrapper.theme-faktura .action-buttons button:hover {
+  background: var(--faktura-slate-100);
+  color: var(--faktura-text);
+}
+
+/* Button cell styling */
+.easylist-faktura td.button-cell,
+.easylist-wrapper.theme-faktura td.button-cell {
+  white-space: nowrap;
+  padding: 6px 8px !important;
+}
+
+/* Fomantic UI button group in table cells - 🎨 MARTIN'S VERBUNDENE BUTTON-GRUPPEN! */
+.easylist-faktura td.button-cell .ui.buttons,
+.easylist-wrapper.theme-faktura td.button-cell .ui.buttons {
+  display: inline-flex;
+  vertical-align: middle;
+  border-radius: var(--faktura-radius-sm);
+  overflow: visible;
+}
+
+/* Connected button group styling */
+.easylist-faktura .ui.buttons,
+.easylist-wrapper.theme-faktura .ui.buttons {
+  display: inline-flex;
+  box-shadow: 0 0 0 1px rgba(34, 36, 38, 0.15);
+  border-radius: var(--faktura-radius-sm);
+}
+
+.easylist-faktura .ui.buttons > .button,
+.easylist-wrapper.theme-faktura .ui.buttons > .button {
+  border-radius: 0;
+  border-left: none;
+  margin: 0 !important;
+}
+
+.easylist-faktura .ui.buttons > .button:first-child,
+.easylist-wrapper.theme-faktura .ui.buttons > .button:first-child {
+  border-left: 1px solid transparent;
+  border-top-left-radius: var(--faktura-radius-sm);
+  border-bottom-left-radius: var(--faktura-radius-sm);
+}
+
+.easylist-faktura .ui.buttons > .button:last-child,
+.easylist-wrapper.theme-faktura .ui.buttons > .button:last-child {
+  border-top-right-radius: var(--faktura-radius-sm);
+  border-bottom-right-radius: var(--faktura-radius-sm);
+}
+
+/* Button with text + icon styling */
+.easylist-faktura .ui.button:not(.icon),
+.easylist-wrapper.theme-faktura .ui.button:not(.icon) {
+  padding: 8px 12px !important;
+}
+
+.easylist-faktura .ui.button i.icon,
+.easylist-wrapper.theme-faktura .ui.button i.icon {
+  margin: 0;
+  margin-right: 0.35em;
+  vertical-align: middle;
+}
+
+/* 🎨 MARTIN'S FARBEN - Buttons in Groups */
+/* Edit button - GREEN */
+.easylist-faktura .ui.buttons > .button.green,
+.easylist-wrapper.theme-faktura .ui.buttons > .button.green {
+  background: #10b981 !important;
+  color: white !important;
+}
+
+.easylist-faktura .ui.buttons > .button.green:hover,
+.easylist-wrapper.theme-faktura .ui.buttons > .button.green:hover {
+  background: #059669 !important;
+}
+
+/* Delete button - RED */
+.easylist-faktura .ui.buttons > .button.red,
+.easylist-wrapper.theme-faktura .ui.buttons > .button.red {
+  background: #ef4444 !important;
+  color: white !important;
+}
+
+.easylist-faktura .ui.buttons > .button.red:hover,
+.easylist-wrapper.theme-faktura .ui.buttons > .button.red:hover {
+  background: #dc2626 !important;
+}
+
+/* Mail button - BLUE */
+.easylist-faktura .ui.buttons > .button.blue,
+.easylist-wrapper.theme-faktura .ui.buttons > .button.blue {
+  background: #3b82f6 !important;
+  color: white !important;
+}
+
+.easylist-faktura .ui.buttons > .button.blue:hover,
+.easylist-wrapper.theme-faktura .ui.buttons > .button.blue:hover {
+  background: #2563eb !important;
+}
+
+/* Beautiful icon-only buttons with hover colors */
+.easylist-faktura .ui.icon.button,
+.easylist-wrapper.theme-faktura .ui.icon.button {
+  padding: 8px !important;
+  background: transparent !important;
+  color: #94a3b8 !important;
+  border: none !important;
+  transition: all 0.2s ease !important;
+}
+
+.easylist-faktura .ui.icon.button:hover,
+.easylist-wrapper.theme-faktura .ui.icon.button:hover {
+  background: #f1f5f9 !important;
+  color: #1e293b !important;
+}
+
+/* Edit button - emerald green on hover */
+.easylist-faktura .ui.icon.button:has(.edit.icon):hover,
+.easylist-wrapper.theme-faktura .ui.icon.button:has(.edit.icon):hover {
+  background: #d1fae5 !important;
+  color: #059669 !important;
+}
+
+/* Clone button - cyan on hover */
+.easylist-faktura .ui.icon.button:has(.clone.icon):hover,
+.easylist-wrapper.theme-faktura .ui.icon.button:has(.clone.icon):hover {
+  background: #cffafe !important;
+  color: #0891b2 !important;
+}
+
+/* PDF button - red on hover */
+.easylist-faktura .ui.icon.button:has(.file.pdf.icon):hover,
+.easylist-wrapper.theme-faktura .ui.icon.button:has(.file.pdf.icon):hover {
+  background: #fee2e2 !important;
+  color: #dc2626 !important;
+}
+
+/* Mail button - blue on hover */
+.easylist-faktura .ui.icon.button:has(.envelope.icon):hover,
+.easylist-wrapper.theme-faktura .ui.icon.button:has(.envelope.icon):hover {
+  background: #dbeafe !important;
+  color: #2563eb !important;
+}
+
+/* Delete/Trash button - red on hover */
+.easylist-faktura .ui.icon.button.delete:hover,
+.easylist-faktura .ui.icon.button:has(.trash.icon):hover,
+.easylist-wrapper.theme-faktura .ui.icon.button.delete:hover,
+.easylist-wrapper.theme-faktura .ui.icon.button:has(.trash.icon):hover {
+  background: #fee2e2 !important;
+  color: #dc2626 !important;
+}
+
+/* Legacy support for non-grouped buttons */
+.easylist-faktura .actions button.delete:hover,
+.easylist-faktura .actions button.del:hover,
+.easylist-faktura .action-buttons button.delete:hover,
+.easylist-faktura .action-buttons button.del:hover,
+.easylist-wrapper.theme-faktura .actions button.delete:hover,
+.easylist-wrapper.theme-faktura .actions button.del:hover,
+.easylist-wrapper.theme-faktura .action-buttons button.delete:hover,
+.easylist-wrapper.theme-faktura .action-buttons button.del:hover {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+/* ============================================
+   Pagination - 🎨 MARTIN'S SCHÖNE PAGINATION MIT SEITENZAHLEN!
+   ============================================ */
+.easylist-faktura .pagination,
+.easylist-faktura .easylist-pagination,
+.easylist-wrapper.theme-faktura .pagination,
+.easylist-wrapper.theme-faktura .easylist-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--faktura-text-secondary);
+}
+
+.easylist-faktura .pagination .pages,
+.easylist-faktura .easylist-pagination .pages,
+.easylist-wrapper.theme-faktura .pagination .pages,
+.easylist-wrapper.theme-faktura .easylist-pagination .pages {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+
+.easylist-faktura .pagination button,
+.easylist-faktura .easylist-pagination button,
+.easylist-wrapper.theme-faktura .pagination button,
+.easylist-wrapper.theme-faktura .easylist-pagination button {
+  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  border-radius: var(--faktura-radius-sm);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--faktura-text);
+  transition: all 0.15s;
+  min-width: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.easylist-faktura .pagination button:hover:not(:disabled),
+.easylist-faktura .easylist-pagination button:hover:not(:disabled),
+.easylist-wrapper.theme-faktura .pagination button:hover:not(:disabled),
+.easylist-wrapper.theme-faktura .easylist-pagination button:hover:not(:disabled) {
+  border-color: var(--faktura-primary);
+  background: var(--faktura-hover);
+}
+
+.easylist-faktura .pagination button.active,
+.easylist-faktura .easylist-pagination button.active,
+.easylist-faktura .pagination .page-number.active,
+.easylist-faktura .easylist-pagination .page-number.active,
+.easylist-wrapper.theme-faktura .pagination button.active,
+.easylist-wrapper.theme-faktura .easylist-pagination button.active,
+.easylist-wrapper.theme-faktura .pagination .page-number.active,
+.easylist-wrapper.theme-faktura .easylist-pagination .page-number.active {
+  background: var(--faktura-primary);
+  color: #fff;
+  border-color: var(--faktura-primary);
+  font-weight: 600;
+}
+
+.easylist-faktura .pagination button:disabled,
+.easylist-faktura .easylist-pagination button:disabled,
+.easylist-wrapper.theme-faktura .pagination button:disabled,
+.easylist-wrapper.theme-faktura .easylist-pagination button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  background: var(--faktura-surface-secondary);
+}
+
+/* Ellipsis for pagination */
+.easylist-faktura .pagination .ellipsis,
+.easylist-faktura .easylist-pagination .ellipsis,
+.easylist-wrapper.theme-faktura .pagination .ellipsis,
+.easylist-wrapper.theme-faktura .easylist-pagination .ellipsis {
+  padding: 0 8px;
+  color: var(--faktura-text-muted);
+  user-select: none;
+}
+
+/* Page number buttons */
+.easylist-faktura .pagination .page-number,
+.easylist-faktura .easylist-pagination .page-number,
+.easylist-wrapper.theme-faktura .pagination .page-number,
+.easylist-wrapper.theme-faktura .easylist-pagination .page-number {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Prev/Next buttons */
+.easylist-faktura .pagination .prev-page,
+.easylist-faktura .pagination .next-page,
+.easylist-faktura .easylist-pagination .prev-page,
+.easylist-faktura .easylist-pagination .next-page,
+.easylist-wrapper.theme-faktura .pagination .prev-page,
+.easylist-wrapper.theme-faktura .pagination .next-page,
+.easylist-wrapper.theme-faktura .easylist-pagination .prev-page,
+.easylist-wrapper.theme-faktura .easylist-pagination .next-page {
+  padding: 8px 10px;
+}
+
+/* ============================================
+   Loading State
+   ============================================ */
+.easylist-faktura .loading,
+.easylist-wrapper.theme-faktura .loading {
+  text-align: center;
+  padding: 40px;
+  color: var(--faktura-text-muted);
+}
+
+.easylist-faktura .loading .spinner,
+.easylist-wrapper.theme-faktura .loading .spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--faktura-border);
+  border-top-color: var(--faktura-primary);
+  border-radius: 50%;
+  animation: faktura-spin 0.6s linear infinite;
+}
+
+@keyframes faktura-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   Badges
+   ============================================ */
+.easylist-faktura .badge,
+.easylist-wrapper.theme-faktura .badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Badge Variants */
+.easylist-faktura .badge-success,
+.easylist-faktura .badge-active,
+.easylist-wrapper.theme-faktura .badge-success,
+.easylist-wrapper.theme-faktura .badge-active {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.easylist-faktura .badge-danger,
+.easylist-faktura .badge-error,
+.easylist-wrapper.theme-faktura .badge-danger,
+.easylist-wrapper.theme-faktura .badge-error {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.easylist-faktura .badge-info,
+.easylist-wrapper.theme-faktura .badge-info {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.easylist-faktura .badge-warning,
+.easylist-wrapper.theme-faktura .badge-warning {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.easylist-faktura .badge-inactive,
+.easylist-faktura .badge-neutral,
+.easylist-wrapper.theme-faktura .badge-inactive,
+.easylist-wrapper.theme-faktura .badge-neutral {
+  background: #f1f5f9;
+  color: #94a3b8;
+}
+
+/* Specific badge types (from Faktura accounts) */
+.easylist-faktura .badge-Income,
+.easylist-wrapper.theme-faktura .badge-Income {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.easylist-faktura .badge-Expense,
+.easylist-wrapper.theme-faktura .badge-Expense {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.easylist-faktura .badge-Asset,
+.easylist-wrapper.theme-faktura .badge-Asset {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.easylist-faktura .badge-Liability,
+.easylist-wrapper.theme-faktura .badge-Liability {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+@media (max-width: 768px) {
+  .easylist-faktura .easylist-toolbar,
+  .easylist-wrapper.theme-faktura .easylist-toolbar {
+    flex-direction: column;
+  }
+  
+  .easylist-faktura .easylist-toolbar select,
+  .easylist-faktura .easylist-toolbar input[type="text"],
+  .easylist-faktura .easylist-toolbar input[type="search"],
+  .easylist-wrapper.theme-faktura .easylist-toolbar select,
+  .easylist-wrapper.theme-faktura .easylist-toolbar input[type="text"],
+  .easylist-wrapper.theme-faktura .easylist-toolbar input[type="search"] {
+    width: 100%;
+  }
+  
+  .easylist-faktura .filter-spacer,
+  .easylist-wrapper.theme-faktura .filter-spacer {
+    display: none;
+  }
+  
+  .easylist-faktura .easylist-stats,
+  .easylist-wrapper.theme-faktura .easylist-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .easylist-faktura table,
+  .easylist-wrapper.theme-faktura table {
+    font-size: 12px;
+  }
+  
+  .easylist-faktura table .hide-mobile,
+  .easylist-wrapper.theme-faktura table .hide-mobile {
+    display: none;
+  }
+}
+
+/* ============================================
+   Empty State
+   ============================================ */
+.easylist-faktura .empty-message,
+.easylist-wrapper.theme-faktura .empty-message {
+  text-align: center;
+  padding: 30px;
+  color: var(--faktura-text-muted);
+}
+
+.easylist-faktura .empty-message i,
+.easylist-wrapper.theme-faktura .empty-message i {
+  margin-right: 6px;
+  opacity: 0.6;
+}
+
+/* ============================================
+   Additional Utility Classes
+   ============================================ */
+.easylist-faktura strong,
+.easylist-wrapper.theme-faktura strong {
+  font-weight: 600;
+  color: var(--faktura-text);
+}
+
+.easylist-faktura .text-muted,
+.easylist-wrapper.theme-faktura .text-muted {
+  color: var(--faktura-text-muted);
+}
+
+.easylist-faktura .text-secondary,
+.easylist-wrapper.theme-faktura .text-secondary {
+  color: var(--faktura-text-secondary);
+}
+
+.easylist-faktura .text-primary,
+.easylist-wrapper.theme-faktura .text-primary {
+  color: var(--faktura-primary);
+}
+
+/* ============================================
+   Martin's Custom Status Styles
+   ============================================ */
+
+/* Status: Draft (mit blauem "Versenden" Button) */
+.easylist-faktura .inv-status-draft,
+.easylist-wrapper.theme-faktura .inv-status-draft {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.easylist-faktura .inv-status-draft .btn-send,
+.easylist-wrapper.theme-faktura .inv-status-draft .btn-send {
+  padding: 6px 12px;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.easylist-faktura .inv-status-draft .btn-send:hover,
+.easylist-wrapper.theme-faktura .inv-status-draft .btn-send:hover {
+  background: #1d4ed8;
+}
+
+/* Status: Sent/Delivered/Opened (grüner Text) */
+.easylist-faktura .inv-status-sent,
+.easylist-wrapper.theme-faktura .inv-status-sent {
+  color: #059669;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Status: Paid (grünes Lock-Icon + Text) */
+.easylist-faktura .inv-status-paid,
+.easylist-wrapper.theme-faktura .inv-status-paid {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #059669;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.easylist-faktura .inv-status-paid i,
+.easylist-wrapper.theme-faktura .inv-status-paid i {
+  color: #059669;
+}
+
+/* Status: Reminder (orange Badge mit Icon) */
+.easylist-faktura .inv-status-reminder,
+.easylist-wrapper.theme-faktura .inv-status-reminder {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: #fff7ed;
+  border-radius: 6px;
+  color: #ea580c;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.easylist-faktura .inv-status-reminder i,
+.easylist-wrapper.theme-faktura .inv-status-reminder i {
+  color: #ea580c;
+}
+
+/* Status: Cancelled (grau durchgestrichen) */
+.easylist-faktura .inv-status-cancelled,
+.easylist-wrapper.theme-faktura .inv-status-cancelled {
+  color: #94a3b8;
+  text-decoration: line-through;
+  font-size: 13px;
+}
+
+/* Status: Overdue (rot mit Warning-Icon) */
+.easylist-faktura .inv-status-overdue,
+.easylist-wrapper.theme-faktura .inv-status-overdue {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #dc2626;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.easylist-faktura .inv-status-overdue i,
+.easylist-wrapper.theme-faktura .inv-status-overdue i {
+  color: #dc2626;
+}
+
+/* ============================================
+   Martin's Custom Action Buttons with Hover Colors
+   ============================================ */
+.easylist-faktura .inv-actions,
+.easylist-wrapper.theme-faktura .inv-actions {
+  display: flex;
+  gap: 4px;
+  justify-content: flex-end;
+}
+
+.easylist-faktura .inv-actions button,
+.easylist-wrapper.theme-faktura .inv-actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 7px;
+  border-radius: 4px;
+  color: #94a3b8;
+  font-size: 14px;
+  transition: all 0.15s;
+}
+
+.easylist-faktura .inv-actions button:hover,
+.easylist-wrapper.theme-faktura .inv-actions button:hover {
+  background: #f1f5f9;
+  color: #1e293b;
+}
+
+.easylist-faktura .inv-actions button.edit:hover,
+.easylist-wrapper.theme-faktura .inv-actions button.edit:hover {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.easylist-faktura .inv-actions button.copy:hover,
+.easylist-wrapper.theme-faktura .inv-actions button.copy:hover {
+  background: #cffafe;
+  color: #0891b2;
+}
+
+.easylist-faktura .inv-actions button.pdf:hover,
+.easylist-wrapper.theme-faktura .inv-actions button.pdf:hover {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.easylist-faktura .inv-actions button.mail:hover,
+.easylist-wrapper.theme-faktura .inv-actions button.mail:hover {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.easylist-faktura .inv-actions button.storno:hover,
+.easylist-wrapper.theme-faktura .inv-actions button.storno:hover {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.easylist-faktura .inv-actions button.del:hover,
+.easylist-wrapper.theme-faktura .inv-actions button.del:hover {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+/* ============================================
+   Amount Formatting (tabular-nums, right-aligned)
+   ============================================ */
+.easylist-faktura .inv-amount,
+.easylist-wrapper.theme-faktura .inv-amount {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+/* ============================================
+   Sum Bar (prominent grey bar above table)
+   ============================================ */
+.easylist-faktura .inv-sum-bar,
+.easylist-wrapper.theme-faktura .inv-sum-bar {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.easylist-faktura .inv-sum-bar .label,
+.easylist-wrapper.theme-faktura .inv-sum-bar .label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.easylist-faktura .inv-sum-bar .value,
+.easylist-wrapper.theme-faktura .inv-sum-bar .value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+/* ============================================
+   Popup/Tooltip Z-Index Fix (Task #294)
+   ============================================ */
+.easylist-faktura .ui.popup,
+.easylist-wrapper.theme-faktura .ui.popup,
+.ui.popup {
+  z-index: 9999 !important;
+}
+
+[data-tooltip]::before,
+[data-tooltip]::after {
+  z-index: 9999 !important;
+}
